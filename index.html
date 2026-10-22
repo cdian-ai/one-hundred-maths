@@ -397,7 +397,7 @@ main{position:absolute;left:0;right:0;bottom:0;top:var(--hh,84px);overflow-y:aut
    visit. */
 /* Bumped once per phase of work, shown small at the foot of "About this course"
    so a parent reporting a problem can say which build they are on. */
-const VERSION="v13";
+const VERSION="v14";
 const R = s => { let x = (s*1103515245 + 12345) & 0x7fffffff; return () => (x = (x*1103515245 + 12345) & 0x7fffffff) / 0x7fffffff; };
 const pick = (r,a) => a[Math.floor(r()*a.length)];
 const between = (r,a,b) => a + Math.floor(r()*(b-a+1));
@@ -418,7 +418,7 @@ const fr = (n,d) => { const g=gcd(n,d)||1; return [n/g,d/g]; };
    is about the mistake actually made rather than always step one. None of
    this touches `a`: the answers and the random draws are unchanged. */
 const Wd=(en,fr)=>({en:en,fr:fr});
-const wl=x=>typeof x==="string"?x:(x[L]||x.en);
+const wl=x=>x&&typeof x==="object"?(x[L]||x.en):x;
 const PLACE=[["ones","unités"],["tens","dizaines"],["hundreds","centaines"],["thousands","milliers"],
  ["ten thousands","dizaines de mille"],["hundred thousands","centaines de mille"],["millions","millions"],
  ["ten millions","dizaines de millions"]].map(p=>({en:p[0],fr:p[1]}));
@@ -2223,8 +2223,154 @@ const SHARE=[11,19,14,23,33];
    IS the explanation, and they follow the worked example step by step: the
    child watches the thing happen rather than reading that it happened.
    Plain SVG, the app's own colours, no library. */
-const SVG=(vb,inner)=>`<svg class="art" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" role="img">${inner}</svg>`;
+const SVG=(vb,inner,label)=>`<svg class="art" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" role="img"${label?` aria-label="${esc(wl(label))}"`:""}>${inner}</svg>`;
 const C={on:"var(--band)",off:"var(--line)",ink:"var(--ink)",mut:"var(--muted)",warm:"var(--sun)",paper:"#fff"};
+const Lb=(en,fr)=>({en:en,fr:fr});
+
+/* ================= four models, used again and again =================
+   v14: nine lessons had a drawing and twenty-six had a sentence. Rather than
+   twenty-six one-off pictures, every new drawing is built from four models, so
+   a child keeps meeting the same few: a bar cut into parts, a number line, a
+   grid of squares or dots, and place-value columns. Each returns SVG pieces
+   in the app's own colours, and the drawings below put them together and
+   change them step by step. */
+const tx=(x,y,str,o)=>{ o=o||{};
+ return `<text x="${x}" y="${y}" text-anchor="${o.a||"middle"}" font-size="${o.fs||11}" fill="${o.c||C.mut}"${o.b?` font-weight="${o.b===true?600:o.b}"`:""}${o.halo?` paint-order="stroke" stroke="#fff" stroke-width="3.5"`:""}>${wl(str)}</text>`; };
+/* a cube of n × n × n small cubes, drawn as three faces */
+function isoCube(n,x,y,s,label){
+ const d=s*.5; let out="";
+ for(let r=0;r<n;r++) for(let c=0;c<n;c++) out+=`<rect x="${x+c*s}" y="${y+r*s}" width="${s}" height="${s}" fill="${C.on}" stroke="#fff" stroke-width="1"/>`;
+ for(let r=0;r<n;r++) for(let c=0;c<n;c++){ const px=x+c*s+(n-r)*d, py=y-(n-r)*d;
+  out+=`<path d="M${px} ${py} l${s} 0 l${-d} ${d} l${-s} 0 z" fill="${C.on}" opacity=".45" stroke="#fff" stroke-width="1"/>`; }
+ for(let r=0;r<n;r++) for(let c=0;c<n;c++){ const px=x+n*s+c*d, py=y+r*s-c*d;
+  out+=`<path d="M${px} ${py} l${d} ${-d} l0 ${s} l${-d} ${d} z" fill="${C.on}" opacity=".72" stroke="#fff" stroke-width="1"/>`; }
+ return out;
+}
+/* a bracket over (up) or under a span, with its label */
+function bracket(x0,x1,y,label,color,up){
+ const c=color||C.mut, d=up?-6:6;
+ return `<path d="M${x0} ${y} v${d} H${x1} v${-d}" fill="none" stroke="${c}" stroke-width="1.6"/>`+
+  (label!==undefined&&label!==""?tx((x0+x1)/2,up?y+d-4:y+d+12,label,{c:c,fs:11,b:true}):"");
+}
+
+/* barModel: a bar cut into parts.
+   parts  - a count of equal parts, or an array of part sizes
+   shaded - how many parts from the left are filled, or an array of fills
+   labels - text inside each part
+   o      - x, y, w, h; over/under: [{from,to,label,color}] brackets on part ranges */
+function barModel(parts,shaded,labels,o){
+ o=Object.assign({x:8,y:22,w:240,h:30,fill:C.on,off:C.off,fs:12},o||{});
+ const sz=Array.isArray(parts)?parts:Array(parts).fill(1), tot=sz.reduce((a,b)=>a+b,0), xs=[o.x];
+ let s="";
+ sz.forEach((p,i)=>{
+  const x=xs[i], w=o.w*p/tot; xs.push(x+w);
+  const f=Array.isArray(shaded)?(shaded[i]||o.off):(i<shaded?o.fill:o.off);
+  s+=`<rect x="${x+1}" y="${o.y}" width="${Math.max(1,w-2)}" height="${o.h}" rx="4" fill="${f}"/>`;
+  const lab=labels&&labels[i];
+  if(lab!==undefined&&lab!==null&&lab!=="")
+   s+=tx(x+w/2,o.y+o.h/2+o.fs*.36,lab,{fs:o.fs,b:true,c:f===o.off?C.ink:"#fff"});
+ });
+ (o.over||[]).forEach(b=>{ s+=bracket(xs[b.from]+2,xs[b.to+1]-2,o.y-3,b.label,b.color,true); });
+ (o.under||[]).forEach(b=>{ s+=bracket(xs[b.from]+2,xs[b.to+1]-2,o.y+o.h+3,b.label,b.color,false); });
+ return s;
+}
+
+/* numberLine: from..to, tick every `step`, labels every `every`.
+   marks - [{v, label, color, below}] dots on the line
+   jumps - [{a, b, label, color}] hops drawn as arcs
+   o     - x, y, w (or, with vertical:true, the line runs up from y by h) */
+function numberLine(from,to,marks,jumps,o){
+ o=Object.assign({x:14,y:52,w:232,h:120,step:null,every:null,fmt:v=>v,fs:9,vertical:false},o||{});
+ const t=v=>(v-from)/(to-from);
+ const P=v=>o.vertical?[o.x,o.y-t(v)*o.h]:[o.x+t(v)*o.w,o.y];
+ const [x0,y0]=P(from), [x1,y1]=P(to);
+ let s=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" stroke="${C.off}" stroke-width="2"/>`;
+ if(o.step){ const n=Math.round((to-from)/o.step);
+  for(let k=0;k<=n;k++){ const v=from+k*o.step, [x,y]=P(v), big=o.every&&Math.abs((v-from)/o.every-Math.round((v-from)/o.every))<1e-6;
+   s+=o.vertical?`<line x1="${x-(big?7:4)}" y1="${y}" x2="${x}" y2="${y}" stroke="${big?C.ink:C.off}" stroke-width="${big?1.6:1}"/>`
+                :`<line x1="${x}" y1="${y-(big?6:4)}" x2="${x}" y2="${y+(big?6:4)}" stroke="${big?C.ink:C.off}" stroke-width="${big?1.6:1}"/>`;
+   if(big) s+=o.vertical?tx(x-10,y+3,o.fmt(v),{a:"end",fs:o.fs}):tx(x,y+18,o.fmt(v),{fs:o.fs});
+  } }
+ (jumps||[]).forEach(j=>{ const [ax,ay]=P(j.a), [bx,by]=P(j.b), c=j.color||C.on;
+  if(o.vertical){ const mx=ax+28; s+=`<path d="M${ax+4} ${ay} Q${mx} ${(ay+by)/2} ${bx+4} ${by}" fill="none" stroke="${c}" stroke-width="2.4"/>`+
+    (j.label!==undefined?tx(mx+4,(ay+by)/2+4,j.label,{a:"start",c:c,b:true,fs:11}):"");
+  } else { const mx=(ax+bx)/2, lift=Math.min(30,8+Math.abs(bx-ax)*.3);
+   s+=`<path d="M${ax} ${ay-4} Q${mx} ${ay-lift*1.6} ${bx} ${by-4}" fill="none" stroke="${c}" stroke-width="2.4"/>`+
+    (j.label!==undefined?tx(mx,ay-lift-6,j.label,{c:c,b:true,fs:11}):""); }
+ });
+ (marks||[]).forEach(m=>{ const [x,y]=P(m.v), c=m.color||C.on;
+  s+=`<circle cx="${x}" cy="${y}" r="${m.r||4.5}" fill="${c}"/>`;
+  if(m.label!==undefined) s+=o.vertical?tx(x+12,y+4,m.label,{a:"start",c:c,b:true,fs:m.fs||11})
+                                       :tx(x,m.below?y+30:y-10,m.label,{c:c,b:true,fs:m.fs||11});
+ });
+ return s;
+}
+
+/* areaGrid: rows × cols of unit squares (or dots).
+   split - {r:[..], c:[..]}: heavier cut lines after those rows / columns
+   shade - (r,c) => fill, or null for an empty cell
+   o     - x, y, cell (side), dots, gap; big:true draws the regions between the
+           cuts as single blocks (for 46 × 27, where 1 242 squares are a smudge),
+           and then shade gets (regionRow, regionCol) */
+function areaGrid(rows,cols,split,shade,o){
+ o=Object.assign({x:10,y:10,cell:16,gap:1.5,dots:false,big:false,w:null,h:null},o||{});
+ split=split||{}; const cw=o.w?o.w/cols:o.cell, ch=o.h?o.h/rows:o.cell;
+ let s="";
+ if(o.big){
+  const rb=[0].concat(split.r||[],[rows]), cb=[0].concat(split.c||[],[cols]);
+  for(let i=0;i<rb.length-1;i++) for(let j=0;j<cb.length-1;j++){
+   const f=shade?shade(i,j):C.off;
+   s+=`<rect x="${o.x+cb[j]*cw+1}" y="${o.y+rb[i]*ch+1}" width="${(cb[j+1]-cb[j])*cw-2}" height="${(rb[i+1]-rb[i])*ch-2}" rx="3" fill="${f||"#fff"}" stroke="${C.off}" stroke-width="1.2"/>`;
+  }
+  return s;
+ }
+ for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+  const f=shade?shade(r,c):C.off;
+  const dx=(split.c||[]).filter(k=>c>=k).length*o.gap*2, dy=(split.r||[]).filter(k=>r>=k).length*o.gap*2;
+  const x=o.x+c*cw+dx, y=o.y+r*ch+dy;
+  s+=o.dots?`<circle cx="${x+cw/2}" cy="${y+ch/2}" r="${Math.min(cw,ch)*.36}" fill="${f||"none"}" stroke="${f?"none":C.off}" stroke-width="1"/>`
+           :`<rect x="${x+o.gap/2}" y="${y+o.gap/2}" width="${cw-o.gap}" height="${ch-o.gap}" rx="2" fill="${f||"#fff"}" stroke="${C.off}" stroke-width=".8"/>`;
+ }
+ return s;
+}
+
+/* pvColumns: numbers set out in place-value columns, lined up on the decimal point.
+   rows  - strings ("2456", "1.45", "" for an empty answer row); the last-but-one
+           row gets o.op beside it and a rule is drawn above o.rule (a row index)
+   point - "show" | "cover" | "none": the decimal point, or a hand over it
+   carry - {col: text}: small digits under the rule (col counted from the left)
+   o     - x, y, cw, rh, heads (column names shown above), hi (column to light),
+           over {col:text} small digits above row 0, strike [cols] in row 0,
+           colors [row]: digit colour per row, slide {row, by}: arrow showing the digits move */
+function pvColumns(rows,point,carry,o){
+ o=Object.assign({x:30,y:26,cw:30,rh:30,fs:22,op:"",rule:null,heads:null,hi:-1,over:{},strike:[],colors:[]},o||{});
+ const parts=rows.map(r=>String(r).split(".")), I=Math.max(...parts.map(p=>p[0].length)), F=Math.max(0,...parts.map(p=>(p[1]||"").length));
+ const n=I+F, cx=i=>o.x+i*o.cw+(i>=I&&F?8:0)+o.cw/2;
+ let s="";
+ if(o.hi>=0) s+=`<rect x="${cx(o.hi)-o.cw/2+1}" y="${o.y-o.rh+4}" width="${o.cw-2}" height="${o.rh*rows.length+4}" rx="6" fill="${C.on}" opacity=".12"/>`;
+ if(o.heads) o.heads.forEach((h,i)=>{ if(h) s+=tx(cx(n-o.heads.length+i),o.y-o.rh+1,h,{fs:o.cw<30?7:8}); });
+ rows.forEach((r,ri)=>{
+  const [ip,fp]=parts[ri], y=o.y+ri*o.rh, col=o.colors[ri]||C.ink;
+  if(r===""&&ri===o.rule) return;
+  ip.split("").forEach((d,k)=>{ const i=I-ip.length+k; if(d!==" ")
+   s+=tx(cx(i),y,d,{fs:o.fs,b:600,c:col}); });
+  (fp||"").split("").forEach((d,k)=>{ if(d!==" ") s+=tx(cx(I+k),y,d,{fs:o.fs,b:600,c:col}); });
+  if(F&&point!=="none"&&(fp!==undefined||ri===o.rule)) s+=`<circle cx="${o.x+I*o.cw+4}" cy="${y-2}" r="2.6" fill="${col}"/>`;
+  if(ri===o.rule-1&&o.op) s+=tx(o.x-14,y,o.op,{fs:o.fs,b:600,c:C.ink});
+ });
+ if(o.rule!==null){ const y=o.y+(o.rule-1)*o.rh+9;
+  s+=`<line x1="${o.x-22}" y1="${y}" x2="${o.x+n*o.cw+(F?8:0)}" y2="${y}" stroke="${C.ink}" stroke-width="1.6"/>`;
+  Object.keys(carry||{}).forEach(i=>{ s+=tx(cx(+i)-6,y+o.rh+11,carry[i],{fs:10,c:C.warm,b:true}); });
+ }
+ o.strike.forEach(i=>{ s+=`<line x1="${cx(i)-8}" y1="${o.y-5}" x2="${cx(i)+8}" y2="${o.y-12}" stroke="${C.no||"#B0463C"}" stroke-width="1.6"/>`; });
+ Object.keys(o.over).forEach(i=>{ s+=tx(cx(+i)+2,o.y-o.rh+8,o.over[i],{fs:10,c:C.warm,b:true}); });
+ if(point==="cover"&&F){ const y=o.y-o.rh/2; s+=`<rect x="${o.x+I*o.cw-3}" y="${y-8}" width="14" height="${o.rh*rows.length}" rx="4" fill="${C.warm}" opacity=".85"/>`; }
+ if(o.slide){ const y=o.y+o.slide.row*o.rh+10, a=cx(n-1), b=a-o.slide.by*o.cw;
+  s+=`<path d="M${a} ${y} L${b} ${y}" stroke="${C.on}" stroke-width="2" marker-end="url(#pvar)"/>
+   <defs><marker id="pvar" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="${C.on}"/></marker></defs>`; }
+ return s;
+}
+const COLW=(rows)=>{ const parts=rows.map(r=>String(r).split(".")); return Math.max(...parts.map(p=>p[0].length))+Math.max(0,...parts.map(p=>(p[1]||"").length)); };
 
 const ART={
  /* 3/8 + 2/8 \u2014 a pizza that actually gets eaten */
@@ -2237,7 +2383,8 @@ const ART={
   let eaten = step===0?3 : step>=1?5 : 0;
   let s=""; for(let i=0;i<8;i++) s+=slice(i, i<eaten?C.on:C.off);
   return SVG("0 0 140 150", s+
-   `<text x="70" y="140" text-anchor="middle" font-size="15" fill="${C.mut}">${eaten}/8</text>`);
+   `<text x="70" y="140" text-anchor="middle" font-size="15" fill="${C.mut}">${eaten}/8</text>`,
+   Lb(`A pizza in 8 slices, ${eaten} eaten`,`Une pizza en 8 parts, ${eaten} mangées`));
  },
  /* 1/2 + 1/8 \u2014 the half is re-cut in front of you */
  frAddDiff(step){
@@ -2247,10 +2394,11 @@ const ART={
      fill="${i<filled?C.on:C.off}"/>`;
    return s+`<text x="218" y="${y+21}" font-size="13" fill="${C.mut}">${lab}</text>`;
   };
-  if(step<=0) return SVG("0 0 250 100", bar(10,2,1,"1/2")+bar(55,8,1,"1/8"));
-  if(step===1) return SVG("0 0 250 100", bar(10,8,4,"4/8")+bar(55,8,1,"1/8"));
+  const lab=Lb("Two loaves: a half re-cut into eighths, added to one eighth","Deux pains : une moitié recoupée en huitièmes, ajoutée à un huitième");
+  if(step<=0) return SVG("0 0 250 100", bar(10,2,1,"1/2")+bar(55,8,1,"1/8"),lab);
+  if(step===1) return SVG("0 0 250 100", bar(10,8,4,"4/8")+bar(55,8,1,"1/8"),lab);
   return SVG("0 0 250 100", bar(10,8,5,"5/8")+
-   `<text x="10" y="90" font-size="13" fill="${C.mut}">4 eighths and 1 eighth</text>`);
+   `<text x="10" y="90" font-size="13" fill="${C.mut}">${wl(Lb("4 eighths and 1 eighth","4 huitièmes et 1 huitième"))}</text>`,lab);
  },
  /* what a digit is worth \u2014 the columns are labelled and one lights up */
  pvDigit(step){
@@ -2266,7 +2414,7 @@ const ART={
   });
   if(step>=2) s+=`<text x="130" y="96" text-anchor="middle" font-size="16" fill="${C.on}"
     font-weight="600">5 \u00d7 10 000 = 50 000</text>`;
-  return SVG("0 0 262 106", s);
+  return SVG("0 0 262 106", s, Lb("352 741 in place-value columns, the 5 in the ten thousands lit","352 741 en colonnes, le 5 des dizaines de mille éclairé"));
  },
  /* below zero \u2014 the jump is drawn across the line */
  pvNeg(step){
@@ -2282,7 +2430,7 @@ const ART={
   if(step>=1) s+=`<path d="M${X(0)} 38 Q${X(1.5)} 18 ${X(3)} 38" fill="none" stroke="${C.on}" stroke-width="2.5"/>
    <text x="${X(1.5)}" y="20" text-anchor="middle" font-size="11" fill="${C.on}" font-weight="600">3</text>`;
   if(step>=2) s+=`<text x="130" y="86" text-anchor="middle" font-size="15" fill="${C.on}" font-weight="600">5 + 3 = 8</text>`;
-  return SVG("0 0 260 94", s);
+  return SVG("0 0 260 94", s, Lb("A number line: 5 up to zero, then 3 more","Une droite : 5 jusqu'à zéro, puis 3 de plus"));
  },
  /* area \u2014 the squares you are actually counting */
  areaRect(step){
@@ -2293,7 +2441,7 @@ const ART={
   s+=`<text x="114" y="140" text-anchor="middle" font-size="11" fill="${C.mut}">8 m</text>
       <text x="6" y="70" font-size="11" fill="${C.mut}" transform="rotate(-90 6 70)">5 m</text>`;
   if(step>=2) s+=`<text x="114" y="158" text-anchor="middle" font-size="16" font-weight="600" fill="${C.on}">40 m\u00b2</text>`;
-  return SVG("0 0 228 166", s);
+  return SVG("0 0 228 166", s, Lb("A garden of 5 rows of 8 one-metre squares","Un jardin de 5 rangées de 8 carrés d'un mètre"));
  },
  /* factors \u2014 24 tiles snapping into rectangles that work */
  factors(step){
@@ -2303,7 +2451,7 @@ const ART={
   for(let r=0;r<rows;r++) for(let c=0;c<cols;c++)
    s+=`<rect x="${10+c*(w+2)}" y="${16+r*(h+2)}" width="${w}" height="${h}" rx="2" fill="${C.on}"/>`;
   s+=`<text x="10" y="12" font-size="12" fill="${C.mut}">${rows} \u00d7 ${cols} = 24</text>`;
-  return SVG("0 0 240 100", s);
+  return SVG("0 0 240 100", s, Lb(`24 tiles in a ${rows} by ${cols} rectangle`,`24 carreaux en rectangle ${rows} sur ${cols}`));
  },
  /* volume \u2014 layers stack up one at a time */
  volume(step){
@@ -2317,7 +2465,7 @@ const ART={
   }
   s+=`<text x="10" y="14" font-size="11" fill="${C.mut}">4 \u00d7 3 \u00d7 ${layers}</text>`;
   if(step>=2) s+=`<text x="150" y="14" font-size="14" font-weight="600" fill="${C.on}">= ${12*layers} cm\u00b3</text>`;
-  return SVG("0 0 240 110", s);
+  return SVG("0 0 240 110", s, Lb(`Layers of 4 by 3 cubes, ${layers} high`,`Des couches de 4 sur 3 cubes, ${layers} de haut`));
  },
  /* angles \u2014 a straight line with the missing piece marked */
  angles(step){
@@ -2328,8 +2476,8 @@ const ART={
   if(step>=1) s+=`<path d="M140 62 A38 38 0 0 1 160 80" fill="none" stroke="${C.warm}" stroke-width="8"/>
     <text x="150" y="74" font-size="13" fill="${C.warm}" font-weight="600">?</text>`;
   if(step>=2) s+=`<text x="150" y="74" font-size="13" fill="${C.on}" font-weight="600">50\u00b0</text>
-    <text x="14" y="102" font-size="12" fill="${C.mut}">a straight line is 180\u00b0</text>`;
-  return SVG("0 0 240 110", s);
+    <text x="14" y="102" font-size="12" fill="${C.mut}">${wl(Lb("a straight line is 180\u00b0","une ligne droite fait 180\u00b0"))}</text>`;
+  return SVG("0 0 240 110", s, Lb("A straight line split into 130° and a missing angle","Une ligne droite coupée en 130° et un angle manquant"));
  },
  /* ratio \u2014 five shares, three of them one colour */
  ratioShare(step){
@@ -2341,27 +2489,258 @@ const ART={
    if(step>=1) s+=`<text x="${8+i*(w+3)+w/2}" y="41" text-anchor="middle" font-size="13"
      fill="#fff" font-weight="600">6</text>`;
   }
-  s+=`<text x="8" y="12" font-size="11" fill="${C.mut}">30 shared into ${n} equal parts</text>`;
+  s+=`<text x="8" y="12" font-size="11" fill="${C.mut}">${wl(Lb(`30 shared into ${n} equal parts`,`30 partagé en ${n} parts égales`))}</text>`;
   if(step>=2) s+=`<text x="8" y="70" font-size="14" font-weight="600" fill="${C.on}">18</text>
-    <text x="34" y="70" font-size="12" fill="${C.mut}">and</text>
+    <text x="34" y="70" font-size="12" fill="${C.mut}">${wl(Lb("and","et"))}</text>
     <text x="70" y="70" font-size="14" font-weight="600" fill="${C.warm}">12</text>`;
-  return SVG("0 0 248 80", s);
+  return SVG("0 0 248 80", s, Lb("30 shared into 5 equal parts, 3 parts and 2 parts","30 partagé en 5 parts égales, 3 parts et 2 parts"));
  },
- /* ten times bigger \u2014 the digits actually move */
+ /* ten times bigger: the digits move one column, the columns stay put */
  pow10(step){
-  const lab=["1000","100","10","1"];
-  let s="";
-  lab.forEach((l,i)=>{ s+=`<rect x="${20+i*52}" y="14" width="48" height="44" rx="6" fill="#fff" stroke="${C.off}" stroke-width="2"/>
-    <text x="${44+i*52}" y="74" text-anchor="middle" font-size="9" fill="${C.mut}">${l}</text>`; });
-  const put=(d,col,c)=>`<text x="${44+col*52}" y="45" text-anchor="middle" font-size="24"
-    font-weight="600" fill="${c}">${d}</text>`;
-  if(step<=0) s+=put(2,2,C.ink)+put(4,3,C.ink);
-  else { s+=put(2,1,C.on)+put(4,2,C.on)+put(0,3,C.mut);
-   s+=`<path d="M96 6 L58 6" stroke="${C.on}" stroke-width="2" marker-end="url(#a)"/>
-     <defs><marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-     <path d="M0 0 L6 3 L0 6 Z" fill="${C.on}"/></marker></defs>`; }
-  return SVG("0 0 250 84", s);
+  const heads=["1000","100","10","1"];
+  const rows=step===0?["24","240"]:step===1?["24","2400"]:["240","24"];
+  return SVG("0 0 230 100",pvColumns(rows,"none",{},{x:56,y:44,heads:heads,colors:[C.mut,C.on],
+   slide:{row:1,by:step===2?-1:step===1?2:1}})+
+   tx(20,74,step===0?"× 10":step===1?"× 100":"÷ 10",{a:"start",c:C.on,b:true,fs:13}),
+   Lb("24 in place-value columns, its digits moving left or right","24 en colonnes, ses chiffres qui se déplacent"));
  },
+ /* ---- v14: the rest of the lessons, built from the four models ---- */
+ /* 486 ÷ 18: twenty boxes first, then seven more */
+ longDiv(step){
+  const fills=[step>=2?C.on:C.off, step>=5?C.warm:C.off];
+  const labs=[step>=2?Lb("20 boxes","20 cartons"):"486", step>=5?Lb("7 boxes","7 cartons"):step>=3?"126":""];
+  const over=[], under=[];
+  if(step>=2) over.push({from:0,to:0,label:"20 × 18 = 360",color:C.on});
+  if(step>=5) over.push({from:1,to:1,label:"126",color:C.warm});
+  if(step>=6) under.push({from:0,to:1,label:Lb("27 boxes","27 cartons"),color:C.on});
+  return SVG("0 0 260 106", tx(8,12,Lb("486 mangoes, 18 in a box","486 mangues, 18 par carton"),{a:"start"})+
+   barModel(step>=2?[360,126]:[486],step>=2?fills:[C.off],step>=2?labs:["486"],{y:44,over:over,under:under}),
+   Lb("A bar of 486 mangoes: 20 boxes of 18, then 7 more","Une barre de 486 mangues : 20 cartons de 18, puis 7 de plus"));
+ },
+ /* 46 × 27 as a rectangle cut into 46 × 20 and 46 × 7 */
+ longMul(step){
+  const g=areaGrid(27,46,{r:[20]},(i)=>i===1?(step>=0?C.warm:null):(step>=1?C.on:null),{x:34,y:22,w:184,h:108,big:true});
+  let s=tx(126,15,"46")+tx(24,66,"20",{a:"end"})+tx(24,118,"7",{a:"end"})+g;
+  s+=tx(126,124,"46 × 7 = 322",{c:"#fff",b:true,fs:12});
+  if(step>=1) s+=tx(126,80,"46 × 20 = 920",{c:"#fff",b:true,fs:12});
+  if(step>=2) s+=tx(126,150,"322 + 920 = 1 242",{c:C.on,b:true,fs:14});
+  return SVG("0 0 252 158",s,Lb("A 46 by 27 rectangle split into 46 by 20 and 46 by 7","Un rectangle 46 sur 27 coupé en 46 sur 20 et 46 sur 7"));
+ },
+ /* 15% of £60: 10% is £6, half of that is £3 */
+ pcOf(step){
+  const parts=[1,.5,.5,1,1,1,1,1,1,1];
+  const fills=parts.map((_,i)=>i===0?C.on:i===1&&step>=1?C.warm:C.off);
+  const labs=["£6",step>=1?"£3":"","","£6","£6","£6","£6","£6","£6","£6"];
+  const over=[{from:0,to:0,label:"10%",color:C.on}];
+  if(step>=1) over.push({from:1,to:1,label:"5%",color:C.warm});
+  const under=step>=2?[{from:0,to:1,label:"15% = £9",color:C.on}]:[];
+  return SVG("0 0 260 100",tx(8,12,Lb("£60 in ten parts","60 £ en dix parts"),{a:"start"})+barModel(parts,fills,labs,{y:40,fs:10,over:over,under:under}),
+   Lb("£60 in ten parts of £6, with 10% and 5% shaded","60 £ en dix parts de 6 £, avec 10 % et 5 % colorés"));
+ },
+ /* 3 472 on the line from 3 000 to 4 000 */
+ pvRound(step){
+  const marks=[], jumps=[];
+  if(step>=1){ marks.push({v:3500,color:C.warm,r:3}); jumps.push({a:3472,b:3000,color:C.on}); }
+  marks.push({v:3472,label:"3 472",color:C.on,below:true});
+  if(step>=2) marks.push({v:3000,r:6,color:C.on});
+  return SVG("0 0 260 96",numberLine(3000,4000,marks,jumps,{y:50,step:100,every:1000,fmt:v=>sp(v)})+
+   (step>=1?tx(14+232*.5+6,36,Lb("halfway","à mi-chemin"),{a:"start",c:C.warm,b:true,halo:true}):"")+
+   (step>=2?tx(14,90,"→ 3 000",{a:"start",c:C.on,b:true,fs:13}):""),
+   Lb("A number line from 3 000 to 4 000 with 3 472 nearer 3 000","Une droite de 3 000 à 4 000, 3 472 plus près de 3 000"));
+ },
+ /* 3 × 7 as dots, then ten of them side by side for 30 × 7 */
+ mentalPV(step){
+  if(step===0) return SVG("0 0 260 120",tx(130,14,"3 × 7 = 21",{c:C.on,b:true,fs:13})+
+   areaGrid(7,3,{},()=>C.on,{x:104,y:22,cell:13,dots:true}),Lb("Seven rows of three dots","Sept rangées de trois points"));
+  const s=areaGrid(7,30,{c:[3,6,9,12,15,18,21,24,27]},(r,c)=>Math.floor(c/3)===0?C.on:C.warm,{x:6,y:24,cell:7.2,dots:true,gap:1});
+  return SVG("0 0 260 120",tx(130,14,step>=2?"30 × 7 = 21 × 10 = 210":Lb("ten lots of 3 × 7","dix fois 3 × 7"),{c:C.on,b:true,fs:13})+s,
+   Lb("Ten blocks of three by seven dots, side by side","Dix blocs de trois sur sept points, côte à côte"));
+ },
+ /* 6 × 7 and 7 × 6 are the same eggs */
+ tables(step){
+  const turn=step>=1, R=turn?6:7, Cc=turn?7:6;
+  return SVG("0 0 260 128",tx(130,14,turn?"7 × 6 = 42":"6 × 7 = 42",{c:C.on,b:true,fs:13})+
+   areaGrid(R,Cc,{},()=>C.on,{x:130-Cc*7,y:22,cell:14,dots:true}),
+   Lb(turn?"Six rows of seven dots, the same 42":"Seven rows of six dots, 42 in all",turn?"Six rangées de sept points, les mêmes 42":"Sept rangées de six points, 42 en tout"));
+ },
+ /* 2 456 + 1 837 in columns, the carried ones under the line */
+ colAdd(step){
+  const ans=["   3","  93","4293"][Math.min(step,2)], carry=step>=2?{2:"1",0:"1"}:{2:"1"};
+  return SVG("0 0 200 128",pvColumns(["2456","1837",ans],"none",carry,
+   {x:52,y:36,op:"+",rule:2,heads:["1000","100","10","1"],hi:step>=2?-1:3-step,colors:["","",C.on]}),
+   Lb("2 456 plus 1 837 set out in columns","2 456 plus 1 837 posé en colonnes"));
+ },
+ /* 5 042 − 1 968, the exchanges written above */
+ colSub(step){
+  const ans=["   4","  74","3074"][Math.min(step,2)];
+  const over=step>=1?{3:"12",2:"13",1:"9",0:"4"}:{3:"12",2:"3"}, strike=step>=1?[0,1,2,3]:[2,3];
+  return SVG("0 0 200 128",pvColumns(["5042","1968",ans],"none",{},
+   {x:52,y:40,op:"−",rule:2,hi:step>=2?-1:3-step,over:over,strike:strike,colors:["","",C.on]}),
+   Lb("5 042 minus 1 968 with the exchanges written above","5 042 moins 1 968 avec les échanges écrits au-dessus"));
+ },
+ /* 248 × 6 in columns */
+ shortMul(step){
+  const ans=["   8","  88","1488"][Math.min(step,2)], carry=step>=1?{2:"4",1:"2"}:{2:"4"};
+  return SVG("0 0 200 128",pvColumns(["248","6",ans],"none",carry,
+   {x:52,y:36,op:"×",rule:2,heads:["1000","100","10","1"],hi:step>=2?-1:3-step,colors:["","",C.on]}),
+   Lb("248 times 6 set out in columns","248 fois 6 posé en colonnes"));
+ },
+ /* 852 shared by 4: hundreds first, then tens, then ones */
+ shortDiv(step){
+  let s=tx(8,12,Lb("852 shared between 4","852 partagé entre 4"),{a:"start"});
+  for(let k=0;k<4;k++){
+   const f=[C.on,step>=1?C.warm:C.off,step>=2?C.ink:C.off];
+   s+=tx(18,40+k*24,"🙂",{fs:13})+barModel([5,2,1.5],f,["200",step>=1?"10":"",step>=2?"3":""],{x:32,y:26+k*24,w:180,h:20,fs:10});
+   if(step>=2) s+=tx(240,41+k*24,"213",{c:C.on,b:true});
+  }
+  return SVG("0 0 260 124",s,Lb("852 shared into four bars: 200, then 10, then 3 each","852 partagé en quatre barres : 200, puis 10, puis 3 chacun"));
+ },
+ /* 29 children, taxis of 4 */
+ divRem(step){
+  let s="";
+  for(let c=0;c<8;c++){
+   const x=14+c*30;
+   if(c<7||step>=2) s+=`<rect x="${x}" y="24" width="26" height="70" rx="7" fill="none" stroke="${c<7?C.on:C.warm}" stroke-width="1.6"${c===7?` stroke-dasharray="4 3"`:""}/>`;
+   for(let r=0;r<4;r++) if(c<7||r===0)
+    s+=`<circle cx="${x+13}" cy="${35+r*16}" r="5.5" fill="${c<7?C.on:step>=1?C.warm:C.mut}"/>`;
+  }
+  s+=tx(8,14,step>=2?Lb("7 r 1, so order 8 taxis","7 r 1, donc 8 taxis"):Lb("7 taxis of 4 = 28","7 taxis de 4 = 28"),{a:"start",c:C.on,b:true,fs:12});
+  if(step>=1) s+=tx(227,110,Lb("1 left","1 reste"),{c:C.warm,b:true});
+  return SVG("0 0 260 118",s,Lb("29 children in taxis of 4: seven full and one left over","29 enfants en taxis de 4 : sept pleins et un de reste"));
+ },
+ /* 7² as a patio of slabs, 4³ as a stack of cubes */
+ sqcube(step){
+  if(step===0) return SVG("0 0 260 124",tx(130,12,"7 × 7 = 49",{c:C.on,b:true,fs:13})+
+   areaGrid(7,7,{},()=>C.on,{x:84,y:20,cell:13.5}),Lb("A square of 7 by 7 slabs","Un carré de 7 sur 7 dalles"));
+  let s=isoCube(4,88,46,17);
+  s+=tx(130,12,step>=2?"4 × 4 × 4 = 64":"4³ = 4 × 4 × 4",{c:C.on,b:true,fs:13});
+  return SVG("0 0 260 124",s,Lb("A cube of 4 by 4 by 4 small cubes","Un cube de 4 sur 4 sur 4 petits cubes"));
+ },
+ /* 13 makes no rectangle except one long row; 12 does */
+ primes(step){
+  let s="";
+  if(step===0){
+   s+=tx(8,14,Lb("13 in 2 rows? one left over","13 en 2 rangées ? il en reste un"),{a:"start"});
+   s+=areaGrid(2,7,{},(r,c)=>r===1&&c===6?null:C.on,{x:40,y:24,cell:20,dots:true});
+   s+=`<circle cx="${40+6*20+10}" cy="${24+30}" r="7.2" fill="${C.warm}"/>`;
+   s+=tx(205,58,"✗",{c:C.warm,b:true,fs:16});
+  } else {
+   s+=tx(8,14,Lb("13: only 1 × 13","13 : seulement 1 × 13"),{a:"start",c:C.on,b:true});
+   s+=areaGrid(1,13,{},()=>C.on,{x:8,y:20,cell:18,dots:true});
+   if(step>=2){ s+=tx(8,62,Lb("12 = 3 × 4, so 12 is not prime","12 = 3 × 4, donc 12 n'est pas premier"),{a:"start"});
+    s+=areaGrid(3,4,{},()=>C.warm,{x:8,y:68,cell:14,dots:true}); }
+  }
+  return SVG("0 0 260 116",s,Lb("13 dots make only one row; 12 dots make a 3 by 4 rectangle","13 points ne font qu'une rangée ; 12 points font un rectangle 3 sur 4"));
+ },
+ /* 5 + 3 × 4: three bundles of £4 first, then the £5 */
+ ooo(step){
+  const u=8;
+  let s=barModel([4,4,4,5],[C.on,C.on,C.on,step>=1?C.warm:C.off],["£4","£4","£4",step>=1?"£5":"£5"],
+   {x:10,y:26,w:17*u,h:28,fs:11,over:[{from:0,to:2,label:"3 × 4 = 12",color:C.on}],under:step>=1?[{from:0,to:3,label:"17",color:C.on}]:[]});
+  if(step>=2) s+=tx(10,108,"(5 + 3) × 4",{a:"start",b:true,c:C.ink})+
+   barModel([8,8,8,8],[C.off,C.off,C.off,C.off],["8","8","8","8"],{x:92,y:94,w:136,h:20,fs:10})+tx(234,108,"= 32",{a:"start",b:true,c:C.mut});
+  return SVG("0 0 260 122",s,Lb("Three bars of £4 grouped first, then £5 added","Trois barres de 4 £ regroupées d'abord, puis 5 £ ajoutées"));
+ },
+ /* a third of half a chocolate bar */
+ frMul(step){
+  const shade=(r,c)=>c!==0?C.off:(step>=1&&r===0?C.on:"#CDE6D7");
+  let s=areaGrid(3,2,{},shade,{x:60,y:22,cell:1,w:140,h:84,gap:3});
+  s+=tx(95,15,"1/2",{c:C.on,b:true});
+  if(step>=1) s+=tx(48,40,Lb("1/3 of it","le 1/3"),{a:"end",c:C.on,b:true,fs:10});
+  if(step>=2) s+=tx(130,124,Lb("1 of 6 pieces = 1/6","1 part sur 6 = 1/6"),{c:C.on,b:true,fs:13});
+  return SVG("0 0 260 132",s,Lb("A chocolate bar halved, with a third of one half shaded","Une tablette coupée en deux, le tiers d'une moitié coloré"));
+ },
+ /* a third of a pie shared by two: each third cut in two */
+ frDivWhole(step){
+  let s;
+  if(step===0) s=barModel(3,[C.on,C.off,C.off],["1/3","",""],{y:30,over:[{from:0,to:0,label:Lb("a third","un tiers"),color:C.on}]});
+  else s=barModel(6,[C.on,C.warm,C.off,C.off,C.off,C.off],step>=2?["1/6","1/6","","","",""]:["","","","","",""],
+   {y:30,over:[{from:0,to:1,label:Lb("cut in two","coupé en deux"),color:C.on}],under:step>=2?[{from:0,to:0,label:Lb("1/6 each","1/6 chacun"),color:C.on}]:[]});
+  return SVG("0 0 260 88",s,Lb("A bar in thirds, then each third cut in two to make sixths","Une barre en tiers, puis chaque tiers coupé en deux : des sixièmes"));
+ },
+ /* 3/4 of £60 */
+ frOfAmount(step){
+  const f=[0,1,2,3].map(i=>step>=1&&i<3?C.on:C.off);
+  return SVG("0 0 260 96",barModel(4,f,["£15","£15","£15","£15"],
+   {y:36,over:[{from:0,to:3,label:"£60",color:C.mut}],under:step>=2?[{from:0,to:2,label:"3/4 = £45",color:C.on}]:[]}),
+   Lb("£60 in four parts of £15, three of them shaded","60 £ en quatre parts de 15 £, trois colorées"));
+ },
+ /* 1.45 + 2.30, points in a line */
+ decAdd(step){
+  return SVG("0 0 200 128",pvColumns(["1.45","2.30",step>=2?"3.75":""],"show",{},
+   {x:58,y:38,op:"+",rule:2,heads:["1","0.1","0.01"],hi:step===1?2:-1,colors:["",step===1?C.warm:"",C.on]}),
+   Lb("1.45 plus 2.30 with the decimal points lined up","1,45 plus 2,30 avec les virgules alignées"));
+ },
+ /* 1.4 × 6: cover the point, multiply, put it back */
+ decMul(step){
+  let s;
+  if(step===0) s=pvColumns(["1.4"],"cover",{},{x:30,y:46,fs:26})+tx(120,42,"14 × 6 = 84",{a:"start",c:C.on,b:true,fs:14});
+  else s=pvColumns(["8.4"],step>=2?"show":"cover",{},{x:30,y:46,fs:26,colors:[C.on]})+
+   tx(120,42,step>=2?Lb("point back: 8.4","virgule remise : 8,4"):Lb("1 place in, 1 out","1 décimale avant, 1 après"),{a:"start",c:step>=2?C.on:C.mut,b:true,fs:step>=2?14:12});
+  return SVG("0 0 260 70",s,Lb("1.4 with its decimal point covered, then put back in 8.4","1,4 avec la virgule cachée, puis remise dans 8,4"));
+ },
+ /* one point on the line, three names */
+ fdp(step){
+  let s=numberLine(0,1,[{v:.5,color:C.on}],[],{y:54,step:.1,every:1,fmt:v=>v===0?"0":"1"});
+  s+=tx(130,38,"1/2",{c:C.on,b:true,fs:14});
+  if(step>=1) s+=tx(130,76,"0.5",{c:C.on,b:true,fs:14});
+  if(step>=2) s+=tx(130,94,"50%",{c:C.warm,b:true,fs:14});
+  return SVG("0 0 260 100",s,Lb("A number line from 0 to 1 with one point labelled 1/2, 0.5 and 50%","Une droite de 0 à 1 avec un point nommé 1/2, 0,5 et 50 %"));
+ },
+ /* 1.5 l against a millilitre scale */
+ metric(step){
+  let s=`<path d="M40 30 h24 v8 l8 10 v86 h-40 v-86 l8 -10 z" fill="#fff" stroke="${C.mut}" stroke-width="1.6"/>`;
+  s+=`<rect x="33.5" y="${134-1500/2000*96}" width="37" height="${1500/2000*96-1}" fill="${C.on}" opacity=".35"/>`;
+  s+=tx(52,148,"1.5 l",{b:true,c:C.ink});
+  const marks=[{v:1000,label:"1 l = 1000 ml",color:C.mut,r:3}];
+  if(step>=2) marks.push({v:1500,label:"1500 ml",color:C.on});
+  s+=numberLine(0,2000,marks,[],{x:150,y:134,h:96,vertical:true,step:250,every:1000,fmt:v=>v});
+  if(step>=1){ const y=134-1500/2000*96;
+   s+=`<line x1="74" y1="${y}" x2="146" y2="${y}" stroke="${C.warm}" stroke-width="2" stroke-dasharray="4 3"/>`+tx(110,y-6,"× 1000",{c:C.warm,b:true}); }
+  return SVG("0 0 260 156",s,Lb("A 1.5 litre bottle beside a scale in millilitres","Une bouteille de 1,5 litre à côté d'une échelle en millilitres"));
+ },
+ /* the flag inside its rectangle, half shaded */
+ areaTri(step){
+  let s=areaGrid(6,10,{},()=>step>=1?"#fff":"#CDE6D7",{x:40,y:20,cell:18});
+  if(step>=1) s+=`<path d="M40 128 L130 20 L220 128 Z" fill="${C.on}" opacity=".55" stroke="${C.on}" stroke-width="2"/>`;
+  s+=tx(130,14,step>=1?Lb("half of 60 = 30","la moitié de 60 = 30"):"10 × 6 = 60",{c:C.on,b:true,fs:12});
+  if(step>=2) s+=`<line x1="130" y1="20" x2="130" y2="128" stroke="${C.warm}" stroke-width="2.2" stroke-dasharray="4 3"/>`+tx(136,62,Lb("height 6","hauteur 6"),{a:"start",c:C.warm,b:true,halo:true});
+  s+=tx(130,143,"base 10");
+  return SVG("0 0 260 150",s,Lb("A triangle flag inside a 10 by 6 rectangle, half of it shaded","Un drapeau triangulaire dans un rectangle 10 sur 6, la moitié colorée"));
+ },
+ /* 5, 3 and 10 levelled to 6 each */
+ mean(step){
+  const u=12; let s="";
+  const row=(y,n,col,lab)=>{ let r=""; for(let k=0;k<n;k++) r+=`<rect x="${40+k*u}" y="${y}" width="${u-2}" height="16" rx="2" fill="${col}"/>`;
+   return r+tx(32,y+12,lab,{a:"end"}); };
+  if(step===0){ s+=row(14,5,C.on,"5")+row(38,3,C.on,"3")+row(62,10,C.on,"10"); }
+  else if(step===1){ s+=tx(40,14,Lb("5 + 3 + 10 = 18, shared by 3","5 + 3 + 10 = 18, partagé en 3"),{a:"start"});
+   s+=barModel(3,[C.on,C.warm,C.on],["6","6","6"],{x:40,y:30,w:18*u,h:22}); }
+  else { s+=row(14,6,C.on,"6")+row(38,6,C.on,"6")+row(62,6,C.on,"6")+tx(40+6*u+8,50,Lb("mean = 6","moyenne = 6"),{a:"start",c:C.on,b:true,fs:13}); }
+  return SVG("0 0 260 86",s,Lb("Rows of 5, 3 and 10 blocks levelled out to 6 each","Des rangées de 5, 3 et 10 blocs égalisées à 6 chacune"));
+ },
+ /* the letter is a box waiting for a number */
+ formula(step){
+  let s=tx(40,44,"y = 3 ×",{a:"start",fs:20,b:600,c:C.ink});
+  s+=`<rect x="118" y="22" width="30" height="30" rx="6" fill="${step>=1?C.on:"#fff"}" stroke="${C.on}" stroke-width="2"/>`;
+  s+=tx(133,44,step>=1?"4":"x",{fs:18,b:600,c:step>=1?"#fff":C.on});
+  s+=tx(156,44,"+ 5",{a:"start",fs:20,b:600,c:C.ink});
+  if(step===0) s+=tx(133,76,Lb("x = 4 goes in the box","x = 4 va dans la case"),{c:C.warm,b:true});
+  if(step>=1) s+=tx(133,76,"3 × 4 = 12",{c:C.on,b:true,fs:13});
+  if(step>=2) s+=tx(133,96,Lb("12 + 5 = 17, so y = 17","12 + 5 = 17, donc y = 17"),{c:C.on,b:true,fs:13});
+  return SVG("0 0 260 104",s,Lb("y = 3 × a box + 5, with 4 put in the box","y = 3 × une case + 5, avec 4 dans la case"));
+ },
+ /* pairs that make 12, and the one that adds to 7 */
+ twoUnknowns(step){
+  const P=[[1,12],[2,6],[3,4]]; let s=tx(60,14,"× = 12",{b:true})+(step>=1?tx(170,14,"+ = ?",{b:true}):"");
+  P.forEach(([a,b],k)=>{ const y=36+k*24, hit=step>=1&&a+b===7;
+   if(hit) s+=`<rect x="20" y="${y-15}" width="220" height="22" rx="6" fill="${C.on}" opacity="${step>=2?.22:.12}"/>`;
+   s+=tx(60,y,`${a} × ${b}`,{fs:13,b:600,c:C.ink});
+   if(step>=1) s+=tx(170,y,`${a} + ${b} = ${a+b}`,{fs:13,c:hit?C.on:C.mut,b:hit?600:false})+(hit?tx(228,y,"✓",{c:C.on,b:true,fs:14}):"");
+  });
+  return SVG("0 0 260 104",s,Lb("A table of pairs that multiply to 12; 3 and 4 add to 7","Un tableau des paires de produit 12 ; 3 et 4 font 7"));
+ },
+
 };
 
 
@@ -3087,13 +3466,20 @@ function pvMark(q){
    ART[] draws the worked example and always shows the same numbers. QART[]
    draws whatever is currently being asked \u2014 the child's own number in the
    place-value columns, their own rectangle, their own jump across zero.
-   A picture that shows a different question is worse than no picture. */
+   A picture that shows a different question is worse than no picture.
+   v14: shown on the first two questions of a lesson and then put away, so the
+   picture gets a child started and the rest they do as the test will ask.
+   The reveal always shows it. */
+/* v14 helpers for the question drawings */
+const nums=q=>(String(q.show).replace(/\u2009/g,"").match(/\d+(\.\d+)?/g)||[]).map(Number);
+const QSVG=(w,h,inner,label)=>`<svg class="qart" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img"${label?` aria-label="${esc(wl(label))}"`:""}>${inner}</svg>`;
+const PVHEAD=n=>["100 000","10 000","1000","100","10","1"].slice(-n);
 const QART={
  pvDigit(q){
   const d=String(q.show).replace(/\D/g,"").split("");
   const lab=["1","10","100","1 000","10 000","100 000","1 000 000"];
   const w=Math.min(42, 300/d.length);
-  return `<svg class="qart" viewBox="0 0 ${d.length*w+10} 84" xmlns="http://www.w3.org/2000/svg">
+  return `<svg class="qart" viewBox="0 0 ${d.length*w+10} 84" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(wl(Lb(`${q.show} in place-value columns`,`${q.show} en colonnes`)))}">
    ${d.map((ch,i)=>{
      const hi=(i===q.hi), x=5+i*w;
      const place=lab[d.length-1-i]||"";
@@ -3121,7 +3507,7 @@ const QART={
       stroke="var(--band)" stroke-width="2.5"/>
       <circle cx="${X(a)}" cy="52" r="4.5" fill="var(--band)"/>
       <circle cx="${X(b)}" cy="52" r="4.5" fill="var(--sun)"/>`;
-  return `<svg class="qart" viewBox="0 0 ${W} 80" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+  return `<svg class="qart" viewBox="0 0 ${W} 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(wl(Lb(`A number line with the jump from ${a} to ${b}`,`Une droite avec le saut de ${a} à ${b}`)))}">${s}</svg>`;
  },
  areaRect(q){
   const m=String(q.show).match(/(\d+)cm \u00d7 (\d+)cm/); if(!m) return "";
@@ -3134,21 +3520,21 @@ const QART={
       fill="var(--muted)">${a} cm</text>
       <text x="8" y="${10+b*cell/2}" font-size="10" fill="var(--muted)"
       transform="rotate(-90 8 ${10+b*cell/2})">${b} cm</text>`;
-  return `<svg class="qart" viewBox="0 0 ${24+a*cell} ${30+b*cell}" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+  return `<svg class="qart" viewBox="0 0 ${24+a*cell} ${30+b*cell}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(wl(Lb(`A rectangle of ${a} by ${b} squares`,`Un rectangle de ${a} sur ${b} carrés`)))}">${s}</svg>`;
  },
  areaTri(q){
   const m=String(q.show).match(/base (\d+)cm, height (\d+)cm/); if(!m) return "";
   const a=+m[1], b=+m[2], k=Math.min(13, 250/a, 110/b);
-  const W=a*k+30, H=b*k+34;
-  return `<svg class="qart" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+  const W=a*k+80, H=b*k+34;
+  return `<svg class="qart" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(wl(Lb(`A triangle, base ${a} and height ${b}, inside its rectangle`,`Un triangle, base ${a} et hauteur ${b}, dans son rectangle`)))}">
    <rect x="15" y="10" width="${a*k}" height="${b*k}" fill="none" stroke="var(--line)"
      stroke-width="1.8" stroke-dasharray="4 3"/>
    <path d="M15 ${10+b*k} L${15+a*k/2} 10 L${15+a*k} ${10+b*k} Z" fill="var(--band)" opacity=".3"
      stroke="var(--band)" stroke-width="2"/>
    <line x1="${15+a*k/2}" y1="10" x2="${15+a*k/2}" y2="${10+b*k}" stroke="var(--sun)"
      stroke-width="2" stroke-dasharray="3 3"/>
-   <text x="${15+a*k/2}" y="${24+b*k}" text-anchor="middle" font-size="10" fill="var(--muted)">base ${a} cm</text>
-   <text x="${19+a*k}" y="${12+b*k/2}" font-size="10" fill="var(--sun)">height ${b}</text></svg>`;
+   <text x="${15+a*k/2}" y="${24+b*k}" text-anchor="middle" font-size="10" fill="var(--muted)">${wl(Lb(`base ${a} cm`,`base ${a} cm`))}</text>
+   <text x="${19+a*k}" y="${12+b*k/2}" font-size="10" fill="var(--sun)">${wl(Lb(`height ${b}`,`hauteur ${b}`))}</text></svg>`;
  },
  volume(q){
   const m=String(q.show).match(/(\d+) \u00d7 (\d+) \u00d7 (\d+)/); if(!m) return "";
@@ -3166,7 +3552,7 @@ const QART={
     s+=`<rect x="${20+col*u*1.15+r*u*.55}" y="${74-L*u*.82+r*u*.42}" width="${u}" height="${u*.8}" rx="1.5"
        fill="var(--band)" opacity="${.24+.1*L}" stroke="#fff" stroke-width=".7"/>`;
    s+=`<text x="14" y="14" font-size="10" fill="var(--muted)">${a} \u00d7 ${b} \u00d7 ${c}</text>`;
-   return `<svg class="qart" viewBox="0 0 ${44+a*u*1.15+b*u*.55} ${100+b*u*.42}" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+   return `<svg class="qart" viewBox="0 0 ${44+a*u*1.15+b*u*.55} ${100+b*u*.42}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(wl(Lb(`A box ${a} by ${b} by ${c}`,`Une boîte de ${a} sur ${b} sur ${c}`)))}">${s}</svg>`;
   }
   const u=Math.min(15, 150/(a+b));
   const dx=u*1.15, dy=u*.55, W=30+a*dx+b*dy, top=26, H=110;
@@ -3184,19 +3570,19 @@ const QART={
        <path d="M0 0 L8 4 L0 8 Z" fill="var(--sun)"/></marker></defs>
       <line x1="${cx}" y1="${H-46}" x2="${cx}" y2="${top+4}" stroke="var(--sun)" stroke-width="2.2"
         stroke-dasharray="5 4" marker-end="url(#vup)"/>
-      <text x="${cx+9}" y="${top+18}" font-size="11" font-weight="600" fill="var(--sun)">\u00d7 ${c} layers</text>
-      <text x="16" y="${H-12}" font-size="10" fill="var(--muted)">one layer is ${a} \u00d7 ${b} = ${a*b}</text>`;
-  return `<svg class="qart" viewBox="0 0 ${W+70} ${H}" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+      <text x="${cx+9}" y="${top+18}" font-size="11" font-weight="600" fill="var(--sun)">${wl(Lb(`\u00d7 ${c} layers`,`\u00d7 ${c} couches`))}</text>
+      <text x="16" y="${H-12}" font-size="10" fill="var(--muted)">${wl(Lb(`one layer is ${a} \u00d7 ${b} = ${a*b}`,`une couche : ${a} \u00d7 ${b} = ${a*b}`))}</text>`;
+  return `<svg class="qart" viewBox="0 0 ${W+70} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(wl(Lb(`A box ${a} by ${b} by ${c}`,`Une boîte de ${a} sur ${b} sur ${c}`)))}">${s}</svg>`;
  },
  ratioShare(q){
   const n=q.r1+q.r2, w=Math.min(46, 260/n);
-  let s=`<text x="8" y="12" font-size="10" fill="var(--muted)">${q.show} shared into ${n} equal parts</text>`;
+  let s=`<text x="8" y="12" font-size="10" fill="var(--muted)">${wl(Lb(`${q.show} shared into ${n} equal parts`,`${q.show} partagé en ${n} parts égales`))}</text>`;
   for(let i=0;i<n;i++)
    s+=`<rect x="${8+i*(w+4)}" y="20" width="${w}" height="34" rx="5"
       fill="${i<q.r1?"var(--band)":"var(--sun)"}"/>`;
   s+=`<text x="${8+q.r1*(w+4)/2}" y="70" text-anchor="middle" font-size="10" fill="var(--band)">${q.r1}</text>
       <text x="${8+q.r1*(w+4)+q.r2*(w+4)/2}" y="70" text-anchor="middle" font-size="10" fill="var(--sun)">${q.r2}</text>`;
-  return `<svg class="qart" viewBox="0 0 ${16+n*(w+4)} 78" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+  return `<svg class="qart" viewBox="0 0 ${16+n*(w+4)} 78" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(wl(Lb(`${q.show} shared in the ratio ${q.r1} : ${q.r2}`,`${q.show} partagé selon le rapport ${q.r1} : ${q.r2}`)))}">${s}</svg>`;
  },
  frOfAmount(q){
   const m=String(q.show).match(/(\d+)\/(\d+) of/); if(!m) return "";
@@ -3205,9 +3591,106 @@ const QART={
   for(let i=0;i<bot;i++)
    s+=`<rect x="${8+i*(w+3)}" y="14" width="${w}" height="36" rx="4"
       fill="${i<top?"var(--band)":"var(--line)"}"/>`;
-  s+=`<text x="8" y="66" font-size="10" fill="var(--muted)">${top} of the ${bot} parts</text>`;
-  return `<svg class="qart" viewBox="0 0 ${16+bot*(w+3)} 74" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
+  s+=`<text x="8" y="66" font-size="10" fill="var(--muted)">${wl(Lb(`${top} of the ${bot} parts`,`${top} des ${bot} parts`))}</text>`;
+  return `<svg class="qart" viewBox="0 0 ${16+bot*(w+3)} 74" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(wl(Lb(`${top} of ${bot} equal parts`,`${top} de ${bot} parts égales`)))}">${s}</svg>`;
  },
+ /* ---- v14: the same four models, drawn with the question's own numbers.
+    None of them prints the answer: they set the question out the way the
+    lesson did, so the child can start. ---- */
+ tables(q){ const [a,b]=nums(q), cell=Math.min(14,240/b,110/a);
+  return QSVG(250,a*cell+16,areaGrid(a,b,{},()=>C.on,{x:125-b*cell/2,y:8,cell:cell,dots:true}),
+   Lb(`${a} rows of ${b} dots`,`${a} rangées de ${b} points`)); },
+ mentalPV(q){ const n=nums(q);
+  if(q.show.includes("÷")){ const [N,b]=n;
+   return QSVG(260,80,barModel(b,0,Array(b).fill("?"),{y:30,over:[{from:0,to:b-1,label:sp(N),color:C.mut}]})+
+    tx(130,76,Lb(`${sp(N)} is 10 lots of ${N/10}`,`${sp(N)}, c'est 10 fois ${N/10}`),{c:C.on,b:true}),Lb(`${sp(N)} split into ${b} equal parts`,`${sp(N)} coupé en ${b} parts égales`)); }
+  if(n.length>2) return "";
+  const [a,b]=n, k=a%100===0?100:10, x=a/k, cell=Math.min(13,150/x,90/b);
+  return QSVG(260,b*cell+30,areaGrid(b,x,{},()=>C.on,{x:20,y:8,cell:cell,dots:true})+
+   tx(40+x*cell,b*cell/2+12,Lb(`${x} × ${b}, then × ${k}`,`${x} × ${b}, puis × ${k}`),{a:"start",c:C.on,b:true,fs:12}),
+   Lb(`${b} rows of ${x} dots, then ${k} times as many`,`${b} rangées de ${x} points, puis ${k} fois plus`)); },
+ colAdd(q){ const [a,b]=nums(q); return QSVG(220,110,pvColumns([String(a),String(b),""],"none",{},
+   {x:220-String(Math.max(a,b)).length*28-22,y:34,cw:28,op:"+",rule:2,heads:PVHEAD(String(Math.max(a,b)).length)}),Lb("The sum set out in columns","Le calcul posé en colonnes")); },
+ colSub(q){ const [a,b]=nums(q); return QSVG(220,110,pvColumns([String(a),String(b),""],"none",{},
+   {x:220-String(a).length*28-22,y:34,cw:28,op:"−",rule:2,heads:PVHEAD(String(a).length)}),Lb("The subtraction set out in columns","La soustraction posée en colonnes")); },
+ shortMul(q){ const [a,b]=nums(q); return QSVG(220,110,pvColumns([String(a),String(b),""],"none",{},
+   {x:220-4*28-22,y:34,cw:28,op:"×",rule:2,heads:PVHEAD(4)}),Lb("The multiplication set out in columns","La multiplication posée en colonnes")); },
+ longMul(q){ const [a,b]=nums(q), one=b%10, ten=b-one;
+  let s=areaGrid(b,10,{r:one?[ten]:[]},(i)=>i===0?C.on:C.warm,{x:40,y:16,w:190,h:96,big:true});
+  s+=tx(135,11,String(a))+tx(34,16+96*ten/b/2+4,String(ten),{a:"end"})+tx(34,16+96*(ten+one/2)/b+4,String(one),{a:"end"});
+  s+=tx(135,16+96*ten/b/2+5,`${a} × ${ten}`,{c:"#fff",b:true,fs:12});
+  if(one) s+=tx(135,16+96*(ten+one/2)/b+5,`${a} × ${one}`,{c:"#fff",b:true,fs:one<4?10:12});
+  return QSVG(250,118,s,Lb(`A rectangle ${a} by ${b}, split into ${a} × ${ten} and ${a} × ${one}`,`Un rectangle ${a} sur ${b}, coupé en ${a} × ${ten} et ${a} × ${one}`)); },
+ shortDiv(q){ const [N,b]=nums(q);
+  return QSVG(260,80,barModel(b,0,Array(b).fill("?"),{y:30,over:[{from:0,to:b-1,label:sp(N),color:C.mut}]})+
+   tx(130,76,Lb(`${b} equal shares`,`${b} parts égales`),{c:C.on,b:true}),Lb(`${sp(N)} shared into ${b} equal parts`,`${sp(N)} partagé en ${b} parts égales`)); },
+ longDiv(q){ const [N,b]=nums(q); let chunk=b*10, lab=`10 × ${b}`;
+  if(N/chunk>12){ chunk=b*100; lab=`100 × ${b}`; }
+  const k=Math.floor(N/chunk), rest=N-k*chunk, parts=Array(k).fill(chunk).concat(rest?[rest]:[]);
+  return QSVG(260,92,tx(8,12,Lb(`chunks of ${lab} = ${sp(chunk)}`,`paquets de ${lab} = ${sp(chunk)}`),{a:"start",c:C.on,b:true})+
+   barModel(parts,parts.map((_,i)=>i<k?C.on:C.off),parts.map((_,i)=>i<k?"":"?"),{y:40,h:26,over:[{from:0,to:parts.length-1,label:sp(N),color:C.mut}]}),
+   Lb(`${sp(N)} as chunks of ${sp(chunk)} and what is left`,`${sp(N)} en paquets de ${sp(chunk)} et ce qui reste`)); },
+ divRem(q){ const [N,b]=nums(q), parts=Array(b).fill(1).concat([.45]);
+  return QSVG(260,80,barModel(parts,parts.map((_,i)=>i<b?C.off:C.warm),parts.map((_,i)=>i<b?"?":"r"),
+   {y:30,over:[{from:0,to:b,label:sp(N),color:C.mut}]})+tx(130,76,Lb(`${b} equal shares and a little left over`,`${b} parts égales et un petit reste`),{c:C.on,b:true}),
+   Lb(`${sp(N)} in ${b} equal parts with some left over`,`${sp(N)} en ${b} parts égales avec un reste`)); },
+ sqcube(q){ const [a]=nums(q);
+  if(q.show.includes("²")){ const cell=Math.min(12,110/a);
+   return QSVG(250,a*cell+12,areaGrid(a,a,{},()=>C.on,{x:125-a*cell/2,y:6,cell:cell}),Lb(`A square of ${a} by ${a}`,`Un carré de ${a} sur ${a}`)); }
+  const sz=Math.min(18,70/a);
+  return QSVG(250,a*sz*1.5+16,isoCube(a,125-a*sz*.75,a*sz*.5+8,sz),Lb(`A cube of ${a} by ${a} by ${a}`,`Un cube de ${a} sur ${a} sur ${a}`)); },
+ pow10(q){ const [a,p]=nums(q), k=String(p).length-1, len=String(a).length, mul=q.show.includes("×");
+  const cols=Math.max(len+(mul?k:0),4);
+  return QSVG(250,84,pvColumns([String(a)],"none",{},{x:125-cols*28/2,y:44,cw:28,heads:PVHEAD(cols),slide:{row:0,by:mul?k:-k}})+
+   tx(20,78,Lb(`${mul?"×":"÷"} ${p}: ${k} place${k>1?"s":""} ${mul?"left":"right"}`,`${mul?"×":"÷"} ${p} : ${k} place${k>1?"s":""} vers la ${mul?"gauche":"droite"}`),{a:"start",c:C.on,b:true}),
+   Lb(`${a} in columns, the digits moving ${k} places`,`${a} en colonnes, les chiffres se déplacent de ${k} places`)); },
+ ooo(q){ const [a,b,c]=nums(q), parts=Array(b).fill(c).concat([a]);
+  return QSVG(260,84,barModel(parts,parts.map((_,i)=>i<b?C.on:C.warm),parts.map((_,i)=>i<b?String(c):String(a)),
+   {y:30,w:Math.min(240,(a+b*c)*9),fs:10,over:[{from:0,to:b-1,label:Lb(`${b} × ${c} first`,`${b} × ${c} d'abord`),color:C.on}],under:[{from:b,to:b,label:Lb("then +","puis +"),color:C.warm}]}),
+   Lb(`${b} bars of ${c}, then ${a} more`,`${b} barres de ${c}, puis ${a} de plus`)); },
+ frMul(q){ const [a,b,c,d]=nums(q);
+  const sh=(r,col)=>col<a&&r<c?C.on:col<a?"#CDE6D7":r<c?"#F3E2B9":"#fff";
+  return QSVG(250,112,areaGrid(d,b,{},sh,{x:70,y:18,w:140,h:84,gap:2})+tx(140,12,`${a}/${b}`,{c:C.on,b:true})+
+   tx(62,60,`${c}/${d}`,{a:"end",c:C.warm,b:true}),Lb(`A grid ${b} wide and ${d} tall: ${a}/${b} one way, ${c}/${d} the other`,`Une grille de ${b} sur ${d} : ${a}/${b} dans un sens, ${c}/${d} dans l'autre`)); },
+ frDivWhole(q){ const [,b,c]=nums(q), parts=Array(c).fill(1/c).concat(Array(b-1).fill(1));
+  return QSVG(260,92,barModel(parts,parts.map((_,i)=>i===0?C.on:i<c?"#CDE6D7":C.off),[],
+   {y:32,over:[{from:0,to:c-1,label:`1/${b}`,color:C.on}],under:[{from:0,to:c-1,label:Lb(`cut into ${c}`,`coupé en ${c}`),color:C.warm}]}),
+   Lb(`A bar in ${b} parts, the first cut into ${c}`,`Une barre en ${b} parts, la première coupée en ${c}`)); },
+ pcOf(q){ const [p,n]=nums(q);
+  return QSVG(260,86,barModel(10,0,Array(10).fill(String(n/10)),{y:36,fs:9,over:[{from:0,to:9,label:sp(n),color:C.mut}],
+   under:[{from:0,to:0,label:"10%",color:C.on}]}),Lb(`${sp(n)} in ten parts of ${n/10}`,`${sp(n)} en dix parts de ${n/10}`)); },
+ fdp(q){ const v=q.show.includes("%")?parseFloat(q.show)/100:q.show.includes("/")?nums(q)[0]/nums(q)[1]:+q.show;
+  return QSVG(260,74,numberLine(0,1,[{v:v,label:q.show,color:C.on}],[],{y:44,step:.1,every:1,fmt:v=>v}),
+   Lb(`${q.show} on a number line from 0 to 1`,`${q.show} sur une droite de 0 à 1`)); },
+ decAdd(q){ const [a,b]=q.show.split(" + ");
+  return QSVG(220,110,pvColumns([a,b,""],"show",{},{x:220-COLW([a,b])*28-30,y:34,cw:28,op:"+",rule:2}),
+   Lb("The two decimals with their points lined up","Les deux décimaux avec les virgules alignées")); },
+ decMul(q){ const [a,b]=q.show.split(" × "), w=Math.round(+a*10);
+  return QSVG(250,64,pvColumns([a],"cover",{},{x:30,y:44,fs:24})+tx(120,32,`${w} × ${b}`,{a:"start",c:C.on,b:true,fs:14})+
+   tx(120,50,Lb("then put the point back","puis remets la virgule"),{a:"start",fs:10}),
+   Lb(`${a} with the point covered`,`${a} avec la virgule cachée`)); },
+ round(q){ const n=+String(q.show).replace(/\D/g,""), p=+String(q.p).replace(/\D/g,""), lo=Math.floor(n/p)*p;
+  return QSVG(260,84,numberLine(lo,lo+p,[{v:lo+p/2,color:C.warm,r:3},{v:n,label:sp(n),color:C.on,below:true}],[],{y:40,step:p/10,every:p,fmt:v=>sp(v)})+
+   tx(130,24,Lb("halfway","à mi-chemin"),{c:C.warm,b:true,fs:10}),Lb(`${sp(n)} between ${sp(lo)} and ${sp(lo+p)}`,`${sp(n)} entre ${sp(lo)} et ${sp(lo+p)}`)); },
+ metric(q){ const m=String(q.show).match(/([\d.]+)(\w+)\s+=\s+\?\s+(\w+)/); if(!m) return "";
+  const v=+m[1], u0=m[2], u1=m[3], f={km:1000,m:100,cm:10,kg:1000,l:1000}[u0], lo=Math.floor(v);
+  return QSVG(260,92,numberLine(lo,lo+1,[{v:v,label:`${v} ${u0}`,color:C.on}],[],{y:46,step:.1,every:1,fmt:x=>`${x} ${u0}`})+
+   tx(14,84,`${lo} ${u0} = ${sp(lo*f)} ${u1}`,{a:"start",fs:10})+tx(246,84,`${lo+1} ${u0} = ${sp((lo+1)*f)} ${u1}`,{a:"end",fs:10}),
+   Lb(`${v} ${u0} between ${lo} and ${lo+1} ${u0}`,`${v} ${u0} entre ${lo} et ${lo+1} ${u0}`)); },
+ mean(q){ const v=nums(q), mx=Math.max(...v), u=Math.min(10,200/mx);
+  let s=""; v.forEach((n,k)=>{ for(let i=0;i<n;i++) s+=`<rect x="${34+i*u}" y="${6+k*20}" width="${u-1.5}" height="14" rx="2" fill="${C.on}"/>`;
+   s+=tx(28,17+k*20,String(n),{a:"end"}); });
+  return QSVG(260,v.length*20+10,s,Lb(`Rows of ${v.join(", ")} blocks to level out`,`Des rangées de ${v.join(", ")} blocs à égaliser`)); },
+ formula(q){ const [m,c,x]=nums(q);
+  let s=tx(40,36,`y = ${m} ×`,{a:"start",fs:18,b:600,c:C.ink});
+  const bx=40+(`y = ${m} ×`.length)*9+4;
+  s+=`<rect x="${bx}" y="16" width="28" height="28" rx="6" fill="#fff" stroke="${C.on}" stroke-width="2"/>`+tx(bx+14,36,"x",{fs:16,b:600,c:C.on})+
+   tx(bx+36,36,`+ ${c}`,{a:"start",fs:18,b:600,c:C.ink})+tx(bx+14,64,Lb(`x = ${x} goes in the box`,`x = ${x} va dans la case`),{c:C.warm,b:true});
+  return QSVG(260,72,s,Lb(`y = ${m} × a box + ${c}, with ${x} to put in the box`,`y = ${m} × une case + ${c}, avec ${x} à mettre dans la case`)); },
+ twoUnknowns(q){ const [s0,p]=nums(q), P=[]; for(let k=1;k*k<=p;k++) if(p%k===0) P.push([k,p/k]);
+  let s=tx(70,14,`× = ${p}`,{b:true})+tx(180,14,`+ = ${s0}?`,{b:true});
+  P.forEach(([a,b],i)=>{ s+=tx(70,34+i*18,`${a} × ${b}`,{fs:12,b:600,c:C.ink})+tx(180,34+i*18,`${a} + ${b} = ?`,{fs:12}); });
+  return QSVG(260,P.length*18+26,s,Lb(`The pairs that multiply to ${p}`,`Les paires de produit ${p}`)); },
 };
 /* The question as it is asked: the prompt, the drawing if there is one, and
    the sum. Shared by practice, today's practice and the reveal, so all three
@@ -3265,7 +3748,7 @@ function drillHTML(s){
   /* v11: the drawing was made for the worked example and shown once. Here it
      is again, drawn from THIS question — the child's own number in the columns,
      their own rectangle, their own jump across zero. */
-  body=qHead(q,s,true)+keypad();
+  body=qHead(q,s,V.i<2)+keypad();
  }
  const T2=TEACH[s.g];
  return `<div class="wrap"><p class="step">${who} ${esc(s[L]||s.en)} \u00b7 ${V.i+1} ${esc(t("of"))} ${s.n}</p>
