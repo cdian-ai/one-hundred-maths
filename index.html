@@ -42,9 +42,12 @@ header{padding:10px 14px 8px;background:var(--paper);position:relative;z-index:5
 .lang button.on{background:var(--band);color:#fff}
 .track{height:6px;border-radius:999px;background:var(--line);margin-top:9px;overflow:hidden}
 .track i{display:block;height:100%;background:var(--band);width:0;transition:width .5s}
-main{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+/* v12: main used to start at y=0, under the header, so the first line of every
+   screen (a lesson's title, half a topic name) was hidden. render() measures the
+   header and sets --hh, because its height changes with the language buttons. */
+main{position:absolute;left:0;right:0;bottom:0;top:var(--hh,84px);overflow-y:auto;-webkit-overflow-scrolling:touch;
  padding:0 14px calc(30px + env(safe-area-inset-bottom))}
-.pad{height:104px}
+.pad{height:40px}
 .wrap{max-width:520px;margin:0 auto}
 .mhead{text-align:center;margin:16px 0 14px}
 .mhead h1{margin:0;font-size:var(--t7);font-weight:650}
@@ -103,9 +106,11 @@ main{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
 .go2{width:100%;max-width:340px;border:0;border-radius:14px;background:var(--band);color:#fff;
  font:inherit;font-size:var(--t5);font-weight:700;padding:15px;margin-top:16px;cursor:pointer}
 .go2.quiet{background:#fff;color:var(--ink2);border:1.5px solid var(--line)}
-.back{position:fixed;left:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:6;
- width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:#fff;
- font-size:var(--t5);color:var(--ink2);cursor:pointer}
+/* v12: the back button floated at the bottom left and sat on top of whatever
+   was under it, keypad included. It lives in the header now, left of the title. */
+.back{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:#fff;
+ font-size:var(--t6);line-height:1;color:var(--ink2);cursor:pointer;padding:0 0 3px}
+.back[hidden]{display:none}
 .tally{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:14px}
 .tally i{width:7px;height:7px;border-radius:50%;background:var(--line)}
 .tally i.on{background:var(--band)}.tally i.bad{background:var(--no)}
@@ -337,14 +342,43 @@ main{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
 
 .qartbox{width:100%;display:flex;justify-content:center;margin:2px 0 10px}
 .qart{width:100%;max-width:300px;height:auto;display:block}
+
+/* ---- v12: the lesson page, teaching first ---- */
+.lt{margin:14px 0 4px;font-size:var(--t6);font-weight:650;line-height:1.25;text-align:center}
+.ex .qmid{margin:0 0 8px}
+.ex .artbox{margin:0 0 6px}
+.exsteps{width:100%;display:flex;flex-direction:column;gap:8px;margin-top:8px;text-align:left}
+.sbtn{display:block;width:100%;border:0;border-left:3px solid var(--band);background:transparent;
+ font:inherit;text-align:left;padding:8px 4px 8px 12px;cursor:pointer;color:inherit;min-height:44px}
+.sbtn:active{background:#F2F8F4}
+.sbtn b{display:block;font-size:var(--t5);color:var(--ink)}
+.sbtn span{display:block;font-size:var(--t4);color:var(--ink2);margin-top:3px;line-height:1.5}
+.sbtn i{display:block;font-style:normal;font-size:var(--t3);color:#6A4A05;background:var(--sun-bg);
+ border-radius:10px;padding:7px 10px;margin-top:7px;line-height:1.5}
+.sbtn small{display:inline-block;font-size:var(--t2);color:var(--muted);margin-top:4px}
+.sbtn.old{border-left-color:var(--line)}
+.sbtn.old b{color:var(--band)}
+.exnav{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:12px}
+.exnav .go2{margin-top:0;flex:1 1 auto}
+.linkbtn{border:0;background:transparent;font:inherit;font-size:var(--t3);color:var(--ink2);
+ text-decoration:underline;cursor:pointer;padding:12px 6px;min-height:44px;white-space:nowrap;flex:0 0 auto}
+.readit{width:100%;margin:4px 0 8px}
+.peekbtn{margin-top:12px}
+.card.peekcard{align-items:stretch;text-align:left;padding:14px 16px;margin-top:10px;width:100%;
+ box-shadow:none;border:1.5px solid var(--line)}
+.peekhead{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.peekhead .qmid{margin:0;font-size:var(--t6)}
+.inside .ic{flex:1 1 0}
+.inside{display:flex}
+.ver{margin:10px 0 0;font-size:var(--t1);color:var(--muted);letter-spacing:.06em}
 </style></head><body>
-<header><div class="hrow">
+<header id="hdr"><div class="hrow">
+ <button class="back" id="back" aria-label="Back" onclick="goMap()" hidden>&lsaquo;</button>
  <div class="htitle"><b id="hT">One Hundred</b><span id="hS">Year 6 SATs maths</span></div>
  <div class="lang"><button id="lEN" class="on" onclick="setLang('en')">EN</button>
  <button id="lFR" onclick="setLang('fr')">FR</button></div></div>
  <div class="track"><i id="bar"></i></div></header>
 <main id="main"><div id="app"></div><div class="pad"></div></main>
-<button class="back" id="back" onclick="goMap()" hidden>&lsaquo;</button>
 <script>
 /* ================= question generators =================
    The arithmetic paper is 36 constructed answers, not multiple choice, so most
@@ -353,6 +387,9 @@ main{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
    returns to should not be the same twenty sums. Every generator takes a seed,
    so a question is stable while it is on screen and different on the next
    visit. */
+/* Bumped once per phase of work, shown small at the foot of "About this course"
+   so a parent reporting a problem can say which build they are on. */
+const VERSION="v12";
 const R = s => { let x = (s*1103515245 + 12345) & 0x7fffffff; return () => (x = (x*1103515245 + 12345) & 0x7fffffff) / 0x7fffffff; };
 const pick = (r,a) => a[Math.floor(r()*a.length)];
 const between = (r,a,b) => a + Math.floor(r()*(b-a+1));
@@ -897,10 +934,10 @@ const TEACH = {
 
 "pvRound": {
  story:[
-  {em:"🚌", en:"A school trip needs coaches. 187 children are going, and each coach holds 50.",
-   fr:"Une sortie scolaire a besoin de cars. 187 enfants partent, et chaque car prend 50."},
-  {em:"🤏", en:"Nobody says “about 187”. They say “about 200”. Rounding is saying a number the way people actually say it.",
-   fr:"Personne ne dit « environ 187 ». On dit « environ 200 ». Arrondir, c'est dire un nombre comme les gens le disent vraiment."}],
+  {em:"🏘️", en:"A town has 3 472 people living in it. The sign at the edge of town says “about 3 000”.",
+   fr:"Une ville compte 3 472 habitants. Le panneau à l'entrée de la ville dit « environ 3 000 »."},
+  {em:"🤏", en:"Nobody paints 3 472 on a sign. 3 472 is between 3 000 and 4 000, and it is closer to 3 000. Rounding is saying a number the way people actually say it.",
+   fr:"Personne ne peint 3 472 sur un panneau. 3 472 est entre 3 000 et 4 000, et plus proche de 3 000. Arrondir, c'est dire un nombre comme les gens le disent vraiment."}],
  show:"3 472 → nearest 1000",
  steps:[
   {line:"look at the hundreds: 4", en:"To round to the nearest thousand, look at the digit one place to the right.",
@@ -1746,7 +1783,7 @@ const T={
  finish:{en:"Finish",fr:"Terminer"},score:{en:"marks",fr:"points"},
  pickall:{en:"Tap every one",fr:"Touche-les tous"},
  factors:{en:"factors of",fr:"diviseurs de"},primes:{en:"the prime numbers",fr:"les nombres premiers"},
- ph1:{en:"The story",fr:"L'histoire"},ph2:{en:"Watch me",fr:"Regarde-moi"},
+ ph1:{en:"The lesson",fr:"La le\u00e7on"},ph2:{en:"Watch me",fr:"Regarde-moi"},
  ph3:{en:"Together",fr:"Ensemble"},ph4:{en:"On your own",fr:"\u00c0 toi"},
  why:{en:"why",fr:"pourquoi"},
  showstep:{en:"Show me the next step",fr:"Montre l'\u00e9tape suivante"},
@@ -1835,6 +1872,20 @@ const T={
  few:{en:"comes up sometimes",fr:"revient parfois"},
  covlead:{en:"Let's find out what you can already do.",fr:"Voyons ce que tu sais d\u00e9j\u00e0 faire."},
  covmore:{en:"How this course was built",fr:"Comment ce cours a \u00e9t\u00e9 construit"},
+ /* v12: the lesson page */
+ situation:{en:"The situation",fr:"La situation"},
+ example:{en:"Worked example",fr:"Exemple d\u00e9taill\u00e9"},
+ nextstep:{en:"Next step",fr:"\u00c9tape suivante"},
+ allsteps:{en:"Show all steps",fr:"Voir toutes les \u00e9tapes"},
+ tapwhy:{en:"tap for why",fr:"touche pour savoir pourquoi"},
+ trywith:{en:"Try one with me",fr:"Essayons-en un ensemble"},
+ backq:{en:"Back to my questions",fr:"Retour \u00e0 mes questions"},
+ readit:{en:"Read it instead",fr:"Le lire plut\u00f4t"},
+ hideit:{en:"Hide the written version",fr:"Cacher la version \u00e9crite"},
+ peek:{en:"Show me the steps",fr:"Montre-moi les \u00e9tapes"},
+ close:{en:"Close",fr:"Fermer"},
+ exagain:{en:"See the example again",fr:"Revoir l\u2019exemple"},
+ goback:{en:"Back",fr:"Retour"},
 };
 let L=localStorage.getItem("cl3.lang")||"en";
 const t=k=>(T[k]||{})[L]||(T[k]||{}).en||k;
@@ -1850,6 +1901,7 @@ const esc=s=>(s===undefined||s===null?"":String(s)).replace(/&/g,"&amp;").replac
 const norm=x=>String(x).replace(/[\s\u2009,\u00a3%]/g,"").replace(",",".");
 let V={s:"cover"};
 function setLang(x){L=x;localStorage.setItem("cl3.lang",x);render()}
+let lastScreen="";
 function render(){
  const done=Object.keys(S.d).length;
  document.documentElement.style.setProperty("--band",BANDS[Math.min(4,Math.floor(done/10))]);
@@ -1857,13 +1909,28 @@ function render(){
  hT.textContent=t("title"); hS.textContent=t("sub");
  bar.style.width=Math.round(done/ALL.length*100)+"%";
  back.hidden=(V.s==="cover"||V.s==="shelf");
+ back.setAttribute("aria-label",t("goback"));
  back.onclick=(V.s==="stop"&&V.topicFrom!==undefined)?function(){openTopic(V.topicFrom)}:goMap;
  app.innerHTML = V.s==="session"?sessionHTML()
   :V.s==="cover"?coverHTML():V.s==="diag"?diagHTML()
   :V.s==="shelf"?homeHTML():V.s==="topic"?topicHTML()
   :V.s==="stop"?stopHTML():paperHTML();
- if(V.s!=="paper") main.scrollTop=0;
+ /* v12: every key press re-rendered and jumped the page to the top, which also
+    threw away a child's place half way down a lesson. The scroll resets only
+    when the screen itself changes. */
+ const screen=[V.s,V.id,V.ph,V.i,V.ci].join("|");
+ if(V.s!=="paper"&&screen!==lastScreen) main.scrollTop=0;
+ lastScreen=screen;
+ fitHeader();
+ if(V.focus){ const el=document.getElementById(V.focus), near=V.near; V.focus=null; V.near=false;
+  if(el&&near) el.scrollIntoView({block:"nearest"});
+  else if(el) main.scrollTop=Math.max(0,el.offsetTop-8); }
 }
+function fitHeader(){
+ const h=document.getElementById("hdr");
+ if(h) document.documentElement.style.setProperty("--hh",Math.ceil(h.getBoundingClientRect().bottom)+"px");
+}
+window.addEventListener("resize",fitHeader);
 function mapHTML(){
  const done=Object.keys(S.d).length;
  let h=`<div class="wrap"><div class="mhead"><h1>${esc(t("head"))}</h1>
@@ -2320,14 +2387,15 @@ function coverHTML(){
   <div class="inside">
    <span class="ic"><b class="num">${ALL.length}</b>${esc(t("nsub"))}</span>
    <span class="ic"><b class="num">${ALL.reduce((a,s)=>a+s.n,0)}</b>${esc(t("nq"))}</span>
-   <span class="ic"><b class="num">${Object.keys(TEACH).length}</b>${esc(t("nvid"))}</span>
+   ${Object.keys(VIDEO).length?`<span class="ic"><b class="num">${Object.keys(VIDEO).length}</b>${esc(t("nvid"))}</span>`:""}
   </div>
   <div class="peek">${CAMPS.map(c=>`<span class="pk" title="${esc(c[L]||c.en)}">${c.em}</span>`).join("")}</div>
   ${V.more?`<div class="card covcard">
     <p class="covwho">${esc(t("covwho"))}</p>
     <p class="covp">${esc(t("covwhat"))}</p>
     <p class="covp">${esc(t("covhow"))}</p>
-    <p class="covsm">${esc(t("covfr"))}</p></div>`
+    <p class="covsm">${esc(t("covfr"))}</p>
+    <p class="ver">${VERSION}</p></div>`
    :`<button class="covmore" onclick="showMore()">${esc(t("covmore"))}</button>`}
   </div>`;
 }
@@ -2635,8 +2703,10 @@ function newQ(){
     was another chance to be wrong. */
  const s=byId(V.id), lvl=(V.i===0?1:s.lvl);
  V.q=GEN[s.g](R(Date.now()%99991+V.i*7919),lvl);V.typed="";V.miss=0;V.pick=null;}
+/* v12: four pills, but the story and the example are one page now, and "Watch
+   me" promised a film. Three: the lesson, together, on your own. */
 function phaseBar(now){
- const ks=["ph1","ph2","ph3","ph4"];
+ const ks=["ph1","ph3","ph4"];
  return `<div class="phases">${ks.map((k,i)=>
   `<span class="pz${i===now?" on":""}${i<now?" past":""}">${esc(t(k))}</span>`).join("")}</div>`;
 }
@@ -2668,53 +2738,70 @@ function stopHTML(){
    (forty-seven subtopics in two languages). */
 const VIDEO={};   /* e.g. longDiv:{en:"vid/longDiv-en.mp4",fr:"vid/longDiv-fr.mp4"} */
 const mmss=n=>Math.floor(n/60)+":"+String(n%60).padStart(2,"0");
+/* v12: the page used to open on a video that did not exist (a play button, a
+   file name and timecodes for a film nobody had recorded), then the bare
+   steps under "not for learning from", then an apology, and only then the
+   teaching. The steps were printed three times and the explanation came last.
+   Now a child scrolling down meets the situation, the picture, the steps one
+   at a time, then the buttons. The bare steps moved into practice, where a
+   child halfway through a question actually wants them. */
 function lessonHTML(s,T2){
  const story=T2.story.slice(0,2);
  const src=(VIDEO[s.g]||{})[L];
- const marks=T2.steps.map((st,i)=>st.at!==undefined?st.at:Math.round(8+i*11));
- return `<div class="wrap">
-  <p class="step">${esc(s[L]||s.en)}</p>
-  <h2 class="lh first">${esc(t("vidmain"))}</h2>
-  <div class="vidbox">${src
-   ? `<video class="vid" id="theVid" controls playsinline preload="metadata" src="${esc(src)}"></video>`
-   : `<div class="vidph"><span class="vidplay">\u25b6</span>
-      <span class="vidt"><b>${esc(t("vidwatch"))}</b>
-      <small>${esc(t("vidsoon"))} \u00b7 ${esc(s.g)}-${L}.mp4 \u00b7 ${esc(t("vidlen"))}</small></span></div>`}
-  </div>
-  <p class="jumph">${esc(t("vidjump"))}</p>
-  <div class="jumps">${T2.steps.map((st,i)=>`<button class="jump" onclick="seekTo(${marks[i]})">
+ const back=V.resumeAt!==undefined;
+ const written=`<h2 class="lh">${esc(t("situation"))}</h2>
+  ${story.map(c=>`<div class="card story"><div class="storyem">${c.em}</div>
+    <p class="storyline">${esc(c[L]||c.en)}</p></div>`).join("")}
+  <h2 class="lh">${esc(t("example"))}</h2>
+  ${exampleHTML(s,T2)}`;
+ let film="";
+ if(src){
+  const marks=T2.steps.map((st,i)=>st.at!==undefined?st.at:Math.round(8+i*11));
+  film=`<div class="vidbox"><video class="vid" id="theVid" controls playsinline preload="metadata" src="${esc(src)}"></video></div>
+   <p class="jumph">${esc(t("vidjump"))}</p>
+   <div class="jumps">${T2.steps.map((st,i)=>`<button class="jump" onclick="seekTo(${marks[i]})">
     <span class="jt num">${mmss(marks[i])}</span>
-    <span class="jx">${esc(st[L]||st.en)}</span></button>`).join("")}</div>
-  ${ART[s.g]?`<div class="card artcard">${ART[s.g](T2.steps.length-1)}</div>`:""}
-
-  ${""/* ---- the quick reminder ----
-     This and the video were the same explanation printed twice, and which one
-     a child saw depended on whether a film happened to exist yet. They have
-     different jobs now. The video is where you LEARN it: the situation, the
-     reasoning, the why. This is where you CHECK it — the bare steps, no story,
-     no explanation, the thing you glance at halfway through question nine.
-     You watch an explanation once and you check a reference twenty times, so
-     it shows whether or not there is a video. */}
-  <h2 class="lh">${esc(t("method"))}</h2>
-  <p class="lhsub">${esc(t("methodsub"))}</p>
-  <div class="card recall"><div class="qmid num">${esc(T2.show)}</div>
-   <ol class="rsteps">${T2.steps.map(st=>`<li class="num">${esc(st.line)}</li>`).join("")}</ol>
-  </div>
-
-  ${""/* Only when no film exists yet does the page have to teach as well. */}
-  ${src?"":`<h2 class="lh">${esc(t("why"))}?</h2>
-   <p class="fallback">${esc(t("nofilm"))}</p>
-   ${story.map(c=>`<div class="card story"><div class="storyem">${c.em}</div>
-     <p class="storyline">${esc(c[L]||c.en)}</p></div>`).join("")}
-   <div class="card lesson">
-    <div class="steps">${T2.steps.map((st,i)=>`<div class="stepline">
-      <b class="num">${esc(st.line)}</b><span>${esc(st[L]||st.en)}</span>
-      ${(V.why||{})[i]?`<i>${esc(w(st,"why"))}</i>`
-        :`<button class="whybtn" onclick="showWhy(${i})">${esc(t("why"))}?</button>`}
-     </div>`).join("")}</div></div>`}
-  <button class="go2" onclick="toGuided()">${esc(t("practise"))}</button>
-  <button class="go2 quiet" onclick="skipTeach()">${esc(t("iknow"))}</button></div>`;
+    <span class="jx">${esc(st[L]||st.en)}</span></button>`).join("")}</div>`;
+ }
+ return `<div class="wrap">
+  <h1 class="lt">${esc(s[L]||s.en)}</h1>
+  ${src?film+(V.read
+     ? `<button class="linkbtn readit" onclick="toggleRead()">${esc(t("hideit"))}</button>${written}`
+     : `<button class="go2 quiet readit" onclick="toggleRead()">${esc(t("readit"))}</button>`)
+   :written}
+  <button class="go2" onclick="toGuided()">${esc(back?t("backq"):t("trywith"))}</button>
+  ${back?"":`<button class="go2 quiet" onclick="skipTeach()">${esc(t("iknow"))}</button>`}</div>`;
 }
+/* The worked example, one step at a time. The drawing redraws for the step
+   being shown, and each step opens its reason when the step itself is tapped:
+   the whole line is the target, not a small pill beside it. */
+function exampleHTML(s,T2){
+ const n=T2.steps.length, upto=Math.min(V.step||0,n-1), last=upto>=n-1;
+ return `<div class="card lesson ex" id="ex">
+  <div class="qmid num">${esc(T2.show)}</div>
+  ${ART[s.g]?`<div class="artbox">${ART[s.g](upto)}</div>`:""}
+  <div class="exsteps">${T2.steps.slice(0,upto+1).map((st,i)=>{
+   const open=!!(V.why||{})[i];
+   return `<button class="sbtn${i<upto?" old":""}" onclick="showWhy(${i})" aria-expanded="${open}">
+    <b class="num">${esc(st.line)}</b><span>${esc(st[L]||st.en)}</span>
+    ${open?`<i>${esc(w(st,"why"))}</i>`:(i===upto?`<small>${esc(t("tapwhy"))}</small>`:"")}</button>`;
+  }).join("")}</div>
+  ${last?"":`<div class="exnav"><button class="go2" onclick="stepNext()">${esc(t("nextstep"))}</button>
+   <button class="linkbtn" onclick="allSteps()">${esc(t("allsteps"))}</button></div>`}
+ </div>`;
+}
+function allSteps(){ V.step=TEACH[byId(V.id).g].steps.length-1; render(); }
+function toggleRead(){ V.read=!V.read; render(); }
+/* The bare steps, for a glance mid-question. Closed until asked for. */
+function peekHTML(T2){
+ if(!T2) return "";
+ if(!V.peek) return `<button class="linkbtn peekbtn" onclick="togglePeek()">${esc(t("peek"))}</button>`;
+ return `<div class="card peekcard" id="peek"><div class="peekhead">
+   <div class="qmid num">${esc(T2.show)}</div>
+   <button class="linkbtn" onclick="togglePeek()">${esc(t("close"))}</button></div>
+  <ol class="rsteps">${T2.steps.map(st=>`<li class="num">${esc(st.line)}</li>`).join("")}</ol></div>`;
+}
+function togglePeek(){ V.peek=!V.peek; if(V.peek){ V.focus="peek"; V.near=true; } render(); }
 function seekTo(sec){
  const v=document.getElementById("theVid");
  if(v){ try{ v.currentTime=sec; v.play(); }catch(e){} }
@@ -2765,8 +2852,13 @@ function watchHTML(s,T2){
   <button class="go2" onclick="${last?"toGuided()":"stepNext()"}">${esc(last?t("gotit"):t("showstep"))}</button></div>`;
 }
 function stepNext(){V.step++;render()}
-function showWhy(i){ if(!V.why) V.why={}; V.why[i]=1; render(); }
-function backToWatch(){ const keep=V.i; V.ph="watch"; V.step=0; V.why={}; V.resumeAt=keep;
+function showWhy(i){ if(!V.why) V.why={}; V.why[i]=!V.why[i]; render(); }
+/* Three wrong in practice: back to the lesson, with the worked example opened
+   out in full and scrolled to, so the child lands on the method rather than on
+   the story they have already read. */
+function backToWatch(){ const keep=V.i, s=byId(V.id); V.ph="watch"; V.why={}; V.resumeAt=keep;
+ V.step=TEACH[s.g].steps.length-1; V.read=true;
+ if(!(VIDEO[s.g]||{})[L]) V.focus="ex";
  S.at={id:V.id,ph:"watch",i:0}; save(); render(); }
 function toGuided(){
  /* coming back from the drill returns you to the drill, not round the loop */
@@ -2775,14 +2867,15 @@ function toGuided(){
   S.at={id:V.id,ph:"drill",i:at}; save(); render(); return; }
  V.ph="guided";V.g=0;V.typed="";V.miss=0;S.at={id:V.id,ph:"guided",i:0};save();render()}
 function guidedHTML(s,T2){
- const g={show:T2.guided.show, steps:T2.guided.steps.slice(0,3)}, q=g.steps[Math.min(V.g,2)];
- return `<div class="wrap"><p class="step">${esc(s[L]||s.en)}</p>${phaseBar(2)}
+ const g=T2.guided, q=g.steps[Math.min(V.g,g.steps.length-1)];
+ return `<div class="wrap"><p class="step">${esc(s[L]||s.en)}</p>${phaseBar(1)}
   <div class="card">${g.show?`<div class="qmid num">${esc(g.show)}</div>`:""}
    <div class="steps">${g.steps.slice(0,V.g).map(x=>
      `<div class="stepline done"><b class="num">${esc(x.a)}</b><span>${esc(w(x,"ask"))}</span></div>`).join("")}</div>
    <p class="guideq">${esc(w(q,"ask"))}</p>
    ${keypad()}
    ${V.miss>=2?`<div class="note">${esc(t("look"))} \u2014 ${esc(w(T2.steps[Math.min(V.g,T2.steps.length-1)],"why"))}</div>`:""}
+   ${peekHTML(T2)}
   </div></div>`;
 }
 /* Marks the single digit the question is about. The number is printed with a
@@ -2947,11 +3040,11 @@ function drillHTML(s){
  }
  const T2=TEACH[s.g];
  return `<div class="wrap"><p class="step">${who} ${esc(s[L]||s.en)} \u00b7 ${V.i+1} ${esc(t("of"))} ${s.n}</p>
-  ${T2?phaseBar(3):""}
+  ${T2?phaseBar(2):""}
   ${!V.shown&&V.i===0&&TRAP[s.g]?`<div class="trap">\u26a0\ufe0f ${esc(TRAP[s.g][L]||TRAP[s.g].en)}</div>`:""}
   ${V.said?`<div class="nice${V.saidFix?" fix":""}">${esc(V.said)}</div>`:""}
   <div class="card">${V.shown?`<div class="reveal"><p class="rl">${esc(t("theans"))}</p>
-    <p class="ra num">${esc(q.a)}</p></div>`:body}
+    <p class="ra num">${esc(q.a)}</p></div>`:body+peekHTML(T2)}
   ${V.miss>=2?`<div class="note">${esc(t("look"))} \u2014 ${esc(w(T2.steps[0],"why"))}</div>`:""}
   ${""/* v5: the teaching was a gate at the front of the stop and nothing more.
        A child getting them wrong could only be shown the same one-line reason
@@ -2960,7 +3053,7 @@ function drillHTML(s){
   ${""/* v7: a learner missing these repeatedly is sent back to the explainer
        for this subtopic. This is why the videos are indexed by subtopic rather
        than sitting in a playlist. */}
-  ${!V.shown&&V.bad>=3?`<button class="go2 warm small" onclick="backToWatch()">\u25b6 ${esc(t("vidagain"))}</button>`:""}
+  ${!V.shown&&V.bad>=3&&T2?`<button class="go2 warm small" onclick="backToWatch()">${(VIDEO[s.g]||{})[L]?"\u25b6 "+esc(t("vidagain")):esc(t("exagain"))}</button>`:""}
   <div class="tally">${dots}</div></div>
   ${V.shown?`<button class="go2" onclick="moveOn()">${esc(t("moveon"))}</button>`:""}
   ${!V.shown&&V.miss>=2?`<button class="go2 quiet small" onclick="giveUp()">${esc(t("giveup"))}</button>`:""}
@@ -3001,7 +3094,7 @@ function check(){
  if(V.typed==="")return;
  V.said=null;
  if(V.ph==="guided"){
-  const g=TEACH[byId(V.id).g].guided, steps=g.steps.slice(0,3);
+  const steps=TEACH[byId(V.id).g].guided.steps;
   if(norm(V.typed)===norm(steps[V.g].a)){
    V.g++; V.typed=""; V.miss=0;
    if(V.g>=steps.length){ V.ph="drill"; V.i=0; V.bad=0; newQ();
