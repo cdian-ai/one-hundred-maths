@@ -24,11 +24,16 @@ than listed, so a subtopic a child returns to is not the same twenty sums, and
 each one names the content-domain codes it serves so the weighting can be
 checked rather than trusted.
 
-**Every subtopic teaches before it asks.** A video explains it; a jump index
-under the player lets a child re-enter at the exact step that broke; a quick
-reminder card carries the bare steps for checking mid-question; then practice,
-one question at a time, on a keypad — because Paper 1 is 36 constructed
-answers and offering four options would train the wrong skill.
+**Every subtopic teaches before it asks.** One page: the situation, then a
+worked example revealed a step at a time with a drawing that changes as it
+goes and a reason behind each step, then another example, a SATs-style word
+problem and a "spot the mistake". Level 2 subtopics have their own example.
+Then one guided question, then practice, one question at a time, on a keypad
+— because Paper 1 is 36 constructed answers and offering four options would
+train the wrong skill. In practice the bare steps are one tap away, the
+first two questions carry a drawing of their own numbers, a wrong answer the
+app recognises gets the hint for the step it skipped, and "Show me the
+answer" shows the working for that question, not just the number.
 
 **The arithmetic paper** is the real format: 36 questions, 40 marks, 30
 minutes, long multiplication and long division worth two each and placed late.

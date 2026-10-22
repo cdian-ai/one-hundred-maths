@@ -378,6 +378,18 @@ main{position:absolute;left:0;right:0;bottom:0;top:var(--hh,84px);overflow-y:aut
 .workbox{width:100%;text-align:left;margin-top:6px;padding:12px 14px;border-radius:14px;background:#F6F3EE}
 .workbox .rl{margin:0 0 6px}
 .rsteps.work li{font-size:var(--t4);font-weight:600;line-height:1.4}
+/* ---- v15: more examples on the lesson page ---- */
+.fold{display:flex;align-items:center;justify-content:space-between;width:100%;margin:16px 0 8px;padding:12px 14px;
+ border-radius:14px;border:1.5px solid var(--line);background:#fff;font:inherit;font-size:var(--t5);font-weight:650;
+ color:var(--ink);cursor:pointer;text-align:left;min-height:48px}
+.fold small{font-size:var(--t3);font-weight:600;color:var(--muted)}
+.wq{margin:0 0 10px;font-size:var(--t5);line-height:1.5;color:var(--ink)}
+.mlines{display:flex;flex-direction:column;gap:6px;width:100%}
+.mline{border:1.5px solid var(--line);border-radius:12px;background:#fff;font:inherit;font-size:var(--t5);font-weight:600;
+ color:var(--ink);padding:10px 14px;text-align:left;cursor:pointer;min-height:44px;font-variant-numeric:tabular-nums}
+.mline.bad{border-color:var(--no);background:var(--no-bg);color:var(--no);text-decoration:line-through}
+.mline.nope{border-color:var(--yes);background:var(--yes-bg);color:var(--yes)}
+.fixnote{max-width:none;margin-top:10px}
 .ver{margin:10px 0 0;font-size:var(--t1);color:var(--muted);letter-spacing:.06em}
 </style></head><body>
 <header id="hdr"><div class="hrow">
@@ -397,7 +409,7 @@ main{position:absolute;left:0;right:0;bottom:0;top:var(--hh,84px);overflow-y:aut
    visit. */
 /* Bumped once per phase of work, shown small at the foot of "About this course"
    so a parent reporting a problem can say which build they are on. */
-const VERSION="v14";
+const VERSION="v15";
 const R = s => { let x = (s*1103515245 + 12345) & 0x7fffffff; return () => (x = (x*1103515245 + 12345) & 0x7fffffff) / 0x7fffffff; };
 const pick = (r,a) => a[Math.floor(r()*a.length)];
 const between = (r,a,b) => a + Math.floor(r()*(b-a+1));
@@ -1068,7 +1080,54 @@ const TEACH = {
    {ask_en:"18 went into 48 twice. How many 17s go into 59?", ask_fr:"18 entrait deux fois dans 48. Combien de 17 dans 59 ?", a:"3"},
    {ask_en:"3 \u00d7 17 = 51. What is 59 \u2212 51?", ask_fr:"3 \u00d7 17 = 51. Combien fait 59 \u2212 51 ?", a:"8"},
    {ask_en:"Bring down the 5 to make 85. How many 17s in 85?", ask_fr:"Abaisse le 5 : 85. Combien de 17 dans 85 ?", a:"5"},
-   {ask_en:"So what is 595 \u00f7 17?", ask_fr:"Alors, combien fait 595 \u00f7 17 ?", a:"35"}]}
+   {ask_en:"So what is 595 \u00f7 17?", ask_fr:"Alors, combien fait 595 \u00f7 17 ?", a:"35"}]},
+ /* v15: further examples */
+ lvl2:{show:"8 352 ÷ 32",
+  pic:{ask:"long", show:"8 352 ÷ 32"},
+  steps:[
+   {line:"32 ) 8 352", en:"Write it the long way. 8 352 inside, 32 outside.", fr:"Écris-la en division posée. 8 352 dedans, 32 dehors.", why_en:"Set it out first. With four digits there are more steps, so the layout matters even more.", why_fr:"Pose-la d'abord. Avec quatre chiffres il y a plus d'étapes, donc la disposition compte encore plus."},
+   {line:"32 into 8?  no", line_fr:"32 dans 8 ?  non", en:"32 does not go into 8. So look at 83.", fr:"32 n'entre pas dans 8. Regarde donc 83.", why_en:"Start with the smallest part of the number that is big enough.", why_fr:"Commence par la plus petite partie du nombre qui soit assez grande."},
+   {line:"32 into 83 = 2,  2×32 = 64", line_fr:"32 dans 83 = 2,  2×32 = 64", en:"32 twos are 64. 32 threes are 96, too big. So 2.", fr:"Deux fois 32 font 64. Trois fois 32 font 96, trop. Donc 2.", why_en:"Count up in 32s until the next one is too big, and write 2 on top.", why_fr:"Compte de 32 en 32 jusqu'à ce que le suivant soit trop grand, et écris 2 en haut."},
+   {line:"83 − 64 = 19", en:"Take 64 away. 19 is left.", fr:"Enlève 64. Il reste 19.", why_en:"Check the 19 is smaller than 32, then carry on.", why_fr:"Vérifie que 19 est plus petit que 32, puis continue."},
+   {line:"bring down the 5 → 195", line_fr:"abaisse le 5 → 195", en:"Bring the 5 down beside the 19. Now you have 195.", fr:"Abaisse le 5 à côté du 19. Tu as maintenant 195.", why_en:"Always bring the next digit down beside what is left.", why_fr:"Abaisse toujours le chiffre suivant à côté de ce qui reste."},
+   {line:"32 into 195 = 6,  6×32 = 192", line_fr:"32 dans 195 = 6,  6×32 = 192", en:"32 sixes are 192. 32 sevens are 224, too big. So 6.", fr:"Six fois 32 font 192. Sept fois 32 font 224, trop. Donc 6.", why_en:"Estimate first: 32 is about 30, and 30 × 6 = 180. Then check 6 × 32.", why_fr:"Estime d'abord : 32, c'est environ 30, et 30 × 6 = 180. Puis vérifie 6 × 32."},
+   {line:"195 − 192 = 3", en:"Take 192 away. 3 is left.", fr:"Enlève 192. Il reste 3.", why_en:"Take away, the same as before. There is still a digit to bring down.", why_fr:"Soustrais, comme avant. Il reste encore un chiffre à abaisser."},
+   {line:"bring down the 2 → 32", line_fr:"abaisse le 2 → 32", en:"Bring the 2 down beside the 3. Now you have 32.", fr:"Abaisse le 2 à côté du 3. Tu as maintenant 32.", why_en:"Bring down the last digit and divide one more time.", why_fr:"Abaisse le dernier chiffre et divise une dernière fois."},
+   {line:"32 into 32 = 1,  1×32 = 32", line_fr:"32 dans 32 = 1,  1×32 = 32", en:"32 goes in exactly once. Nothing left.", fr:"32 entre exactement une fois. Il ne reste rien.", why_en:"Write the 1 on top. Nothing left means no remainder.", why_fr:"Écris le 1 en haut. S'il ne reste rien, il n'y a pas de reste."},
+   {line:"8 352 ÷ 32 = 261", en:"The answer is 261.", fr:"La réponse est 261.", why_en:"Check it the other way: 261 × 32 should give 8 352 back.", why_fr:"Vérifie à l'envers : 261 × 32 doit redonner 8 352."}],
+  guided:{show:"6 216 ÷ 21",
+   steps:[
+    {ask_en:"21 does not go into 6. How many 21s go into 62?", ask_fr:"21 n'entre pas dans 6. Combien de 21 dans 62 ?", a:"2"},
+    {ask_en:"62 − 42 = 20. Bring down the 1 to make 201. How many 21s in 201?", ask_fr:"62 − 42 = 20. Abaisse le 1 : 201. Combien de 21 dans 201 ?", a:"9"},
+    {ask_en:"9 × 21 = 189. What is 201 − 189?", ask_fr:"9 × 21 = 189. Combien fait 201 − 189 ?", a:"12"},
+    {ask_en:"Bring down the 6 to make 126, and 126 ÷ 21 = 6. So what is 6 216 ÷ 21?", ask_fr:"Abaisse le 6 : 126, et 126 ÷ 21 = 6. Alors, combien fait 6 216 ÷ 21 ?", a:"296"}]}},
+ examples:[
+  {show:"920 ÷ 23",
+   steps:[
+    {line:"23 ) 920", en:"Write it the long way. 920 inside, 23 outside.", fr:"Écris-la en division posée. 920 dedans, 23 dehors.", why_en:"Set it out first, so the layout keeps track of what is left.", why_fr:"Pose-la d'abord, pour que la disposition garde la trace de ce qui reste."},
+    {line:"23 into 9?  no", line_fr:"23 dans 9 ?  non", en:"23 does not go into 9. So look at 92.", fr:"23 n'entre pas dans 9. Regarde donc 92.", why_en:"Start with the smallest part of the number that is big enough.", why_fr:"Commence par la plus petite partie du nombre qui soit assez grande."},
+    {line:"23 into 92 = 4,  4×23 = 92", line_fr:"23 dans 92 = 4,  4×23 = 92", en:"23 fours are exactly 92.", fr:"Quatre fois 23 font exactement 92.", why_en:"Count up in 23s: 23, 46, 69, 92. Four fitted, so write 4 on top.", why_fr:"Compte de 23 en 23 : 23, 46, 69, 92. Quatre tiennent, écris 4 en haut."},
+    {line:"92 − 92 = 0", en:"Take the 92 away. Nothing is left.", fr:"Enlève 92. Il ne reste rien.", why_en:"Nothing left does not mean you have finished. There is still a digit to bring down.", why_fr:"S'il ne reste rien, ce n'est pas fini. Il reste un chiffre à abaisser."},
+    {line:"bring down the 0 → 0", line_fr:"abaisse le 0 → 0", en:"Bring the 0 down. Now you have 0.", fr:"Abaisse le 0. Tu as maintenant 0.", why_en:"Always bring the next digit down, even when it is a zero.", why_fr:"Abaisse toujours le chiffre suivant, même si c'est un zéro."},
+    {line:"23 into 0 = 0", line_fr:"23 dans 0 = 0", en:"23 goes into 0 zero times.", fr:"23 entre zéro fois dans 0.", why_en:"Write the 0 on top. Without it the answer would be 4, which is ten times too small.", why_fr:"Écris le 0 en haut. Sans lui, la réponse serait 4, dix fois trop petite."},
+    {line:"920 ÷ 23 = 40", en:"The answer is 40.", fr:"La réponse est 40.", why_en:"Check it the other way: 40 × 23 should give 920 back.", why_fr:"Vérifie à l'envers : 40 × 23 doit redonner 920."}]}],
+ word:{en:"Musa packs 806 eggs into trays. Each tray holds 26 eggs. How many trays does he fill?",
+  fr:"Musa range 806 œufs dans des plateaux. Chaque plateau contient 26 œufs. Combien de plateaux remplit-il ?",
+  show:"806 ÷ 26",
+  steps:[
+   {line:"26 ) 806", en:"Trays of 26 means divide: 806 ÷ 26.", fr:"Des plateaux de 26, c'est une division : 806 ÷ 26.", why_en:"Set it out the long way: 806 inside, 26 outside.", why_fr:"Pose-la en division : 806 dedans, 26 dehors."},
+   {line:"26 into 8?  no", line_fr:"26 dans 8 ?  non", en:"26 does not go into 8. So look at 80.", fr:"26 n'entre pas dans 8. Regarde donc 80.", why_en:"Start with the smallest part of the number that is big enough.", why_fr:"Commence par la plus petite partie du nombre qui soit assez grande."},
+   {line:"26 into 80 = 3,  3×26 = 78", line_fr:"26 dans 80 = 3,  3×26 = 78", en:"26 threes are 78. 26 fours are 104, too big. So 3.", fr:"Trois fois 26 font 78. Quatre fois 26 font 104, trop. Donc 3.", why_en:"Count up in 26s until the next one is too big, and write 3 on top.", why_fr:"Compte de 26 en 26 jusqu'à ce que le suivant soit trop grand, et écris 3 en haut."},
+   {line:"80 − 78 = 2", en:"Take 78 away. 2 is left.", fr:"Enlève 78. Il reste 2.", why_en:"Check the 2 is smaller than 26, then bring it down to the next step.", why_fr:"Vérifie que 2 est plus petit que 26, puis passe-le à l'étape suivante."},
+   {line:"bring down the 6 → 26", line_fr:"abaisse le 6 → 26", en:"Bring the 6 down beside the 2. Now you have 26.", fr:"Abaisse le 6 à côté du 2. Tu as maintenant 26.", why_en:"Always bring the next digit down beside what is left.", why_fr:"Abaisse toujours le chiffre suivant à côté de ce qui reste."},
+   {line:"26 into 26 = 1,  1×26 = 26", line_fr:"26 dans 26 = 1,  1×26 = 26", en:"26 goes in exactly once. Nothing left.", fr:"26 entre exactement une fois. Il ne reste rien.", why_en:"Write the 1 on top. No remainder means every tray is full.", why_fr:"Écris le 1 en haut. Pas de reste : chaque plateau est plein."},
+   {line:"806 ÷ 26 = 31", en:"Musa fills 31 trays.", fr:"Musa remplit 31 plateaux.", why_en:"Check it the other way: 31 × 26 should give 806 back.", why_fr:"Vérifie à l'envers : 31 × 26 doit redonner 806."}]},
+ mistake:{show:"594 ÷ 22",
+  lines:["22 ) 594", "22 into 59 = 1,  1×22 = 22", "59 − 22 = 37"],
+  lines_fr:["22 ) 594", "22 dans 59 = 1,  1×22 = 22", "59 − 22 = 37"],
+  wrong:1,
+  fix_en:"37 is bigger than 22, so 22 fits into 59 again. 22 into 59 = 2: 59 − 44 = 15, bring down the 4 to make 154, and 154 ÷ 22 = 7, so 594 ÷ 22 = 27.",
+  fix_fr:"37 est plus grand que 22, donc 22 entre encore dans 59. 22 dans 59 = 2 : 59 − 44 = 15, abaisse le 4 pour faire 154, et 154 ÷ 22 = 7, donc 594 ÷ 22 = 27."}
 },
 
 "longMul": {
@@ -1100,7 +1159,40 @@ const TEACH = {
  guided:{show:"38 \u00d7 24", steps:[
    {ask_en:"First the 4: what is 38 \u00d7 4?", ask_fr:"D'abord le 4 : combien fait 38 \u00d7 4 ?", a:"152"},
    {ask_en:"Now the 20. 38 \u00d7 2 = 76, so 38 \u00d7 20 = ?", ask_fr:"Puis le 20. 38 \u00d7 2 = 76, donc 38 \u00d7 20 = ?", a:"760"},
-   {ask_en:"Add your two rows: 152 + 760", ask_fr:"Additionne tes deux lignes : 152 + 760", a:"912"}]}
+   {ask_en:"Add your two rows: 152 + 760", ask_fr:"Additionne tes deux lignes : 152 + 760", a:"912"}]},
+ /* v15: further examples */
+ lvl2:{show:"2 347 × 36",
+  pic:{ask:"long", show:"2 347 × 36"},
+  steps:[
+   {line:"2 347 × 6 = 14 082", en:"First the 6. Work right to left and carry as you go.", fr:"D'abord le 6. Va de droite à gauche et retiens au fur et à mesure.", why_en:"Split 36 into 30 and 6. Multiply all four digits by the 6 first.", why_fr:"Coupe 36 en 30 et 6. Multiplie d'abord les quatre chiffres par 6."},
+   {line:"2 347 × 30 = 70 410", en:"Now the 30. 2 347 × 3 = 7 041, so 2 347 × 30 = 70 410.", fr:"Puis le 30. 2 347 × 3 = 7 041, donc 2 347 × 30 = 70 410.", why_en:"Put the zero at the end of the second row first, because you are multiplying by thirty.", why_fr:"Mets d'abord le zéro au bout de la deuxième ligne, parce que tu multiplies par trente."},
+   {line:"14 082 + 70 410 = 84 492", en:"Add the two rows.", fr:"Additionne les deux lignes.", why_en:"Keep the columns straight: ones under ones, all the way to the ten thousands.", why_fr:"Garde les colonnes droites : unités sous unités, jusqu'aux dizaines de mille."},
+   {line:"2 347 × 36 = 84 492", en:"The product is 84 492.", fr:"Le produit est 84 492.", why_en:"Check: roughly 2 000 × 40 = 80 000, close to 84 492.", why_fr:"Vérifie : environ 2 000 × 40 = 80 000, proche de 84 492."}],
+  guided:{show:"1 524 × 23",
+   steps:[
+    {ask_en:"First the 3: what is 1 524 × 3?", ask_fr:"D'abord le 3 : combien fait 1 524 × 3 ?", a:"4572"},
+    {ask_en:"Now the 20. 1 524 × 2 = 3 048, so 1 524 × 20 = ?", ask_fr:"Puis le 20. 1 524 × 2 = 3 048, donc 1 524 × 20 = ?", a:"30480"},
+    {ask_en:"Add your two rows: 4 572 + 30 480", ask_fr:"Additionne tes deux lignes : 4 572 + 30 480", a:"35052"}]}},
+ examples:[
+  {show:"305 × 46",
+   steps:[
+    {line:"305 × 6 = 1 830", en:"First the 6. 0 × 6 is 0, plus the carry of 3, makes 3.", fr:"D'abord le 6. 0 × 6 = 0, plus la retenue de 3, cela fait 3.", why_en:"Multiply by the ones first. Do not skip the zero in 305: add the carry onto it.", why_fr:"Multiplie d'abord par les unités. Ne saute pas le zéro de 305 : ajoute-lui la retenue."},
+    {line:"305 × 40 = 12 200", en:"Now the 40. 305 × 4 = 1 220, so 305 × 40 = 12 200.", fr:"Puis le 40. 305 × 4 = 1 220, donc 305 × 40 = 12 200.", why_en:"Put the zero at the end of the second row first, because you are multiplying by forty.", why_fr:"Mets d'abord le zéro au bout de la deuxième ligne, parce que tu multiplies par quarante."},
+    {line:"1 830 + 12 200 = 14 030", en:"Add the two rows together.", fr:"Additionne les deux lignes.", why_en:"Line the rows up by place value, ones under ones, then add.", why_fr:"Aligne les lignes selon la valeur des chiffres, unités sous unités, puis additionne."},
+    {line:"305 × 46 = 14 030", en:"The product is 14 030.", fr:"Le produit est 14 030.", why_en:"Check: roughly 300 × 50 = 15 000, close to 14 030.", why_fr:"Vérifie : environ 300 × 50 = 15 000, proche de 14 030."}]}],
+ word:{en:"A school buys 36 boxes of pencils. Each box holds 144 pencils. How many pencils does the school buy?",
+  fr:"Une école achète 36 boîtes de crayons. Chaque boîte contient 144 crayons. Combien de crayons l'école achète-t-elle ?",
+  show:"144 × 36",
+  steps:[
+   {line:"144 × 6 = 864", en:"36 boxes of 144 means 144 × 36. First the 6 boxes.", fr:"36 boîtes de 144, c'est 144 × 36. D'abord les 6 boîtes.", why_en:"Split 36 into 30 and 6, and multiply by the ones first.", why_fr:"Coupe 36 en 30 et 6, et multiplie d'abord par les unités."},
+   {line:"144 × 30 = 4 320", en:"Now the 30 boxes. 144 × 3 = 432, so 144 × 30 = 4 320.", fr:"Puis les 30 boîtes. 144 × 3 = 432, donc 144 × 30 = 4 320.", why_en:"Start the second row with a zero, because you are multiplying by thirty.", why_fr:"Commence la deuxième ligne par un zéro, parce que tu multiplies par trente."},
+   {line:"864 + 4 320 = 5 184", en:"Add the two rows.", fr:"Additionne les deux lignes.", why_en:"Add the rows to put the 6 boxes and the 30 boxes back together.", why_fr:"Additionne les lignes pour rassembler les 6 boîtes et les 30 boîtes."},
+   {line:"144 × 36 = 5 184", en:"The school buys 5 184 pencils.", fr:"L'école achète 5 184 crayons.", why_en:"Check: roughly 150 × 36 = 5 400, close to 5 184.", why_fr:"Vérifie : environ 150 × 36 = 5 400, proche de 5 184."}]},
+ mistake:{show:"53 × 24",
+  lines:["53 × 4 = 212", "53 × 20 = 106", "212 + 106 = 318"],
+  wrong:1,
+  fix_en:"The second row is missing its zero: that is 53 × 2, not 53 × 20. 53 × 20 = 1 060, so 212 + 1 060 = 1 272.",
+  fix_fr:"Il manque le zéro à la deuxième ligne : c'est 53 × 2, pas 53 × 20. 53 × 20 = 1 060, donc 212 + 1 060 = 1 272."}
 },
 
 "frAddDiff": {
@@ -1129,7 +1221,40 @@ const TEACH = {
    {ask_en:"What number do both 3 and 6 go into?", ask_fr:"Dans quel nombre entrent \u00e0 la fois 3 et 6 ?", a:"6"},
    {ask_en:"1/3 is how many sixths? (top and bottom \u00d7 2)", ask_fr:"1/3 fait combien de sixi\u00e8mes ? (haut et bas \u00d7 2)", a:"2/6"},
    {ask_en:"Now add: 2/6 + 1/6", ask_fr:"Additionne : 2/6 + 1/6", a:"3/6"},
-   {ask_en:"Simplify 3/6", ask_fr:"Simplifie 3/6", a:"1/2"}]}
+   {ask_en:"Simplify 3/6", ask_fr:"Simplifie 3/6", a:"1/2"}]},
+ /* v15: further examples */
+ lvl2:{show:"2/3 + 7/12",
+  steps:[
+   {line:"3 × 4 = 12", en:"12 is a multiple of 3: 3 goes into it 4 times. Make both denominators 12.", fr:"12 est un multiple de 3 : 3 y entre 4 fois. Rends les deux dénominateurs égaux à 12.", why_en:"Find a number both bottoms go into. Here you multiply by 4, not just 2.", why_fr:"Trouve un nombre dans lequel entrent les deux dénominateurs. Ici, tu multiplies par 4, pas juste par 2."},
+   {line:"2/3 = 8/12", en:"Multiply top and bottom by 4. Two thirds is eight twelfths.", fr:"Multiplie le haut et le bas par 4. Deux tiers font huit douzièmes.", why_en:"Multiply the top by 4 as well as the bottom. 2/12 would be far too small.", why_fr:"Multiplie aussi le numérateur par 4. 2/12 serait bien trop petit."},
+   {line:"8/12 + 7/12 = 15/12", en:"Add the numerators. Fifteen twelfths: more than one whole.", fr:"Additionne les numérateurs. Quinze douzièmes : plus d'une unité.", why_en:"Add the tops and keep the bottom. A top bigger than the bottom is fine.", why_fr:"Additionne les numérateurs et garde le dénominateur. Un numérateur plus grand que le dénominateur, c'est permis."},
+   {line:"15/12 = 5/4", en:"15 and 12 are both in the 3 times table. Divide both by 3. That is 1 and 1/4.", fr:"15 et 12 sont dans la table de 3. Divise les deux par 3. Cela fait 1 et 1/4.", why_en:"Simplify: find a number that goes into top and bottom, and divide both by it.", why_fr:"Simplifie : trouve un nombre qui divise le haut et le bas, et divise les deux."}],
+  guided:{show:"1/2 + 5/6",
+   steps:[
+    {ask_en:"What number do both 2 and 6 go into?", ask_fr:"Dans quel nombre entrent à la fois 2 et 6 ?", a:"6"},
+    {ask_en:"1/2 is how many sixths? (top and bottom × 3)", ask_fr:"1/2 fait combien de sixièmes ? (haut et bas × 3)", a:"3/6"},
+    {ask_en:"Now add: 3/6 + 5/6", ask_fr:"Additionne : 3/6 + 5/6", a:"8/6"},
+    {ask_en:"Simplify 8/6", ask_fr:"Simplifie 8/6", a:"4/3"}]}},
+ examples:[
+  {show:"1/4 + 1/12",
+   steps:[
+    {line:"4 × 3 = 12", en:"12 is a multiple of 4. So make both denominators 12.", fr:"12 est un multiple de 4. Rends donc les deux dénominateurs égaux à 12.", why_en:"Find a number both bottoms go into. 4 goes into 12.", why_fr:"Trouve un nombre dans lequel entrent les deux dénominateurs. 4 entre dans 12."},
+    {line:"1/4 = 3/12", en:"Multiply top and bottom by 3. A quarter is three twelfths.", fr:"Multiplie le haut et le bas par 3. Un quart fait trois douzièmes.", why_en:"Multiply the top and the bottom by the SAME number.", why_fr:"Multiplie le haut et le bas par le MÊME nombre."},
+    {line:"3/12 + 1/12 = 4/12", en:"Now add the numerators. Four twelfths.", fr:"Additionne les numérateurs. Quatre douzièmes.", why_en:"Add the tops and keep the bottom.", why_fr:"Additionne les numérateurs et garde le dénominateur."},
+    {line:"4/12 = 1/3", en:"4 and 12 can both be divided by 4. One third.", fr:"4 et 12 se divisent tous les deux par 4. Un tiers.", why_en:"Always check the answer: if top and bottom share a factor, divide both by it.", why_fr:"Vérifie toujours : si le haut et le bas ont un diviseur commun, divise les deux par lui."}]}],
+ word:{en:"Leo drinks 1/2 a litre of water in the morning and 3/10 of a litre in the afternoon. How much does he drink altogether? Give your answer in its simplest form.",
+  fr:"Leo boit 1/2 litre d'eau le matin et 3/10 de litre l'après-midi. Combien boit-il en tout ? Donne la fraction la plus simple.",
+  show:"1/2 + 3/10",
+  steps:[
+   {line:"2 × 5 = 10", en:"10 is a multiple of 2. Make both denominators 10.", fr:"10 est un multiple de 2. Rends les deux dénominateurs égaux à 10.", why_en:"Find a bottom number both will go into.", why_fr:"Trouve un dénominateur dans lequel les deux entrent."},
+   {line:"1/2 = 5/10", en:"Half a litre is five tenths of a litre.", fr:"Un demi-litre fait cinq dixièmes de litre.", why_en:"Multiply top and bottom by 5, the same number.", why_fr:"Multiplie le haut et le bas par 5, le même nombre."},
+   {line:"5/10 + 3/10 = 8/10", en:"Add the numerators. Eight tenths of a litre.", fr:"Additionne les numérateurs. Huit dixièmes de litre.", why_en:"Add the tops, keep the bottom.", why_fr:"Additionne les numérateurs, garde le dénominateur."},
+   {line:"8/10 = 4/5", en:"Halve top and bottom. Leo drinks 4/5 of a litre.", fr:"Divise le haut et le bas par 2. Leo boit 4/5 de litre.", why_en:"Simplest form: divide top and bottom by the same number until you can't.", why_fr:"Forme la plus simple : divise le haut et le bas par le même nombre jusqu'à ne plus pouvoir."}]},
+ mistake:{show:"1/2 + 1/4",
+  lines:["1/2 + 1/4", "= 2/6"],
+  wrong:1,
+  fix_en:"You added the bottoms. Make them the same first: 1/2 = 2/4, so 2/4 + 1/4 = 3/4.",
+  fix_fr:"Tu as additionné les dénominateurs. Rends-les égaux d'abord : 1/2 = 2/4, donc 2/4 + 1/4 = 3/4."}
 },
 
 "pcOf": {
@@ -1158,7 +1283,41 @@ const TEACH = {
    {ask_en:"What is 10% of 80?", ask_fr:"Combien fait 10 % de 80 ?", a:"8"},
    {ask_en:"So what is 30%?", ask_fr:"Alors combien fait 30 % ?", a:"24"},
    {ask_en:"And 5% (half of 10%)?", ask_fr:"Et 5 % (la moiti\u00e9 de 10 %) ?", a:"4"},
-   {ask_en:"Put them together: 35% of 80", ask_fr:"Rassemble : 35 % de 80", a:"28"}]}
+   {ask_en:"Put them together: 35% of 80", ask_fr:"Rassemble : 35 % de 80", a:"28"}]},
+ /* v15: further examples */
+ lvl2:{show:"45% of 160",
+  pic:{ask:"calc", show:"45% of 160"},
+  steps:[
+   {line:"10% of 160 = 16", en:"10% is one tenth. Divide by 10.", fr:"10 %, c'est un dixième. Divise par 10.", why_en:"Find 10% first: divide by 10. Everything else is built from it.", why_fr:"Trouve d'abord 10 % : divise par 10. Tout le reste se construit dessus."},
+   {line:"40% = 4 × 16 = 64", en:"45% has four tens in it. 4 × 16 = 64.", fr:"45 % contient quatre dizaines. 4 × 16 = 64.", why_en:"Count the tens in the percentage and multiply your 10% by that.", why_fr:"Compte les dizaines du pourcentage et multiplie ton 10 % par ce nombre."},
+   {line:"5% = 16 ÷ 2 = 8", en:"5% is half of 10%. Half of 16 is 8.", fr:"5 %, c'est la moitié de 10 %. La moitié de 16 fait 8.", why_en:"For the 5, halve your 10%.", why_fr:"Pour le 5, prends la moitié de ton 10 %."},
+   {line:"64 + 8 = 72", en:"40% and 5% make 45%. 45% of 160 is 72.", fr:"40 % et 5 % font 45 %. 45 % de 160, c'est 72.", why_en:"Add the pieces you built. Check: 45% is a bit under half, and half of 160 is 80.", why_fr:"Additionne les morceaux construits. Vérifie : 45 %, c'est un peu moins de la moitié, et la moitié de 160 fait 80."}],
+  guided:{show:"85% of 200",
+   steps:[
+    {ask_en:"What is 10% of 200?", ask_fr:"Combien fait 10 % de 200 ?", a:"20"},
+    {ask_en:"So what is 80%?", ask_fr:"Alors combien fait 80 % ?", a:"160"},
+    {ask_en:"And 5% (half of 10%)?", ask_fr:"Et 5 % (la moitié de 10 %) ?", a:"10"},
+    {ask_en:"Put them together: 85% of 200", ask_fr:"Rassemble : 85 % de 200", a:"170"}]}},
+ examples:[
+  {show:"15% of £50",
+   steps:[
+    {line:"10% of 50 = 5", en:"10% is one tenth. Divide by 10.", fr:"10 %, c'est un dixième. Divise par 10.", why_en:"Find 10% first: divide by 10.", why_fr:"Trouve d'abord 10 % : divise par 10."},
+    {line:"5% of 50 = 2.5", en:"5% is half of 10%. Half of 5 is 2.5.", fr:"5 %, c'est la moitié de 10 %. La moitié de 5 fait 2,5.", why_en:"Halve your 10%. Half of an odd number ends in .5, and that is fine.", why_fr:"Prends la moitié de ton 10 %. La moitié d'un nombre impair finit par ,5, et c'est normal."},
+    {line:"5 + 2.5 = 7.5", en:"15% of £50 is £7.50.", fr:"15 % de 50 £, c'est 7,50 £.", why_en:"Add the pieces. With money, write 7.5 as £7.50.", why_fr:"Additionne les morceaux. Avec de l'argent, écris 7,5 sous la forme 7,50 £."}]}],
+ word:{en:"A coat costs £80. In the sale there is 25% off. How much does the coat cost in the sale?",
+  fr:"Un manteau coûte 80 £. En soldes, il y a 25 % de réduction. Combien coûte le manteau en soldes ?",
+  show:"25% off £80",
+  steps:[
+   {line:"10% of 80 = 8", en:"Find 10% first.", fr:"Trouve d'abord 10 %.", why_en:"Divide by 10 to find 10%. Build everything from it.", why_fr:"Divise par 10 pour trouver 10 %. Construis tout à partir de là."},
+   {line:"20% = 2 × 8 = 16", en:"20% is two lots of 10%.", fr:"20 %, c'est deux fois 10 %.", why_en:"Double the 10% to get 20%.", why_fr:"Double le 10 % pour avoir 20 %."},
+   {line:"5% = 8 ÷ 2 = 4", en:"5% is half of 10%.", fr:"5 %, c'est la moitié de 10 %.", why_en:"Halve the 10% to get 5%.", why_fr:"Prends la moitié du 10 % pour avoir 5 %."},
+   {line:"16 + 4 = 20", en:"25% is £20. That is the money taken off.", fr:"25 %, c'est 20 £. C'est la réduction.", why_en:"Add 20% and 5% to make 25%.", why_fr:"Additionne 20 % et 5 % pour faire 25 %."},
+   {line:"80 − 20 = 60", en:"The coat costs £60 in the sale.", fr:"Le manteau coûte 60 £ en soldes.", why_en:"Read the question again. It asks for the new price, so take the £20 off.", why_fr:"Relis la question. Elle demande le nouveau prix, donc enlève les 20 £."}]},
+ mistake:{show:"15% of 60",
+  lines:["15% of 60", "60 ÷ 15 = 4"],
+  wrong:1,
+  fix_en:"Per cent means out of 100, so don't divide by 15. 10% of 60 = 6, 5% = 3, so 15% = 9.",
+  fix_fr:"Pour cent veut dire sur 100, donc ne divise pas par 15. 10 % de 60 = 6, 5 % = 3, donc 15 % = 9."}
 },
 
 "pvDigit": {
@@ -1186,7 +1345,38 @@ const TEACH = {
  guided:{show:"806 342", steps:[
    {ask_en:"Which place is the 8 in \u2014 what is it worth?", ask_fr:"\u00c0 quelle place est le 8 \u2014 que vaut-il ?", a:"800000"},
    {ask_en:"What is the 3 worth?", ask_fr:"Que vaut le 3 ?", a:"300"},
-   {ask_en:"What is the 4 worth?", ask_fr:"Que vaut le 4 ?", a:"40"}]}
+   {ask_en:"What is the 4 worth?", ask_fr:"Que vaut le 4 ?", a:"40"}]},
+ /* v15: further examples */
+ lvl2:{show:"3 845 027",
+  pic:{ask:"pvDigit", show:"3 845 027", hi:1},
+  steps:[
+   {line:"3   8 4 5   0 2 7", en:"We want the 8. Count from the right: ones, tens, hundreds, thousands, ten thousands, hundred thousands, millions.", fr:"On cherche le 8. Compte depuis la droite : unités, dizaines, centaines, milliers, dizaines de mille, centaines de mille, millions.", why_en:"Use the spaces to help: each group of three is ones, then thousands, then millions.", why_fr:"Sers-toi des espaces : chaque groupe de trois, ce sont les unités, puis les milliers, puis les millions."},
+   {line:"8 is in the hundred thousands", line_fr:"le 8 est aux centaines de mille", en:"The 8 is the sixth place along, so it is in the hundred thousands.", fr:"Le 8 est à la sixième place, donc aux centaines de mille.", why_en:"The 8 is the first digit of the thousands group, so it is hundred thousands.", why_fr:"Le 8 est le premier chiffre du groupe des milliers : ce sont les centaines de mille."},
+   {line:"8 × 100 000 = 800 000", en:"So the 8 is worth 800 000.", fr:"Donc le 8 vaut 800 000.", why_en:"Multiply the digit by its place: 8 × 100 000.", why_fr:"Multiplie le chiffre par sa place : 8 × 100 000."}],
+  guided:{show:"5 260 913",
+   steps:[
+    {ask_en:"What is the 5 worth?", ask_fr:"Que vaut le 5 ?", a:"5000000"},
+    {ask_en:"What is the 2 worth?", ask_fr:"Que vaut le 2 ?", a:"200000"},
+    {ask_en:"What is the 9 worth?", ask_fr:"Que vaut le 9 ?", a:"900"}]}},
+ examples:[
+  {show:"704 315",
+   steps:[
+    {line:"7 0 4   3 1 5", en:"We want the 4. Count the places from the right: ones, tens, hundreds, thousands.", fr:"On cherche le 4. Compte les places depuis la droite : unités, dizaines, centaines, milliers.", why_en:"Count every place, even the 0. The 0 is a digit too and it holds a place.", why_fr:"Compte chaque place, même le 0. Le 0 est un chiffre et il occupe une place."},
+    {line:"4 is in the thousands", line_fr:"le 4 est aux milliers", en:"The 4 is the fourth place along, so it is in the thousands.", fr:"Le 4 est à la quatrième place, donc aux milliers.", why_en:"Do not skip the 0. It sits in the ten thousands and keeps the 7 in the hundred thousands.", why_fr:"Ne saute pas le 0. Il est aux dizaines de mille et garde le 7 aux centaines de mille."},
+    {line:"4 × 1 000 = 4 000", en:"So the 4 is worth 4 000.", fr:"Donc le 4 vaut 4 000.", why_en:"Multiply the digit by its place: a 4 in the thousands is 4 × 1 000.", why_fr:"Multiplie le chiffre par sa place : un 4 aux milliers, c'est 4 × 1 000."}]}],
+ word:{en:"A football club sold 463 920 tickets this season. What is the value of the 6 in 463 920?",
+  fr:"Un club de foot a vendu 463 920 billets cette saison. Quelle est la valeur du 6 dans 463 920 ?",
+  show:"463 920",
+  steps:[
+   {line:"4 6 3   9 2 0", en:"Count the places from the right: ones, tens, hundreds, thousands, ten thousands.", fr:"Compte les places depuis la droite : unités, dizaines, centaines, milliers, dizaines de mille.", why_en:"Start at the right-hand end every time, even when the last digit is 0.", why_fr:"Pars toujours de la droite, même quand le dernier chiffre est 0."},
+   {line:"6 is in the ten thousands", line_fr:"le 6 est aux dizaines de mille", en:"The 6 is the fifth place along, which is ten thousands.", fr:"Le 6 est à la cinquième place, celle des dizaines de mille.", why_en:"Name the place before you write anything. The place tells you the value.", why_fr:"Nomme la place avant d'écrire. C'est la place qui donne la valeur."},
+   {line:"6 × 10 000 = 60 000", en:"The 6 is worth 60 000.", fr:"Le 6 vaut 60 000.", why_en:"Write the value, not the digit. The answer is 60 000, not 6.", why_fr:"Écris la valeur, pas le chiffre. La réponse est 60 000, pas 6."}]},
+ mistake:{show:"534 128",
+  lines:["5 3 4   1 2 8", "3 is in the thousands", "3 × 1 000 = 3 000"],
+  lines_fr:["5 3 4   1 2 8", "le 3 est aux milliers", "3 × 1 000 = 3 000"],
+  wrong:1,
+  fix_en:"Count from the right: ones, tens, hundreds, thousands, ten thousands. The 3 is in the ten thousands, so it is worth 3 × 10 000 = 30 000.",
+  fix_fr:"Compte depuis la droite : unités, dizaines, centaines, milliers, dizaines de mille. Le 3 est aux dizaines de mille, donc il vaut 3 × 10 000 = 30 000."}
 },
 
 "pvRound": {
@@ -1214,7 +1404,42 @@ const TEACH = {
    {ask_en:"Which digit decides it? (the tens)", ask_fr:"Quel chiffre décide ? (les dizaines)", a:"4"},
    {ask_en:"4 is less than 5 — so what is the answer?", ask_fr:"4 est plus petit que 5 — alors, la réponse ?", a:"8600"},
    {ask_en:"Now 8 651 to the nearest 100", ask_fr:"Maintenant 8 651 à la centaine près", a:"8700"},
- ]}
+ ]},
+ /* v15: further examples */
+ lvl2:{show:"4 683 215 → nearest 100 000",
+  pic:{ask:"round", show:"4 683 215", p:"100 000"},
+  show_fr:"4 683 215 → à la centaine de mille près",
+  steps:[
+   {line:"look at the ten thousands: 8", line_fr:"regarde les dizaines de mille : 8", en:"To round to the nearest hundred thousand, look at the ten thousands digit.", fr:"Pour arrondir à la centaine de mille, regarde le chiffre des dizaines de mille.", why_en:"Look only at the digit one place to the right. The 3 215 after it does not matter.", why_fr:"Regarde seulement le chiffre juste à droite. Le 3 215 qui suit ne compte pas."},
+   {line:"8 is 5 or more → round up", line_fr:"8, c'est 5 ou plus → on monte", en:"8 is 5 or more, so the 6 hundred thousands go up to 7.", fr:"8, c'est 5 ou plus, donc les 6 centaines de mille passent à 7.", why_en:"4 683 215 is between 4 600 000 and 4 700 000, and nearer 4 700 000.", why_fr:"4 683 215 est entre 4 600 000 et 4 700 000, et plus près de 4 700 000."},
+   {line:"4 683 215 → 4 700 000", en:"Everything after the hundred thousands becomes zero.", fr:"Tout ce qui suit les centaines de mille devient zéro.", why_en:"Keep the digits up to the place you round to, then write zeros. Count them: five zeros.", why_fr:"Garde les chiffres jusqu'à la place où tu arrondis, puis écris des zéros. Compte-les : cinq zéros."}],
+  guided:{show:"2 349 618 → nearest 10 000",
+   show_fr:"2 349 618 → à la dizaine de mille près",
+   steps:[
+    {ask_en:"Which digit decides it? (the thousands)", ask_fr:"Quel chiffre décide ? (les milliers)", a:"9"},
+    {ask_en:"9 is 5 or more — so what is the answer?", ask_fr:"9, c'est 5 ou plus — alors, la réponse ?", a:"2350000"},
+    {ask_en:"Now 2 349 618 to the nearest 100 000", ask_fr:"Maintenant 2 349 618 à la centaine de mille près", a:"2300000"}]}},
+ examples:[
+  {show:"6 962 → nearest 100",
+   show_fr:"6 962 → à la centaine près",
+   steps:[
+    {line:"look at the tens: 6", line_fr:"regarde les dizaines : 6", en:"To round to the nearest hundred, look at the tens digit.", fr:"Pour arrondir à la centaine, regarde le chiffre des dizaines.", why_en:"Look only at the digit one place to the right of the hundreds.", why_fr:"Regarde seulement le chiffre juste à droite des centaines."},
+    {line:"6 is 5 or more → round up", line_fr:"6, c'est 5 ou plus → on monte", en:"6 is 5 or more, so the hundreds go up by one.", fr:"6, c'est 5 ou plus, donc les centaines montent de un.", why_en:"Round up means the next hundred. After 6 900 comes 7 000, so the 9 rolls over.", why_fr:"Monter veut dire la centaine suivante. Après 6 900 vient 7 000, donc le 9 passe à 10."},
+    {line:"6 962 → 7 000", en:"The answer is 7 000.", fr:"La réponse est 7 000.", why_en:"When a 9 rounds up, it becomes 0 and you add one to the digit on its left.", why_fr:"Quand un 9 monte, il devient 0 et tu ajoutes un au chiffre de gauche."}]}],
+ word:{en:"48 652 people watched a football match. Write this number to the nearest 1000.",
+  fr:"48 652 personnes ont regardé un match de foot. Écris ce nombre au millier près.",
+  show:"48 652 → nearest 1000",
+  show_fr:"48 652 → au millier près",
+  steps:[
+   {line:"look at the hundreds: 6", line_fr:"regarde les centaines : 6", en:"Nearest thousand, so look at the hundreds digit.", fr:"Au millier près, donc regarde le chiffre des centaines.", why_en:"Find the place you are rounding to, then look one place to its right.", why_fr:"Trouve la place où tu arrondis, puis regarde juste à sa droite."},
+   {line:"6 is 5 or more → round up", line_fr:"6, c'est 5 ou plus → on monte", en:"6 is 5 or more, so the 8 thousands go up to 9.", fr:"6, c'est 5 ou plus, donc les 8 milliers passent à 9.", why_en:"48 652 is between 48 000 and 49 000, and nearer 49 000.", why_fr:"48 652 est entre 48 000 et 49 000, et plus près de 49 000."},
+   {line:"48 652 → 49 000", en:"About 49 000 people watched.", fr:"Environ 49 000 personnes ont regardé.", why_en:"Turn every digit after the thousands into zeros.", why_fr:"Remplace tous les chiffres après les milliers par des zéros."}]},
+ mistake:{show:"7 349 → nearest 100",
+  lines:["7 349 → nearest 100", "7 349 → 7 350", "7 350 → 7 400"],
+  lines_fr:["7 349 → à la centaine près", "7 349 → 7 350", "7 350 → 7 400"],
+  wrong:1,
+  fix_en:"Don't round twice. Look only at the tens: 4 is less than 5, so stay. 7 349 → 7 300.",
+  fix_fr:"N'arrondis pas deux fois. Regarde seulement les dizaines : 4 est plus petit que 5, on reste. 7 349 → 7 300."}
 },
 
 "pvNeg": {
@@ -1242,7 +1467,37 @@ const TEACH = {
    {ask_en:"How far from −6 up to zero?", ask_fr:"De −6 jusqu'à zéro ?", a:"6"},
    {ask_en:"And from zero up to 4?", ask_fr:"Et de zéro à 4 ?", a:"4"},
    {ask_en:"So the whole gap?", ask_fr:"Donc l'écart complet ?", a:"10"},
- ]}
+ ]},
+ /* v15: further examples */
+ lvl2:{show:"−14 → 9",
+  pic:{ask:"negGap", show:"-14  →  9"},
+  steps:[
+   {line:"count up to zero: 14", line_fr:"compte jusqu'à zéro : 14", en:"From −14 °C up to 0 °C is 14 degrees.", fr:"De −14 °C à 0 °C, il y a 14 degrés.", why_en:"Count from the negative number up to zero first. Zero is the meeting point.", why_fr:"Compte d'abord du nombre négatif jusqu'à zéro. Zéro est le point de rencontre."},
+   {line:"then on to 9: 9", line_fr:"puis jusqu'à 9 : 9", en:"From 0 °C up to 9 °C is 9 more.", fr:"De 0 °C à 9 °C, 9 de plus.", why_en:"Then count on from zero to the other number.", why_fr:"Puis compte de zéro jusqu'à l'autre nombre."},
+   {line:"14 + 9 = 23", en:"Add the two parts: the gap is 23 degrees.", fr:"Additionne les deux parties : l'écart est de 23 degrés.", why_en:"Add the two counts. Never subtract: −14 and 9 are 23 apart, not 5.", why_fr:"Additionne les deux comptages. Ne soustrais jamais : −14 et 9 sont à 23 d'écart, pas 5."}],
+  guided:{show:"−17 → 12",
+   steps:[
+    {ask_en:"How far from −17 up to zero?", ask_fr:"De −17 jusqu'à zéro ?", a:"17"},
+    {ask_en:"And from zero up to 12?", ask_fr:"Et de zéro à 12 ?", a:"12"},
+    {ask_en:"So the whole gap?", ask_fr:"Donc l'écart complet ?", a:"29"}]}},
+ examples:[
+  {show:"4 → −7",
+   steps:[
+    {line:"count down to zero: 4", line_fr:"descends jusqu'à zéro : 4", en:"This time the temperature is falling. From 4 down to 0 is four steps.", fr:"Cette fois, la température descend. De 4 à 0, il y a quatre pas.", why_en:"Going down works the same way. Count to zero first.", why_fr:"En descendant, c'est pareil. Compte d'abord jusqu'à zéro."},
+    {line:"then on to −7: 7", line_fr:"puis jusqu'à −7 : 7", en:"From 0 down to −7 is seven more.", fr:"De 0 à −7, sept pas de plus.", why_en:"Count on past zero to the other number.", why_fr:"Continue après zéro jusqu'à l'autre nombre."},
+    {line:"4 + 7 = 11", en:"Add the two parts: the gap is 11.", fr:"Additionne les deux parties : l'écart est 11.", why_en:"A gap is never negative. Add the two counts, whichever way you go.", why_fr:"Un écart n'est jamais négatif. Additionne les deux comptages, dans un sens ou dans l'autre."}]}],
+ word:{en:"Musa parks in the car park on floor −3. He takes the lift up to floor 12. How many floors does he go up?",
+  fr:"Musa se gare au parking, à l'étage −3. Il prend l'ascenseur jusqu'à l'étage 12. De combien d'étages monte-t-il ?",
+  show:"−3 → 12",
+  steps:[
+   {line:"count up to zero: 3", line_fr:"compte jusqu'à zéro : 3", en:"From floor −3 up to floor 0 is three floors.", fr:"De l'étage −3 à l'étage 0, il y a trois étages.", why_en:"Count from the negative number up to zero first.", why_fr:"Compte d'abord du nombre négatif jusqu'à zéro."},
+   {line:"then on to 12: 12", line_fr:"puis jusqu'à 12 : 12", en:"From floor 0 up to floor 12 is twelve more.", fr:"De l'étage 0 à l'étage 12, douze de plus.", why_en:"Then count on from zero to the other number.", why_fr:"Puis compte de zéro jusqu'à l'autre nombre."},
+   {line:"3 + 12 = 15", en:"He goes up 15 floors.", fr:"Il monte de 15 étages.", why_en:"Add the two counts. 12 − 3 = 9 would be wrong.", why_fr:"Additionne les deux comptages. 12 − 3 = 9 serait faux."}]},
+ mistake:{show:"−8 → 5",
+  lines:["−8 → 5", "8 − 5 = 3"],
+  wrong:1,
+  fix_en:"Don't subtract. Count up to zero (8), then on to 5 (5): 8 + 5 = 13.",
+  fix_fr:"Ne soustrais pas. Compte jusqu'à zéro (8), puis jusqu'à 5 (5) : 8 + 5 = 13."}
 },
 
 "mentalPV": {
@@ -1270,7 +1525,37 @@ const TEACH = {
    {ask_en:"Start easy: 4 × 6", ask_fr:"Commence facile : 4 × 6", a:"24"},
    {ask_en:"400 is 100 lots of 4, so × 100", ask_fr:"400, c'est 100 fois 4, donc × 100", a:"2400"},
    {ask_en:"Now try 240 ÷ 8", ask_fr:"Essaie 240 ÷ 8", a:"30"},
- ]}
+ ]},
+ /* v15: further examples */
+ lvl2:{show:"700 × 8",
+  pic:{ask:"calc", show:"700 × 8"},
+  steps:[
+   {line:"7 × 8 = 56", en:"Hide the zeros. Seven eights are 56.", fr:"Cache les zéros. Sept fois huit font 56.", why_en:"Hide the zeros and do the times-table fact you already know.", why_fr:"Cache les zéros et fais le calcul de la table que tu connais."},
+   {line:"700 is 100 lots of 7", line_fr:"700, c'est 100 fois 7", en:"700 is a hundred times as big as 7.", fr:"700, c'est cent fois plus que 7.", why_en:"Count the zeros you hid: two zeros means 100 lots.", why_fr:"Compte les zéros cachés : deux zéros, c'est 100 fois."},
+   {line:"56 × 100 = 5 600", en:"So 700 × 8 is 5 600.", fr:"Donc 700 × 8 font 5 600.", why_en:"Put both zeros back: multiply your answer by 100.", why_fr:"Remets les deux zéros : multiplie ta réponse par 100."}],
+  guided:{show:"560 ÷ 8",
+   steps:[
+    {ask_en:"Hide the zero: 56 ÷ 8", ask_fr:"Cache le zéro : 56 ÷ 8", a:"7"},
+    {ask_en:"Check it: 7 × 8", ask_fr:"Vérifie : 7 × 8", a:"56"},
+    {ask_en:"560 is 10 lots of 56. So 560 ÷ 8?", ask_fr:"560, c'est 10 fois 56. Donc 560 ÷ 8 ?", a:"70"}]}},
+ examples:[
+  {show:"50 × 8",
+   steps:[
+    {line:"5 × 8 = 40", en:"Hide the zero. Five eights are 40.", fr:"Cache le zéro. Cinq fois huit font 40.", why_en:"Do the times-table fact first. This one already ends in 0.", why_fr:"Fais d'abord le calcul de la table. Celui-ci finit déjà par 0."},
+    {line:"50 is 10 lots of 5", line_fr:"50, c'est 10 fois 5", en:"50 is ten times as big as 5.", fr:"50, c'est dix fois plus que 5.", why_en:"So the answer will be ten times bigger too.", why_fr:"Donc la réponse sera dix fois plus grande aussi."},
+    {line:"40 × 10 = 400", en:"So 50 × 8 is 400. Two zeros, not one.", fr:"Donc 50 × 8 font 400. Deux zéros, pas un.", why_en:"Put the zero back on 40. Keep the 0 that was already there.", why_fr:"Remets le zéro après 40. Garde le 0 qui était déjà là."}]}],
+ word:{en:"A box holds 60 pencils. Priya's school orders 7 boxes. How many pencils is that?",
+  fr:"Une boîte contient 60 crayons. L'école de Priya commande 7 boîtes. Combien de crayons cela fait-il ?",
+  show:"60 × 7",
+  steps:[
+   {line:"6 × 7 = 42", en:"Hide the zero. Six sevens are 42.", fr:"Cache le zéro. Six fois sept font 42.", why_en:"Start with the times-table fact you already know.", why_fr:"Commence par le calcul de la table que tu connais."},
+   {line:"60 is 10 lots of 6", line_fr:"60, c'est 10 fois 6", en:"60 pencils is ten times 6 pencils.", fr:"60 crayons, c'est dix fois 6 crayons.", why_en:"Ten times bigger in the question means ten times bigger in the answer.", why_fr:"Dix fois plus dans la question, dix fois plus dans la réponse."},
+   {line:"42 × 10 = 420", en:"The school gets 420 pencils.", fr:"L'école reçoit 420 crayons.", why_en:"Put the zero back: multiply by 10.", why_fr:"Remets le zéro : multiplie par 10."}]},
+ mistake:{show:"300 × 4",
+  lines:["300 × 4", "3 × 4 = 12", "12 × 10 = 120"],
+  wrong:2,
+  fix_en:"300 is 100 lots of 3, not 10. Put back both zeros: 12 × 100 = 1 200.",
+  fix_fr:"300, c'est 100 fois 3, pas 10. Remets les deux zéros : 12 × 100 = 1 200."}
 },
 
 "colAdd": {
@@ -1298,7 +1583,41 @@ const TEACH = {
    {ask_en:"Ones: 4 + 8", ask_fr:"Unités : 4 + 8", a:"12"},
    {ask_en:"Tens: 7 + 1 plus the carry", ask_fr:"Dizaines : 7 + 1 plus la retenue", a:"9"},
    {ask_en:"The whole thing: 3 274 + 1 918", ask_fr:"Le tout : 3 274 + 1 918", a:"5192"},
- ]}
+ ]},
+ /* v15: further examples */
+ lvl2:{show:"37 486 + 25 759",
+  pic:{ask:"calc", show:"37 486 + 25 759"},
+  steps:[
+   {line:"6 + 9 = 15, write 5 carry 1", line_fr:"6 + 9 = 15, écris 5 retiens 1", en:"Start at the right. 15 is too big for one column.", fr:"Commence à droite. 15 est trop grand pour une colonne.", why_en:"Write only the ones digit in the column and carry the ten into the next column.", why_fr:"N'écris que le chiffre des unités et retiens la dizaine dans la colonne suivante."},
+   {line:"8 + 5 + 1 = 14, write 4 carry 1", line_fr:"8 + 5 + 1 = 14, écris 4 retiens 1", en:"Now the tens, and do not forget the one you carried.", fr:"Puis les dizaines, sans oublier la retenue.", why_en:"Add the carried 1 in with the next column. Leaving it out loses ten from the answer.", why_fr:"Ajoute la retenue dans la colonne suivante. L'oublier fait perdre dix."},
+   {line:"4 + 7 + 1 = 12, write 2 carry 1", line_fr:"4 + 7 + 1 = 12, écris 2 retiens 1", en:"Hundreds, with the carry.", fr:"Les centaines, avec la retenue.", why_en:"Five columns is just more of the same. Keep each digit in its own column.", why_fr:"Cinq colonnes, c'est juste plus de la même chose. Garde chaque chiffre dans sa colonne."},
+   {line:"7+5+1=13, 3+2+1=6 → 63 245", en:"Carry on left. The answer is 63 245.", fr:"Continue vers la gauche. La réponse est 63 245.", why_en:"Check it roughly: 37 000 and 26 000 is about 63 000. It is.", why_fr:"Vérifie à peu près : 37 000 et 26 000 font environ 63 000. C'est le cas."}],
+  guided:{show:"48 263 + 36 958",
+   steps:[
+    {ask_en:"Ones: 3 + 8", ask_fr:"Unités : 3 + 8", a:"11"},
+    {ask_en:"Tens: 6 + 5 plus the carry", ask_fr:"Dizaines : 6 + 5 plus la retenue", a:"12"},
+    {ask_en:"The whole thing: 48 263 + 36 958", ask_fr:"Le tout : 48 263 + 36 958", a:"85221"}]}},
+ examples:[
+  {show:"4 768 + 5 456",
+   steps:[
+    {line:"8 + 6 = 14, write 4 carry 1", line_fr:"8 + 6 = 14, écris 4 retiens 1", en:"Start at the right. 14 is too big for one column.", fr:"Commence à droite. 14 est trop grand pour une colonne.", why_en:"Write the ones digit and carry the ten into the next column.", why_fr:"Écris le chiffre des unités et retiens la dizaine dans la colonne suivante."},
+    {line:"6 + 5 + 1 = 12, write 2 carry 1", line_fr:"6 + 5 + 1 = 12, écris 2 retiens 1", en:"Tens, with the carry. Another carry.", fr:"Les dizaines, avec la retenue. Encore une retenue.", why_en:"Add the carried 1 in, then carry again if the column is 10 or more.", why_fr:"Ajoute la retenue, puis retiens encore si la colonne fait 10 ou plus."},
+    {line:"7 + 4 + 1 = 12, write 2 carry 1", line_fr:"7 + 4 + 1 = 12, écris 2 retiens 1", en:"Hundreds, with the carry. And another.", fr:"Les centaines, avec la retenue. Et encore une.", why_en:"Keep going column by column. Every carry goes one place left.", why_fr:"Continue colonne par colonne. Chaque retenue va une place à gauche."},
+    {line:"4 + 5 + 1 = 10 → 10 224", en:"The thousands make 10. Write all of it: the answer is 10 224.", fr:"Les milliers font 10. Écris tout : la réponse est 10 224.", why_en:"In the last column there is nowhere to carry to, so write the 1 in a new column on the left.", why_fr:"Dans la dernière colonne, il n'y a plus où retenir : écris le 1 dans une nouvelle colonne à gauche."}]}],
+ word:{en:"A theatre sold 3 685 tickets on Friday and 2 947 tickets on Saturday. How many tickets did it sell altogether?",
+  fr:"Un théâtre a vendu 3 685 billets vendredi et 2 947 billets samedi. Combien de billets a-t-il vendus en tout ?",
+  show:"3 685 + 2 947",
+  steps:[
+   {line:"5 + 7 = 12, write 2 carry 1", line_fr:"5 + 7 = 12, écris 2 retiens 1", en:"\"Altogether\" means add. Start with the ones.", fr:"« En tout » veut dire additionner. Commence par les unités.", why_en:"Line up ones under ones, then start at the right.", why_fr:"Aligne les unités sous les unités, puis commence à droite."},
+   {line:"8 + 4 + 1 = 13, write 3 carry 1", line_fr:"8 + 4 + 1 = 13, écris 3 retiens 1", en:"Tens, with the carry.", fr:"Les dizaines, avec la retenue.", why_en:"Add the carried 1 in with the next column.", why_fr:"Ajoute la retenue dans la colonne suivante."},
+   {line:"6 + 9 + 1 = 16, write 6 carry 1", line_fr:"6 + 9 + 1 = 16, écris 6 retiens 1", en:"Hundreds, with the carry.", fr:"Les centaines, avec la retenue.", why_en:"Same again: write the ones digit, carry the ten.", why_fr:"Pareil : écris le chiffre des unités, retiens la dizaine."},
+   {line:"3 + 2 + 1 = 6 → 6 632", en:"The theatre sold 6 632 tickets.", fr:"Le théâtre a vendu 6 632 billets.", why_en:"Check it roughly: 3 700 and 2 900 is about 6 600. It is.", why_fr:"Vérifie à peu près : 3 700 et 2 900 font environ 6 600. C'est le cas."}]},
+ mistake:{show:"2 568 + 1 375",
+  lines:["8 + 5 = 13, write 3 carry 1", "6 + 7 = 13, write 3 carry 1"],
+  lines_fr:["8 + 5 = 13, écris 3 retiens 1", "6 + 7 = 13, écris 3 retiens 1"],
+  wrong:1,
+  fix_en:"The carried 1 was left out. Tens: 6 + 7 + 1 = 14, write 4 carry 1. The answer is 3 943.",
+  fix_fr:"La retenue a été oubliée. Dizaines : 6 + 7 + 1 = 14, écris 4 retiens 1. La réponse est 3 943."}
 },
 
 "colSub": {
@@ -1326,7 +1645,42 @@ const TEACH = {
    {ask_en:"Ones: borrow, then 15 − 7", ask_fr:"Unités : emprunte, puis 15 − 7", a:"8"},
    {ask_en:"Tens: after borrowing, 9 − 4", ask_fr:"Dizaines : après l'emprunt, 9 − 4", a:"5"},
    {ask_en:"The whole thing", ask_fr:"Le tout", a:"3458"},
- ]}
+ ]},
+ /* v15: further examples */
+ lvl2:{show:"60 305 − 24 768",
+  pic:{ask:"calc", show:"60 305 − 24 768"},
+  steps:[
+   {line:"5 − 8? borrow → 15 − 8 = 7", line_fr:"5 − 8 ? emprunte → 15 − 8 = 7", en:"The ones are too small. The tens are 0, so take from the hundreds: 3 becomes 2, the tens become 9.", fr:"Les unités sont trop petites. Les dizaines valent 0 : prends aux centaines. 3 devient 2, les dizaines deviennent 9.", why_en:"If the next column is 0 it cannot lend, so go further left to the first column that can, then work back.", why_fr:"Si la colonne suivante vaut 0, elle ne peut pas prêter : va plus à gauche jusqu'à une colonne qui peut, puis reviens."},
+   {line:"9 − 6 = 3", en:"The tens are now 9. 9 take away 6 is 3.", fr:"Les dizaines valent maintenant 9. 9 moins 6 font 3.", why_en:"Use the new top digit, the 9, not the 0.", why_fr:"Prends le nouveau chiffre du haut, le 9, pas le 0."},
+   {line:"2 − 7? borrow again → 12 − 7 = 5", line_fr:"2 − 7 ? emprunte encore → 12 − 7 = 5", en:"The hundreds are short. The thousands are 0, so take from the ten thousands: 6 becomes 5, the thousands become 9.", fr:"Les centaines manquent. Les milliers valent 0 : prends aux dizaines de mille. 6 devient 5, les milliers deviennent 9.", why_en:"Same again: walk left past the 0, then work back.", why_fr:"Pareil : va à gauche après le 0, puis reviens."},
+   {line:"9 − 4 = 5,  5 − 2 = 3", en:"Finish the thousands and the ten thousands.", fr:"Termine les milliers et les dizaines de mille.", why_en:"Use the digits after borrowing: 9 and 5.", why_fr:"Prends les chiffres après l'emprunt : 9 et 5."},
+   {line:"60 305 − 24 768 = 35 537", en:"The answer is 35 537.", fr:"La réponse est 35 537.", why_en:"Check by adding back: 35 537 + 24 768 should be 60 305.", why_fr:"Vérifie en additionnant : 35 537 + 24 768 doit faire 60 305."}],
+  guided:{show:"50 403 − 18 675",
+   steps:[
+    {ask_en:"Ones: borrow, then 13 − 5", ask_fr:"Unités : emprunte, puis 13 − 5", a:"8"},
+    {ask_en:"Tens: after borrowing, 9 − 7", ask_fr:"Dizaines : après l'emprunt, 9 − 7", a:"2"},
+    {ask_en:"Hundreds: borrow again, 13 − 6", ask_fr:"Centaines : emprunte encore, 13 − 6", a:"7"},
+    {ask_en:"The whole thing", ask_fr:"Le tout", a:"31728"}]}},
+ examples:[
+  {show:"7 003 − 2 458",
+   steps:[
+    {line:"3 − 8? borrow", line_fr:"3 − 8 ? emprunte", en:"The ones are too small. The tens and hundreds are both 0, so go all the way to the thousands.", fr:"Les unités sont trop petites. Les dizaines et les centaines valent 0 : va jusqu'aux milliers.", why_en:"A 0 cannot lend. Walk left past every 0 to the first column that can.", why_fr:"Un 0 ne peut pas prêter. Va à gauche après chaque 0 jusqu'à une colonne qui peut."},
+    {line:"7 003 = 6 000 + 900 + 90 + 13", en:"Take one thousand. It becomes 9 hundreds, 9 tens and 10 ones.", fr:"Prends un millier. Il devient 9 centaines, 9 dizaines et 10 unités.", why_en:"Write the new digits above: 6, 9, 9, 13. The number is the same, only written differently.", why_fr:"Écris les nouveaux chiffres au-dessus : 6, 9, 9, 13. Le nombre est le même, écrit autrement."},
+    {line:"13 − 8 = 5,  9 − 5 = 4,  9 − 4 = 5,  6 − 2 = 4", en:"Now every column works. Take away from right to left.", fr:"Maintenant chaque colonne marche. Soustrais de droite à gauche.", why_en:"Use the new top digits, not the old ones.", why_fr:"Prends les nouveaux chiffres du haut, pas les anciens."},
+    {line:"7 003 − 2 458 = 4 545", en:"The answer is 4 545.", fr:"La réponse est 4 545.", why_en:"Check by adding back: 4 545 + 2 458 should be 7 003.", why_fr:"Vérifie en additionnant : 4 545 + 2 458 doit faire 7 003."}]}],
+ word:{en:"A farm had 6 250 chickens. It sold 3 874 of them. How many chickens are left?",
+  fr:"Une ferme avait 6 250 poulets. Elle en a vendu 3 874. Combien de poulets reste-t-il ?",
+  show:"6 250 − 3 874",
+  steps:[
+   {line:"0 − 4? borrow → 10 − 4 = 6", line_fr:"0 − 4 ? emprunte → 10 − 4 = 6", en:"\"Left\" means take away. The ones are 0, so take ten from the tens.", fr:"« Reste » veut dire soustraire. Les unités valent 0 : prends dix aux dizaines.", why_en:"If the top digit is too small, take a ten from the column to its left.", why_fr:"Si le chiffre du haut est trop petit, prends une dizaine à la colonne de gauche."},
+   {line:"4 − 7? borrow → 14 − 7 = 7", line_fr:"4 − 7 ? emprunte → 14 − 7 = 7", en:"The tens were 5, now 4. 4 − 7 does not work, so borrow from the hundreds.", fr:"Les dizaines valaient 5, maintenant 4. 4 − 7 ne marche pas : emprunte aux centaines.", why_en:"Cross out the old digit and write the new one, so you remember the borrow.", why_fr:"Barre l'ancien chiffre et écris le nouveau, pour ne pas oublier l'emprunt."},
+   {line:"1 − 8? borrow → 11 − 8 = 3", line_fr:"1 − 8 ? emprunte → 11 − 8 = 3", en:"The hundreds were 2, now 1. 1 − 8 does not work, so borrow from the thousands.", fr:"Les centaines valaient 2, maintenant 1. 1 − 8 ne marche pas : emprunte aux milliers.", why_en:"Each borrow makes the next column one smaller. Use the smaller digit.", why_fr:"Chaque emprunt rend la colonne suivante plus petite de un. Prends ce chiffre-là."},
+   {line:"6 250 − 3 874 = 2 376", en:"The thousands are now 5, and 5 − 3 = 2. 2 376 chickens are left.", fr:"Les milliers valent maintenant 5, et 5 − 3 = 2. Il reste 2 376 poulets.", why_en:"Check by adding back: 2 376 + 3 874 should be 6 250.", why_fr:"Vérifie en additionnant : 2 376 + 3 874 doit faire 6 250."}]},
+ mistake:{show:"5 263 − 2 847",
+  lines:["5 263 − 2 847", "3 − 7? → 7 − 3 = 4"],
+  wrong:1,
+  fix_en:"You can't swap the digits round: the top is 3, not 7. Borrow: 13 − 7 = 6. Working on, 5 263 − 2 847 = 2 416.",
+  fix_fr:"Tu ne peux pas inverser les chiffres : en haut, c'est 3, pas 7. Emprunte : 13 − 7 = 6. En continuant, 5 263 − 2 847 = 2 416."}
 },
 
 "shortMul": {
@@ -1354,7 +1708,28 @@ const TEACH = {
    {ask_en:"6 × 4, what do you write down?", ask_fr:"6 × 4, qu'écris-tu ?", a:"4"},
    {ask_en:"7 × 4 = 28, plus the carry of 2", ask_fr:"7 × 4 = 28, plus la retenue de 2", a:"30"},
    {ask_en:"The whole answer", ask_fr:"La réponse complète", a:"1504"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"307 × 8",
+   steps:[
+    {line:"7 × 8 = 56, write 6 carry 5", line_fr:"7 × 8 = 56, écris 6 retiens 5", en:"Ones first. 56 is five tens and six.", fr:"Les unités d'abord. 56, c'est cinq dizaines et six.", why_en:"Write the 6 in the ones column and carry the 5 tens to the next column.", why_fr:"Écris le 6 dans la colonne des unités et retiens les 5 dizaines dans la colonne suivante."},
+    {line:"0 × 8 = 0, 0 + 5 = 5", en:"Tens next. 0 × 8 is 0, but the carry is still waiting.", fr:"Puis les dizaines. 0 × 8 = 0, mais la retenue attend toujours.", why_en:"Do not skip the zero. Multiply it, then add the carry: write 5 in the tens.", why_fr:"Ne saute pas le zéro. Multiplie-le, puis ajoute la retenue : écris 5 aux dizaines."},
+    {line:"3 × 8 = 24 → 2 456", en:"Hundreds last. Nothing to carry this time.", fr:"Les centaines en dernier. Pas de retenue cette fois.", why_en:"Write all of 24 at the front, because there is no column left to carry into.", why_fr:"Écris tout le 24 devant, car il n'y a plus de colonne pour la retenue."},
+    {line:"307 × 8 = 2 456", en:"The product is 2 456.", fr:"Le produit est 2 456.", why_en:"Check: roughly 300 × 8 = 2 400, so 2 456 is believable.", why_fr:"Vérifie : environ 300 × 8 = 2 400, donc 2 456 est crédible."}]}],
+ word:{en:"A cinema has 7 screens. Each screen has 186 seats. How many seats are there altogether?",
+  fr:"Un cinéma a 7 salles. Chaque salle a 186 places. Combien y a-t-il de places en tout ?",
+  show:"186 × 7",
+  steps:[
+   {line:"6 × 7 = 42, write 2 carry 4", line_fr:"6 × 7 = 42, écris 2 retiens 4", en:"7 lots of 186 means 186 × 7. Start with the ones.", fr:"7 fois 186, c'est 186 × 7. Commence par les unités.", why_en:"Write the 2 and carry the 4 tens into the next column.", why_fr:"Écris le 2 et retiens les 4 dizaines dans la colonne suivante."},
+   {line:"8 × 7 = 56, 56 + 4 = 60", en:"Tens. 60 means write 0 and carry 6.", fr:"Les dizaines. 60 : écris 0 et retiens 6.", why_en:"Multiply first, then add the carry. Write the 0 — it holds the tens place.", why_fr:"Multiplie d'abord, puis ajoute la retenue. Écris le 0 — il garde la place des dizaines."},
+   {line:"1 × 7 = 7, 7 + 6 = 13 → 1 302", en:"Hundreds. 13 goes at the front.", fr:"Les centaines. 13 se met devant.", why_en:"Add the carried 6 to the 7, then write the whole 13.", why_fr:"Ajoute la retenue de 6 au 7, puis écris tout le 13."},
+   {line:"186 × 7 = 1 302", en:"There are 1 302 seats.", fr:"Il y a 1 302 places.", why_en:"Check: roughly 200 × 7 = 1 400, a bit more than 1 302. That fits.", why_fr:"Vérifie : environ 200 × 7 = 1 400, un peu plus que 1 302. Ça colle."}]},
+ mistake:{show:"356 × 4",
+  lines:["6 × 4 = 24", "(5 + 2) × 4 = 28", "= 1 484"],
+  wrong:1,
+  fix_en:"The carry was added before multiplying. Multiply first, then add it: 5 × 4 = 20, 20 + 2 = 22, so 356 × 4 = 1 424.",
+  fix_fr:"La retenue a été ajoutée avant de multiplier. Multiplie d'abord, puis ajoute-la : 5 × 4 = 20, 20 + 2 = 22, donc 356 × 4 = 1 424."}
 },
 
 "shortDiv": {
@@ -1382,7 +1757,28 @@ const TEACH = {
    {ask_en:"6 ÷ 3", ask_fr:"6 ÷ 3", a:"2"},
    {ask_en:"3 ÷ 3", ask_fr:"3 ÷ 3", a:"1"},
    {ask_en:"The whole answer", ask_fr:"La réponse complète", a:"213"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"824 ÷ 4",
+   steps:[
+    {line:"8 ÷ 4 = 2", en:"Start at the left. 8 hundreds shared by 4 is 2 hundreds each.", fr:"Commence à gauche. 8 centaines partagées par 4, cela fait 2 centaines chacun.", why_en:"Share the biggest place first and write the 2 on top.", why_fr:"Partage d'abord la plus grande place et écris le 2 en haut."},
+    {line:"2 ÷ 4 = 0 r 2", en:"4 does not go into 2. Write 0 on top and carry the 2.", fr:"4 n'entre pas dans 2. Écris 0 en haut et reporte le 2.", why_en:"Write the 0 on top. Leaving it out makes the answer ten times too small.", why_fr:"Écris le 0 en haut. Si tu l'oublies, la réponse devient dix fois trop petite."},
+    {line:"24 ÷ 4 = 6 → 206", en:"The carried 2 makes 24. 24 ÷ 4 is 6.", fr:"La retenue fait 24. 24 ÷ 4 = 6.", why_en:"Put the carry in front of the next digit, then divide.", why_fr:"Mets la retenue devant le chiffre suivant, puis divise."},
+    {line:"824 ÷ 4 = 206", en:"The answer is 206, not 26.", fr:"La réponse est 206, pas 26.", why_en:"Check: 206 × 4 should give 824 back.", why_fr:"Vérifie : 206 × 4 doit redonner 824."}]}],
+ word:{en:"A school raises £945. It shares the money equally between 7 charities. How much does each charity get?",
+  fr:"Une école récolte 945 £. Elle partage l'argent également entre 7 associations. Combien reçoit chaque association ?",
+  show:"945 ÷ 7",
+  steps:[
+   {line:"9 ÷ 7 = 1 r 2", en:"Shared equally means divide: 945 ÷ 7. 7 goes into 9 once, 2 left over.", fr:"Partager également, c'est diviser : 945 ÷ 7. 7 entre une fois dans 9, il reste 2.", why_en:"Write 1 on top and carry the remainder 2 to the next digit.", why_fr:"Écris 1 en haut et reporte le reste 2 sur le chiffre suivant."},
+   {line:"24 ÷ 7 = 3 r 3", en:"The carry makes 24. 7 threes are 21, so 3 is left.", fr:"La retenue fait 24. Trois fois 7 font 21, il reste donc 3.", why_en:"Write 3 on top and carry the 3 across.", why_fr:"Écris 3 en haut et reporte le 3."},
+   {line:"35 ÷ 7 = 5", en:"The carry makes 35. 7 fives are 35 exactly.", fr:"La retenue fait 35. Cinq fois 7 font exactement 35.", why_en:"Write 5 on top. Nothing is left, so there is no remainder.", why_fr:"Écris 5 en haut. Il ne reste rien, donc pas de reste."},
+   {line:"945 ÷ 7 = 135", en:"Each charity gets £135.", fr:"Chaque association reçoit 135 £.", why_en:"Check: 135 × 7 should give 945 back.", why_fr:"Vérifie : 135 × 7 doit redonner 945."}]},
+ mistake:{show:"618 ÷ 3",
+  lines:["6 ÷ 3 = 2", "1 ÷ 3 = 0 r 1", "18 ÷ 3 = 6", "618 ÷ 3 = 26"],
+  wrong:3,
+  fix_en:"The 0 from 1 ÷ 3 was left out of the answer. Write it on top: 618 ÷ 3 = 206.",
+  fix_fr:"Le 0 de 1 ÷ 3 a été oublié dans la réponse. Écris-le en haut : 618 ÷ 3 = 206."}
 },
 
 "divRem": {
@@ -1438,7 +1834,49 @@ const TEACH = {
    {ask_en:"How many steps left for × 100?", ask_fr:"Combien de pas à gauche pour × 100 ?", a:"2"},
    {ask_en:"So 6.3 × 100 =", ask_fr:"Donc 6,3 × 100 =", a:"630"},
    {ask_en:"And 4 500 ÷ 1000 =", ask_fr:"Et 4 500 ÷ 1000 =", a:"4.5"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"157 ÷ 6",
+   steps:[
+    {line:"15 ÷ 6 = 2 r 3", en:"6 does not go into 1, so use 15. Two 6s fit, 3 left over.", fr:"6 n'entre pas dans 1, prends donc 15. Deux 6 tiennent, il reste 3.", why_en:"Write 2 on top and carry the 3 to the next digit.", why_fr:"Écris 2 en haut et reporte le 3 sur le chiffre suivant."},
+    {line:"37 ÷ 6 = 6 r 1", en:"The carry makes 37. Six 6s are 36, so 1 is left.", fr:"La retenue fait 37. Six fois 6 font 36, il reste donc 1.", why_en:"There is no next digit, so this 1 is the remainder. Check it is smaller than 6.", why_fr:"Il n'y a plus de chiffre, donc ce 1 est le reste. Vérifie qu'il est plus petit que 6."},
+    {line:"157 ÷ 6 = 26 r 1", en:"Twenty-six remainder one.", fr:"Vingt-six reste un.", why_en:"Write the remainder after the r. Only the last leftover is the remainder.", why_fr:"Écris le reste après le r. Seul le dernier reste compte."},
+    {line:"26 × 6 + 1 = 157", en:"Check it the other way.", fr:"Vérifie à l'envers.", why_en:"Multiply back, then add the remainder. You should get 157.", why_fr:"Multiplie pour revenir, puis ajoute le reste. Tu dois trouver 157."}]}],
+ word:{en:"Binta has £50. Books cost £6 each. How many books can she buy?",
+  fr:"Binta a 50 £. Les livres coûtent 6 £ chacun. Combien de livres peut-elle acheter ?",
+  show:"50 ÷ 6",
+  steps:[
+   {line:"6 × 8 = 48", en:"How many whole 6s fit into 50? Eight.", fr:"Combien de 6 entiers dans 50 ? Huit.", why_en:"Count up in 6s until the next one would go past 50.", why_fr:"Compte de 6 en 6 jusqu'à ce que le suivant dépasse 50."},
+   {line:"50 − 48 = 2", en:"£2 is left over. That is the remainder.", fr:"Il reste 2 £. C'est le reste.", why_en:"Take it away to find the remainder. 2 is smaller than 6, so no more books fit.", why_fr:"Soustrais pour trouver le reste. 2 est plus petit que 6, donc pas d'autre livre."},
+   {line:"50 ÷ 6 = 8 r 2", en:"Eight remainder two.", fr:"Huit reste deux.", why_en:"Now read the question again before you answer.", why_fr:"Relis maintenant la question avant de répondre."},
+   {line:"8 r 2 → 8", en:"She can buy 8 books. £2 is not enough for another one.", fr:"Elle peut acheter 8 livres. 2 £ ne suffisent pas pour un autre.", why_en:"Round down here: you cannot buy part of a book. With the taxis you rounded up.", why_fr:"Arrondis vers le bas ici : on n'achète pas un bout de livre. Pour les taxis, on arrondissait vers le haut."}]},
+ mistake:{show:"47 ÷ 5",
+  lines:["47 ÷ 5", "5 × 8 = 40", "47 − 40 = 7", "47 ÷ 5 = 8 r 7"],
+  wrong:1,
+  fix_en:"8 is not the most 5s that fit: the remainder 7 is bigger than 5. Use 5 × 9 = 45 and 47 − 45 = 2, so 47 ÷ 5 = 9 r 2.",
+  fix_fr:"8 n'est pas le plus grand nombre de 5 : le reste 7 est plus grand que 5. Prends 5 × 9 = 45 et 47 − 45 = 2, donc 47 ÷ 5 = 9 r 2."},
+ /* v15: further examples */
+ examples:[
+  {show:"352 ÷ 100",
+   steps:[
+    {line:"÷ 100 = two places right", line_fr:"÷ 100 = deux places à droite", en:"Dividing moves the digits right. 100 has two zeros, so two places.", fr:"Diviser déplace les chiffres vers la droite. 100 a deux zéros, donc deux places.", why_en:"Count the zeros in 100 to know how many places to move.", why_fr:"Compte les zéros de 100 pour savoir de combien de places bouger."},
+    {line:"352 → 35.2", en:"One place right. The 2 was ones, now it is tenths.", fr:"Une place à droite. Le 2 était unité, il devient dixième.", why_en:"Move every digit one place. The decimal point stays still.", why_fr:"Déplace chaque chiffre d'une place. La virgule ne bouge pas."},
+    {line:"35.2 → 3.52", en:"Two places right. The 3 is now ones.", fr:"Deux places à droite. Le 3 est maintenant aux unités.", why_en:"Move them one more place. There is no zero to take off, so the answer is a decimal.", why_fr:"Déplace-les encore d'une place. Il n'y a pas de zéro à enlever, donc la réponse est décimale."},
+    {line:"352 ÷ 100 = 3.52", en:"352 ÷ 100 is 3.52.", fr:"352 ÷ 100 = 3,52.", why_en:"Check it the other way: 3.52 × 100 should give 352 back.", why_fr:"Vérifie à l'envers : 3,52 × 100 doit redonner 352."}]}],
+ word:{en:"A pencil costs 35p. How much do 100 pencils cost? Give your answer in pounds.",
+  fr:"Un crayon coûte 35 p. Combien coûtent 100 crayons ? Donne ta réponse en livres.",
+  show:"35 × 100",
+  steps:[
+   {line:"× 100 = two places left", line_fr:"× 100 = deux places à gauche", en:"100 pencils means 35 × 100.", fr:"100 crayons, c'est 35 × 100.", why_en:"Count the zeros: × 100 moves every digit two places left.", why_fr:"Compte les zéros : × 100 déplace chaque chiffre de deux places à gauche."},
+   {line:"35 × 100 = 3 500", en:"That is 3 500p.", fr:"Cela fait 3 500 p.", why_en:"Move the digits two places left and fill the empty places with zeros.", why_fr:"Déplace les chiffres de deux places à gauche et remplis les places vides avec des zéros."},
+   {line:"3 500 ÷ 100 = 35", en:"100p is £1, so divide by 100 to get pounds.", fr:"100 p font 1 £, donc divise par 100 pour avoir des livres.", why_en:"Read the question again: it wants pounds, not pence. Change the units.", why_fr:"Relis la question : elle veut des livres, pas des pence. Change d'unité."},
+   {line:"= £35", en:"100 pencils cost £35.", fr:"100 crayons coûtent 35 £.", why_en:"Write the £ sign. 35 on its own could be pence.", why_fr:"Écris le signe £. 35 tout seul pourrait être des pence."}]},
+ mistake:{show:"4.6 × 10",
+  lines:["4.6 × 10", "= 4.60"],
+  wrong:1,
+  fix_en:"A zero was just stuck on the end, and 4.60 is still 4.6. Move the digits one place left instead: 4.6 × 10 = 46.",
+  fix_fr:"On a juste collé un zéro au bout, et 4,60 vaut toujours 4,6. Déplace plutôt les chiffres d'une place à gauche : 4,6 × 10 = 46."}
 },
 
 "factors": {
@@ -1466,7 +1904,29 @@ const TEACH = {
    {ask_en:"1 × ?", ask_fr:"1 × ?", a:"18"},
    {ask_en:"2 × ?", ask_fr:"2 × ?", a:"9"},
    {ask_en:"3 × ?", ask_fr:"3 × ?", a:"6"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"factors of 36",
+   steps:[
+    {line:"1 × 36", en:"Start at 1. 1 and 36 are both factors.", fr:"Commence à 1. 1 et 36 sont tous deux des diviseurs.", why_en:"Work in pairs, starting with 1 × the number.", why_fr:"Travaille par paires, en commençant par 1 × le nombre."},
+    {line:"2 × 18,  3 × 12,  4 × 9", en:"Try 2, then 3, then 4. They all work.", fr:"Essaie 2, puis 3, puis 4. Ils marchent tous.", why_en:"Try each number in order so you do not miss one. 5 does not work: 36 ÷ 5 leaves some over.", why_fr:"Essaie chaque nombre dans l'ordre pour n'en oublier aucun. 5 ne marche pas : 36 ÷ 5 laisse un reste."},
+    {line:"6 × 6 = 36", en:"6 pairs with itself. That gives just one factor: 6.", fr:"6 fait la paire avec lui-même. Cela ne donne qu'un diviseur : 6.", why_en:"Write 6 only once. When a number pairs with itself, you have reached the middle, so stop.", why_fr:"N'écris 6 qu'une fois. Quand un nombre fait la paire avec lui-même, tu es au milieu : arrête."},
+    {line:"1 2 3 4 6 9 12 18 36", en:"Nine factors. An odd number of them, because 36 is a square number.", fr:"Neuf diviseurs. Un nombre impair, parce que 36 est un nombre carré.", why_en:"Read both numbers off every pair, and the 6 once.", why_fr:"Lis les deux nombres de chaque paire, et le 6 une seule fois."}]}],
+ word:{en:"Tomasz puts 30 chairs into equal rows, with none left over. How many chairs could be in each row? Give all the answers.",
+  fr:"Tomasz range 30 chaises en rangées égales, sans en laisser. Combien de chaises peut-il y avoir par rangée ? Donne toutes les réponses.",
+  show:"factors of 30",
+  steps:[
+   {line:"1 × 30", en:"Equal rows with none left over means the factors of 30.", fr:"Des rangées égales sans reste, ce sont les diviseurs de 30.", why_en:"Spot that the question wants factors, then start at 1 × 30.", why_fr:"Repère que la question demande les diviseurs, puis commence par 1 × 30."},
+   {line:"2 × 15,  3 × 10", en:"2 and 3 both work.", fr:"2 et 3 marchent tous les deux.", why_en:"Write each pair as you find it, so you keep both numbers.", why_fr:"Écris chaque paire dès que tu la trouves, pour garder les deux nombres."},
+   {line:"30 ÷ 4 = 7 r 2", en:"4 does not work: there would be 2 chairs left over.", fr:"4 ne marche pas : il resterait 2 chaises.", why_en:"If there is a remainder, it is not a factor. Move on to 5.", why_fr:"S'il y a un reste, ce n'est pas un diviseur. Passe à 5."},
+   {line:"5 × 6 = 30", en:"5 works. After 5 × 6 comes 6 × 5, which you already have.", fr:"5 marche. Après 5 × 6 vient 6 × 5, que tu as déjà.", why_en:"Stop when the pairs cross over.", why_fr:"Arrête quand les paires se croisent."},
+   {line:"1 2 3 5 6 10 15 30", en:"Each row could have 1, 2, 3, 5, 6, 10, 15 or 30 chairs.", fr:"Chaque rangée peut avoir 1, 2, 3, 5, 6, 10, 15 ou 30 chaises.", why_en:"Read the factors off your pairs, smallest first.", why_fr:"Lis les diviseurs dans tes paires, du plus petit au plus grand."}]},
+ mistake:{show:"factors of 20",
+  lines:["1 × 20,  2 × 10,  4 × 5", "1 2 4 5 10"],
+  wrong:1,
+  fix_en:"20 is missing. Take both numbers from every pair: 1 × 20 gives 1 and 20, so the factors are 1, 2, 4, 5, 10, 20.",
+  fix_fr:"Il manque 20. Prends les deux nombres de chaque paire : 1 × 20 donne 1 et 20, donc les diviseurs sont 1, 2, 4, 5, 10, 20."}
 },
 
 "sqcube": {
@@ -1494,7 +1954,28 @@ const TEACH = {
    {ask_en:"9²", ask_fr:"9²", a:"81"},
    {ask_en:"3³ — start with 3 × 3", ask_fr:"3³ — commence par 3 × 3", a:"27"},
    {ask_en:"12²", ask_fr:"12²", a:"144"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"6³",
+   steps:[
+    {line:"6³ = 6 × 6 × 6", en:"The little 3 means three sixes multiplied together.", fr:"Le petit 3 veut dire trois six multipliés entre eux.", why_en:"Write out the three sixes first. 6³ is not 6 × 3.", why_fr:"Écris d'abord les trois six. 6³, ce n'est pas 6 × 3."},
+    {line:"6 × 6 = 36", en:"Multiply the first two sixes.", fr:"Multiplie les deux premiers six.", why_en:"Do it in steps: two of them first.", why_fr:"Fais-le par étapes : deux d'abord."},
+    {line:"36 × 6 = 216", en:"Now multiply by the third six. 30 × 6 = 180 and 6 × 6 = 36.", fr:"Multiplie maintenant par le troisième six. 30 × 6 = 180 et 6 × 6 = 36.", why_en:"Split 36 into 30 and 6 if it helps, then add: 180 + 36 = 216.", why_fr:"Coupe 36 en 30 et 6 si ça aide, puis additionne : 180 + 36 = 216."},
+    {line:"6³ = 216", en:"6 cubed is 216.", fr:"6 au cube fait 216.", why_en:"Check you used three sixes. 18 would be 6 × 3, and 36 would be only 6².", why_fr:"Vérifie que tu as pris trois six. 18 serait 6 × 3, et 36 serait seulement 6²."}]}],
+ word:{en:"Kofi builds a large cube out of 1 cm cubes. Each edge is 5 cubes long. How many small cubes does he use?",
+  fr:"Kofi construit un grand cube avec des cubes de 1 cm. Chaque arête fait 5 cubes de long. Combien de petits cubes utilise-t-il ?",
+  show:"5³",
+  steps:[
+   {line:"5³ = 5 × 5 × 5", en:"5 long, 5 wide and 5 high. That is 5 cubed.", fr:"5 de long, 5 de large et 5 de haut. C'est 5 au cube.", why_en:"A cube has three edges that matter, so multiply three fives.", why_fr:"Un cube a trois dimensions, donc multiplie trois cinq."},
+   {line:"5 × 5 = 25", en:"One layer is 5 rows of 5: 25 cubes.", fr:"Une couche fait 5 rangées de 5 : 25 cubes.", why_en:"Find the bottom layer first.", why_fr:"Trouve d'abord la couche du bas."},
+   {line:"25 × 5 = 125", en:"There are 5 layers of 25.", fr:"Il y a 5 couches de 25.", why_en:"Multiply the layer by how many layers are stacked up.", why_fr:"Multiplie la couche par le nombre de couches empilées."},
+   {line:"5³ = 125", en:"Kofi uses 125 small cubes.", fr:"Kofi utilise 125 petits cubes.", why_en:"Check: 15 would be 5 × 3, far too few to build a cube.", why_fr:"Vérifie : 15 serait 5 × 3, bien trop peu pour construire un cube."}]},
+ mistake:{show:"8²",
+  lines:["8²", "= 8 × 2", "= 16"],
+  wrong:1,
+  fix_en:"The little 2 means two eights multiplied together, not × 2. 8² = 8 × 8 = 64.",
+  fix_fr:"Le petit 2 veut dire deux huit multipliés entre eux, pas × 2. 8² = 8 × 8 = 64."}
 },
 
 "primes": {
@@ -1522,7 +2003,30 @@ const TEACH = {
    {ask_en:"Is 9 prime? Type 1 for yes, 0 for no", ask_fr:"9 est-il premier ? 1 pour oui, 0 pour non", a:"0"},
    {ask_en:"Is 11 prime?", ask_fr:"11 est-il premier ?", a:"1"},
    {ask_en:"Is 2 prime?", ask_fr:"2 est-il premier ?", a:"1"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"is 49 prime?",
+   show_fr:"49 est-il premier ?",
+   steps:[
+    {line:"2? no.  3? no.  5? no.", line_fr:"2 ? non.  3 ? non.  5 ? non.", en:"49 is odd, its digits add to 13, and it does not end in 0 or 5.", fr:"49 est impair, ses chiffres font 13 en tout, et il ne finit ni par 0 ni par 5.", why_en:"Do not stop after 2, 3 and 5. Keep trying the next numbers too.", why_fr:"Ne t'arrête pas après 2, 3 et 5. Essaie aussi les nombres suivants."},
+    {line:"7 × 7 = 49", en:"7 goes in exactly. So 7 is a factor of 49.", fr:"7 tombe juste. Donc 7 est un diviseur de 49.", why_en:"Try the times tables you know. Square numbers like 49 always have a factor in the middle.", why_fr:"Essaie les tables que tu connais. Les carrés comme 49 ont toujours un diviseur au milieu."},
+    {line:"49 is NOT prime", line_fr:"49 n'est PAS premier", en:"49 has three factors: 1, 7 and 49. A prime has exactly two.", fr:"49 a trois diviseurs : 1, 7 et 49. Un nombre premier en a exactement deux.", why_en:"Count the factors. More than two means it is not prime.", why_fr:"Compte les diviseurs. Plus de deux, ce n'est pas premier."}]}],
+ word:{en:"Write all the prime numbers between 20 and 30.",
+  fr:"Écris tous les nombres premiers entre 20 et 30.",
+  show:"primes from 20 to 30",
+  show_fr:"premiers de 20 à 30",
+  steps:[
+   {line:"22, 24, 26, 28: even", line_fr:"22, 24, 26, 28 : pairs", en:"Cross out the even numbers. 2 goes into all of them.", fr:"Barre les nombres pairs. 2 entre dans chacun.", why_en:"Rule out the even numbers first. The only even prime is 2.", why_fr:"Écarte d'abord les nombres pairs. Le seul premier pair est 2."},
+   {line:"21 = 3 × 7", en:"21 is in the 3 times table.", fr:"21 est dans la table de 3.", why_en:"Test each odd number with 3. Add the digits: 2 + 1 = 3, so 3 goes in.", why_fr:"Teste chaque nombre impair avec 3. Additionne les chiffres : 2 + 1 = 3, donc 3 entre."},
+   {line:"25 = 5 × 5", en:"25 ends in 5, so 5 goes in.", fr:"25 finit par 5, donc 5 entre.", why_en:"Any number ending in 0 or 5 has 5 as a factor. Cross it out.", why_fr:"Tout nombre qui finit par 0 ou 5 a 5 comme diviseur. Barre-le."},
+   {line:"27 = 3 × 9", en:"27 is in the 3 times table too.", fr:"27 est aussi dans la table de 3.", why_en:"Check every number left, even ones that look prime.", why_fr:"Vérifie chaque nombre restant, même ceux qui ont l'air premiers."},
+   {line:"23, 29", en:"Only 23 and 29 are left. Nothing but 1 and themselves goes in.", fr:"Il ne reste que 23 et 29. Seuls 1 et eux-mêmes y entrent.", why_en:"Write the numbers that are left. Those are the primes.", why_fr:"Écris les nombres qui restent. Ce sont les premiers."}]},
+ mistake:{show:"primes < 10",
+  lines:["4 = 2 × 2", "9 = 3 × 3", "1, 2, 3, 5, 7"],
+  wrong:2,
+  fix_en:"1 is not prime: it has only one factor. The primes less than 10 are 2, 3, 5 and 7.",
+  fix_fr:"1 n'est pas premier : il n'a qu'un seul diviseur. Les premiers plus petits que 10 sont 2, 3, 5 et 7."}
 },
 
 "ooo": {
@@ -1550,7 +2054,26 @@ const TEACH = {
    {ask_en:"Which part first?", ask_fr:"Quelle partie d'abord ?", a:"12"},
    {ask_en:"Now finish it", ask_fr:"Termine", a:"20"},
    {ask_en:"And (8 + 2) × 6?", ask_fr:"Et (8 + 2) × 6 ?", a:"60"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"20 − 12 ÷ 4",
+   steps:[
+    {line:"12 ÷ 4 = 3", en:"Division comes first, even though it is at the end.", fr:"La division passe d'abord, même si elle est à la fin.", why_en:"Find the × or ÷ and do it first. Here it is 12 ÷ 4.", why_fr:"Trouve le × ou le ÷ et fais-le d'abord. Ici, c'est 12 ÷ 4."},
+    {line:"20 − 3 = 17", en:"Then take it away from 20.", fr:"Puis enlève-le de 20.", why_en:"Then do the − with the answer you just found.", why_fr:"Puis fais le − avec la réponse que tu viens de trouver."},
+    {line:"(20 − 12) ÷ 4 = 2", en:"Left to right gives 2. You only get that with brackets.", fr:"De gauche à droite, ça donne 2. On ne l'obtient qu'avec des parenthèses.", why_en:"No brackets means no left to right. 20 − 12 ÷ 4 is 17.", why_fr:"Sans parenthèses, pas de gauche à droite. 20 − 12 ÷ 4 fait 17."}]}],
+ word:{en:"Tomasz has £50. He buys 3 books at £8 each. Work out 50 − 3 × 8 to find how much money he has left.",
+  fr:"Tomasz a 50 £. Il achète 3 livres à 8 £ chacun. Calcule 50 − 3 × 8 pour trouver combien il lui reste.",
+  show:"50 − 3 × 8",
+  steps:[
+   {line:"3 × 8 = 24", en:"Three books at £8 cost £24.", fr:"Trois livres à 8 £ coûtent 24 £.", why_en:"Do the × first: that is the cost of the books.", why_fr:"Fais le × d'abord : c'est le prix des livres."},
+   {line:"50 − 24 = 26", en:"Take the £24 away from £50.", fr:"Enlève les 24 £ des 50 £.", why_en:"Then do the −. Left to right would give 47 × 8 = 376, more than he started with.", why_fr:"Puis fais le −. De gauche à droite, ça ferait 47 × 8 = 376, plus que ce qu'il avait."},
+   {line:"= £26", en:"Tomasz has £26 left.", fr:"Il reste 26 £ à Tomasz.", why_en:"Check it makes sense: he must have less than £50 left.", why_fr:"Vérifie que c'est logique : il doit lui rester moins de 50 £."}]},
+ mistake:{show:"6 + 4 × 2",
+  lines:["6 + 4 × 2", "= 10 × 2", "= 20"],
+  wrong:1,
+  fix_en:"You added first, left to right. Multiply first: 4 × 2 = 8, then 6 + 8 = 14.",
+  fix_fr:"Tu as additionné d'abord, de gauche à droite. Multiplie d'abord : 4 × 2 = 8, puis 6 + 8 = 14."}
 },
 
 "frAddSame": {
@@ -1578,7 +2101,28 @@ const TEACH = {
    {ask_en:"Add the tops", ask_fr:"Additionne les numérateurs", a:"6"},
    {ask_en:"What is the bottom?", ask_fr:"Quel est le dénominateur ?", a:"9"},
    {ask_en:"Write the answer", ask_fr:"Écris la réponse", a:"6/9"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"5/12 + 1/12",
+   steps:[
+    {line:"5 + 1 = 6", en:"Add the top numbers (the numerators).", fr:"Additionne les numérateurs.", why_en:"Add the tops: they count how many twelfths you have.", why_fr:"Additionne les numérateurs : ils comptent combien de douzièmes tu as."},
+    {line:"bottom stays 12", line_fr:"le dénominateur reste 12", en:"The bottom number (the denominator) stays 12.", fr:"Le dénominateur reste 12.", why_en:"Keep the bottom the same. The pieces are still twelfths.", why_fr:"Garde le même dénominateur. Les parts sont toujours des douzièmes."},
+    {line:"= 6/12", en:"Six twelfths.", fr:"Six douzièmes.", why_en:"Write the new top over the same bottom.", why_fr:"Écris le nouveau numérateur sur le même dénominateur."},
+    {line:"6/12 = 1/2", en:"6 and 12 can both be divided by 6. Six twelfths is a half.", fr:"6 et 12 se divisent tous les deux par 6. Six douzièmes, c'est une moitié.", why_en:"Look for a number that goes into the top and the bottom. Divide both by it.", why_fr:"Cherche un nombre qui divise le haut et le bas. Divise les deux par ce nombre."}]}],
+ word:{en:"Binta paints 3/10 of a fence on Saturday and 5/10 of it on Sunday. What fraction of the fence has she painted? Give your answer in its simplest form.",
+  fr:"Binta peint 3/10 d'une clôture samedi et 5/10 dimanche. Quelle fraction de la clôture a-t-elle peinte ? Donne la fraction la plus simple.",
+  show:"3/10 + 5/10",
+  steps:[
+   {line:"3 + 5 = 8", en:"Add the numerators: 8 tenths painted.", fr:"Additionne les numérateurs : 8 dixièmes peints.", why_en:"Add the tops. They count the tenths of fence.", why_fr:"Additionne les numérateurs. Ils comptent les dixièmes de clôture."},
+   {line:"bottom stays 10", line_fr:"le dénominateur reste 10", en:"The fence is still in tenths.", fr:"La clôture est toujours en dixièmes.", why_en:"Keep the denominator. Never add 10 + 10.", why_fr:"Garde le dénominateur. N'additionne jamais 10 + 10."},
+   {line:"= 8/10", en:"Eight tenths of the fence.", fr:"Huit dixièmes de la clôture.", why_en:"Write the new top over the same bottom.", why_fr:"Écris le nouveau numérateur sur le même dénominateur."},
+   {line:"8/10 = 4/5", en:"8 and 10 are both even. Halve them both: four fifths.", fr:"8 et 10 sont pairs. Divise les deux par 2 : quatre cinquièmes.", why_en:"The question says simplest form, so divide top and bottom by the same number.", why_fr:"La question demande la forme la plus simple : divise le haut et le bas par le même nombre."}]},
+ mistake:{show:"2/5 + 1/5",
+  lines:["2/5 + 1/5", "= 3/10"],
+  wrong:1,
+  fix_en:"You added the denominators. The bottom stays 5: 2/5 + 1/5 = 3/5.",
+  fix_fr:"Tu as additionné les dénominateurs. Le bas reste 5 : 2/5 + 1/5 = 3/5."}
 },
 
 "frMul": {
@@ -1606,7 +2150,27 @@ const TEACH = {
    {ask_en:"Multiply the tops", ask_fr:"Multiplie les numérateurs", a:"6"},
    {ask_en:"Multiply the bottoms", ask_fr:"Multiplie les dénominateurs", a:"12"},
    {ask_en:"Simplify 6/12", ask_fr:"Simplifie 6/12", a:"1/2"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"3/4 × 2/5",
+   steps:[
+    {line:"3 × 2 = 6", en:"Multiply the top numbers (the numerators).", fr:"Multiplie les numérateurs.", why_en:"Multiply the two tops together.", why_fr:"Multiplie les deux numérateurs."},
+    {line:"4 × 5 = 20", en:"Multiply the bottom numbers (the denominators).", fr:"Multiplie les dénominateurs.", why_en:"Multiply the two bottoms together. No common bottom needed.", why_fr:"Multiplie les deux dénominateurs. Pas besoin de dénominateur commun."},
+    {line:"= 6/20", en:"Six twentieths. Not finished yet.", fr:"Six vingtièmes. Ce n'est pas fini.", why_en:"Write the new top over the new bottom, then look: can it be simplified?", why_fr:"Écris le nouveau numérateur sur le nouveau dénominateur, puis regarde : peut-on simplifier ?"},
+    {line:"6/20 = 3/10", en:"6 and 20 are both even. Halve them both: three tenths.", fr:"6 et 20 sont pairs. Divise les deux par 2 : trois dixièmes.", why_en:"Divide top and bottom by the same number. 3/10 is smaller than both fractions, so it checks out.", why_fr:"Divise le haut et le bas par le même nombre. 3/10 est plus petit que les deux fractions : c'est bon."}]}],
+ word:{en:"Ola has 3/4 of a pizza left. She eats 1/2 of what is left. What fraction of the whole pizza does she eat?",
+  fr:"Il reste 3/4 d'une pizza à Ola. Elle mange la moitié de ce qui reste. Quelle fraction de la pizza entière mange-t-elle ?",
+  show:"1/2 × 3/4",
+  steps:[
+   {line:"1 × 3 = 3", en:"Half OF three quarters: “of” means multiply. Tops first.", fr:"La moitié DE trois quarts : « de » veut dire multiplier. Les numérateurs d'abord.", why_en:"When you see “of” with fractions, multiply. Start with the tops.", why_fr:"Quand tu vois « de » avec des fractions, multiplie. Commence par les numérateurs."},
+   {line:"2 × 4 = 8", en:"Then the bottoms.", fr:"Puis les dénominateurs.", why_en:"Multiply the bottoms. The pieces get smaller, so the bottom gets bigger.", why_fr:"Multiplie les dénominateurs. Les parts rétrécissent, donc le dénominateur grandit."},
+   {line:"= 3/8", en:"Ola eats 3/8 of the pizza.", fr:"Ola mange 3/8 de la pizza.", why_en:"Check: 3/8 is less than the 3/4 she had, which makes sense.", why_fr:"Vérifie : 3/8 est moins que les 3/4 qu'elle avait, c'est logique."}]},
+ mistake:{show:"2/3 × 1/5",
+  lines:["2/3 × 1/5", "= 3/8"],
+  wrong:1,
+  fix_en:"You added the tops and the bottoms. Multiply them: 2 × 1 = 2 and 3 × 5 = 15, so 2/15.",
+  fix_fr:"Tu as additionné les numérateurs et les dénominateurs. Multiplie-les : 2 × 1 = 2 et 3 × 5 = 15, donc 2/15."}
 },
 
 "frDivWhole": {
@@ -1634,7 +2198,27 @@ const TEACH = {
    {ask_en:"The bottom is 4. Multiply it by 3", ask_fr:"Le dénominateur est 4. Multiplie par 3", a:"12"},
    {ask_en:"So the answer is", ask_fr:"Donc la réponse est", a:"1/12"},
    {ask_en:"And 1/5 ÷ 2?", ask_fr:"Et 1/5 ÷ 2 ?", a:"1/10"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"2/5 ÷ 4",
+   steps:[
+    {line:"each piece cut into 4", line_fr:"chaque part coupée en 4", en:"Sharing between 4 cuts every fifth into 4 smaller pieces.", fr:"Partager entre 4 coupe chaque cinquième en 4 parts plus petites.", why_en:"Picture sharing each piece: smaller pieces, not fewer.", why_fr:"Imagine le partage de chaque part : des parts plus petites, pas moins de parts."},
+    {line:"5 × 4 = 20", en:"Four times as many pieces in the whole, so multiply the denominator by 4.", fr:"Quatre fois plus de parts dans le tout, donc multiplie le dénominateur par 4.", why_en:"Multiply the bottom by the number you divide by. The top stays 2.", why_fr:"Multiplie le dénominateur par le nombre qui divise. Le numérateur reste 2."},
+    {line:"= 2/20", en:"Two twentieths. Not finished yet.", fr:"Deux vingtièmes. Ce n'est pas fini.", why_en:"Write the same top over the new bottom, then check if it simplifies.", why_fr:"Écris le même numérateur sur le nouveau dénominateur, puis vérifie si ça se simplifie."},
+    {line:"2/20 = 1/10", en:"2 and 20 are both even. Halve them: one tenth.", fr:"2 et 20 sont pairs. Divise par 2 : un dixième.", why_en:"Divide top and bottom by the same number to simplify.", why_fr:"Divise le haut et le bas par le même nombre pour simplifier."}]}],
+ word:{en:"Sam has 1/2 a litre of juice. He pours it equally into 5 cups. What fraction of a litre is in each cup?",
+  fr:"Sam a 1/2 litre de jus. Il le verse à parts égales dans 5 verres. Quelle fraction de litre y a-t-il dans chaque verre ?",
+  show:"1/2 ÷ 5",
+  steps:[
+   {line:"the half is cut into 5", line_fr:"la moitié est coupée en 5", en:"Pouring into 5 cups shares the half into 5 smaller parts.", fr:"Verser dans 5 verres partage la moitié en 5 parts plus petites.", why_en:"Sharing into cups means dividing. Each cup gets a smaller piece.", why_fr:"Répartir dans des verres, c'est diviser. Chaque verre a une part plus petite."},
+   {line:"2 × 5 = 10", en:"Multiply the denominator by 5.", fr:"Multiplie le dénominateur par 5.", why_en:"Multiply the bottom by the number of cups. The top stays 1.", why_fr:"Multiplie le dénominateur par le nombre de verres. Le numérateur reste 1."},
+   {line:"= 1/10", en:"Each cup holds 1/10 of a litre.", fr:"Chaque verre contient 1/10 de litre.", why_en:"Check by putting it back: 5 tenths make a half.", why_fr:"Vérifie en recomposant : 5 dixièmes font une moitié."}]},
+ mistake:{show:"1/4 ÷ 2",
+  lines:["1/4 ÷ 2", "= 1/2"],
+  wrong:1,
+  fix_en:"You divided the bottom by 2. Sharing makes the pieces smaller, so multiply the bottom: 4 × 2 = 8, so 1/8.",
+  fix_fr:"Tu as divisé le dénominateur par 2. Partager rend les parts plus petites, donc multiplie le dénominateur : 4 × 2 = 8, donc 1/8."}
 },
 
 "frOfAmount": {
@@ -1662,7 +2246,28 @@ const TEACH = {
    {ask_en:"80 ÷ 5", ask_fr:"80 ÷ 5", a:"16"},
    {ask_en:"Now × 2", ask_fr:"Maintenant × 2", a:"32"},
    {ask_en:"Try 3/8 of 64", ask_fr:"Essaie 3/8 de 64", a:"24"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"5/6 of 84",
+   show_fr:"5/6 de 84",
+   steps:[
+    {line:"84 ÷ 6 = 14", en:"Divide by the denominator. One sixth of 84 is 14.", fr:"Divise par le dénominateur. Un sixième de 84 fait 14.", why_en:"Divide by the bottom number, the 6, to find one part. Not by the 5.", why_fr:"Divise par le dénominateur, le 6, pour trouver une part. Pas par le 5."},
+    {line:"14 × 5 = 70", en:"Multiply by the numerator. You want five of those sixths.", fr:"Multiplie par le numérateur. Tu veux cinq de ces sixièmes.", why_en:"Multiply one part by the top number.", why_fr:"Multiplie une part par le numérateur."},
+    {line:"84 − 14 = 70", en:"Check: five sixths is everything except one sixth.", fr:"Vérifie : cinq sixièmes, c'est tout sauf un sixième.", why_en:"Check another way: take one part away from the whole amount.", why_fr:"Vérifie autrement : enlève une part de la quantité totale."}]}],
+ word:{en:"A school has 240 pupils. 3/8 of them walk to school. How many pupils walk to school?",
+  fr:"Une école a 240 élèves. Les 3/8 viennent à pied. Combien d'élèves viennent à pied ?",
+  show:"3/8 of 240",
+  show_fr:"3/8 de 240",
+  steps:[
+   {line:"240 ÷ 8 = 30", en:"Divide by the denominator. One eighth of the pupils is 30.", fr:"Divise par le dénominateur. Un huitième des élèves, c'est 30.", why_en:"Divide the amount by the bottom number to find one part.", why_fr:"Divise la quantité par le dénominateur pour trouver une part."},
+   {line:"30 × 3 = 90", en:"Multiply by the numerator: three eighths.", fr:"Multiplie par le numérateur : trois huitièmes.", why_en:"Multiply one part by the top number.", why_fr:"Multiplie une part par le numérateur."},
+   {line:"= 90", en:"90 pupils walk to school.", fr:"90 élèves viennent à pied.", why_en:"Check: 3/8 is less than half, and 90 is less than half of 240.", why_fr:"Vérifie : 3/8, c'est moins de la moitié, et 90 est moins que la moitié de 240."}]},
+ mistake:{show:"2/5 of 30",
+  lines:["2/5 of 30", "30 ÷ 2 = 15", "15 × 5 = 75"],
+  wrong:1,
+  fix_en:"You divided by the top. Divide by the bottom first: 30 ÷ 5 = 6, then 6 × 2 = 12.",
+  fix_fr:"Tu as divisé par le numérateur. Divise d'abord par le dénominateur : 30 ÷ 5 = 6, puis 6 × 2 = 12."}
 },
 
 "decAdd": {
@@ -1690,7 +2295,30 @@ const TEACH = {
    {ask_en:"Add the hundredths: 0 + 5", ask_fr:"Additionne les centièmes : 0 + 5", a:"5"},
    {ask_en:"Add the tenths: 2 + 4", ask_fr:"Additionne les dixièmes : 2 + 4", a:"6"},
    {ask_en:"The whole answer", ask_fr:"La réponse complète", a:"9.65"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"4.7 + 2.85",
+   steps:[
+    {line:"4.7 = 4.70", en:"4.7 has one fewer digit after the point. Put a zero on the end.", fr:"4,7 a un chiffre de moins après la virgule. Ajoute un zéro à la fin.", why_en:"Fill the empty place with a zero so the columns match. 4.7 is the same as 4.70.", why_fr:"Complète la place vide avec un zéro pour que les colonnes correspondent. 4,7 vaut 4,70."},
+    {line:"0 + 5 = 5", en:"Hundredths first: 0 + 5 = 5.", fr:"Les centièmes d'abord : 0 + 5 = 5.", why_en:"Start at the right-hand column, with the points lined up.", why_fr:"Commence par la colonne de droite, avec les virgules alignées."},
+    {line:"7 + 8 = 15", en:"Tenths: 15 tenths. Write 5 and carry 1 over the point into the ones.", fr:"Dixièmes : 15 dixièmes. Écris 5 et retiens 1 dans les unités, de l'autre côté de la virgule.", why_en:"Carry across the point just like any other column.", why_fr:"Retiens par-dessus la virgule comme pour n'importe quelle colonne."},
+    {line:"4 + 2 + 1 = 7", en:"Ones: 4 + 2, plus the 1 you carried.", fr:"Unités : 4 + 2, plus le 1 de la retenue.", why_en:"Add the carried 1 to the next column. Don't forget it.", why_fr:"Ajoute la retenue à la colonne suivante. Ne l'oublie pas."},
+    {line:"= 7.55", en:"Put the point straight under the others.", fr:"Place la virgule juste sous les autres.", why_en:"Check: about 5 + 3 = 8, and 7.55 is close.", why_fr:"Vérifie : environ 5 + 3 = 8, et 7,55 en est proche."}]}],
+ word:{en:"Kofi buys a book for £6.75 and a pen for £1.80. How much does he spend altogether?",
+  fr:"Kofi achète un livre à 6,75 £ et un stylo à 1,80 £. Combien dépense-t-il en tout ?",
+  show:"6.75 + 1.80",
+  steps:[
+   {line:"point under point", line_fr:"virgule sous virgule", en:"Write £6.75 and £1.80 with the points in a line.", fr:"Écris 6,75 £ et 1,80 £ avec les virgules alignées.", why_en:"Line up the decimal points, one under the other.", why_fr:"Aligne les virgules, l'une sous l'autre."},
+   {line:"5 + 0 = 5", en:"Hundredths (pennies): 5 + 0 = 5.", fr:"Centièmes (les pence) : 5 + 0 = 5.", why_en:"Add from the right-hand column.", why_fr:"Additionne depuis la colonne de droite."},
+   {line:"7 + 8 = 15", en:"Tenths: 15. Write 5, carry 1 into the pounds.", fr:"Dixièmes : 15. Écris 5, retiens 1 dans les livres.", why_en:"If a column makes 10 or more, write the ones digit and carry the 1.", why_fr:"Si une colonne fait 10 ou plus, écris le chiffre des unités et retiens 1."},
+   {line:"6 + 1 + 1 = 8", en:"Pounds: 6 + 1, plus the 1 carried.", fr:"Livres : 6 + 1, plus la retenue.", why_en:"Add the carried 1 to the next column.", why_fr:"Ajoute la retenue à la colonne suivante."},
+   {line:"= £8.55", en:"Kofi spends £8.55.", fr:"Kofi dépense 8,55 £.", why_en:"Check: about £7 + £2 = £9, and £8.55 is close.", why_fr:"Vérifie : environ 7 £ + 2 £ = 9 £, et 8,55 £ en est proche."}]},
+ mistake:{show:"3.5 + 1.25",
+  lines:["3.5 + 1.25", "= 1.60"],
+  wrong:1,
+  fix_en:"You lined up the ends, not the points. Write 3.5 as 3.50: 3.50 + 1.25 = 4.75.",
+  fix_fr:"Tu as aligné les fins, pas les virgules. Écris 3,5 comme 3,50 : 3,50 + 1,25 = 4,75."}
 },
 
 "decMul": {
@@ -1718,7 +2346,39 @@ const TEACH = {
    {ask_en:"Ignore the point: 23 × 7", ask_fr:"Ignore la virgule : 23 × 7", a:"161"},
    {ask_en:"How many decimal places?", ask_fr:"Combien de décimales ?", a:"1"},
    {ask_en:"So the answer is", ask_fr:"Donc la réponse est", a:"16.1"},
- ]}
+ ]},
+ /* v15: further examples */
+ lvl2:{show:"£2.35 × 4",
+  pic:{ask:"calc", show:"2.35 × 4"},
+  steps:[
+   {line:"ignore the point: 235 × 4 = 940", line_fr:"ignore la virgule : 235 × 4 = 940", en:"A book costs £2.35. Kofi buys 4. Pretend it is 235 for a moment.", fr:"Un livre coûte 2,35 £. Kofi en achète 4. Fais comme si c'était 235 un instant.", why_en:"Take the point out and multiply the whole numbers.", why_fr:"Enlève la virgule et multiplie les nombres entiers."},
+   {line:"two decimal places in, two out", line_fr:"deux décimales au départ, deux à l'arrivée", en:"2.35 has two digits after the point, so the answer has two.", fr:"2,35 a deux chiffres après la virgule, donc la réponse aussi.", why_en:"Count the places you started with. Two in means two out.", why_fr:"Compte les décimales de départ. Deux au départ, deux à l'arrivée."},
+   {line:"2.35 × 4 = 9.40", en:"£9.40 for the four books.", fr:"9,40 £ pour les quatre livres.", why_en:"Count two places from the right of 940. Check: 2.35 is nearly 2.5, and 2.5 × 4 = 10.", why_fr:"Compte deux places depuis la droite de 940. Vérifie : 2,35 est presque 2,5, et 2,5 × 4 = 10."}],
+  guided:{show:"1.35 × 3",
+   steps:[
+    {ask_en:"Ignore the point: 135 × 3", ask_fr:"Ignore la virgule : 135 × 3", a:"405"},
+    {ask_en:"How many decimal places?", ask_fr:"Combien de décimales ?", a:"2"},
+    {ask_en:"So the answer is", ask_fr:"Donc la réponse est", a:"4.05"}]}},
+ examples:[
+  {show:"2.5 × 4",
+   steps:[
+    {line:"ignore the point: 25 × 4 = 100", line_fr:"ignore la virgule : 25 × 4 = 100", en:"Take the point out. 25 × 4 is 100.", fr:"Enlève la virgule. 25 × 4 fait 100.", why_en:"Multiply the whole numbers first, as if there were no point.", why_fr:"Multiplie d'abord les nombres entiers, comme s'il n'y avait pas de virgule."},
+    {line:"one decimal place in, one out", line_fr:"une décimale au départ, une à l'arrivée", en:"2.5 had one digit after the point, so the answer has one.", fr:"2,5 avait un chiffre après la virgule, donc la réponse aussi.", why_en:"Count the decimal places in the question. Put the same number back.", why_fr:"Compte les décimales de la question. Remets-en le même nombre."},
+    {line:"100 ÷ 10 = 10", en:"One place back gives 10.0, which is just 10.", fr:"Une décimale remise donne 10,0, c'est-à-dire 10.", why_en:"Count the place from the right of 100: 10.0. A zero at the end after the point can go.", why_fr:"Compte la décimale depuis la droite de 100 : 10,0. Un zéro à la fin après la virgule peut partir."},
+    {line:"2.5 × 4 = 10", en:"So 2.5 × 4 = 10. Not 100, and not 1.", fr:"Donc 2,5 × 4 = 10. Pas 100, et pas 1.", why_en:"Check roughly: 2.5 is between 2 and 3, so the answer is between 8 and 12.", why_fr:"Vérifie : 2,5 est entre 2 et 3, donc la réponse est entre 8 et 12."}]}],
+ word:{en:"A bag of rice weighs 3.6 kg. Musa buys 7 bags. How much rice does he buy altogether?",
+  fr:"Un sac de riz pèse 3,6 kg. Musa achète 7 sacs. Combien de riz achète-t-il en tout ?",
+  show:"3.6 × 7",
+  steps:[
+   {line:"ignore the point: 36 × 7 = 252", line_fr:"ignore la virgule : 36 × 7 = 252", en:"7 bags of 3.6 kg is 3.6 × 7. Do 36 × 7 first.", fr:"7 sacs de 3,6 kg, c'est 3,6 × 7. Fais d'abord 36 × 7.", why_en:"Spot the multiplication: equal bags means ×. Then take the point out.", why_fr:"Repère la multiplication : des sacs égaux, c'est ×. Puis enlève la virgule."},
+   {line:"one decimal place in, one out", line_fr:"une décimale au départ, une à l'arrivée", en:"3.6 has one decimal place, so the answer has one.", fr:"3,6 a une décimale, donc la réponse aussi.", why_en:"Count the places in the question and put the same number back.", why_fr:"Compte les décimales de la question et remets-en le même nombre."},
+   {line:"3.6 × 7 = 25.2", en:"Musa buys 25.2 kg of rice.", fr:"Musa achète 25,2 kg de riz.", why_en:"Write the answer with its unit: kg.", why_fr:"Écris la réponse avec son unité : kg."},
+   {line:"4 × 7 = 28", en:"Check: 3.6 is nearly 4, and 4 × 7 = 28. 25.2 is close.", fr:"Vérifie : 3,6 est presque 4, et 4 × 7 = 28. 25,2 est proche.", why_en:"Round to check. If you got 252 or 2.52, the rough answer shows it is wrong.", why_fr:"Arrondis pour vérifier. Si tu trouves 252 ou 2,52, l'estimation montre l'erreur."}]},
+ mistake:{show:"1.6 × 3",
+  lines:["16 × 3 = 48", "1.6 × 3 = 0.48"],
+  wrong:1,
+  fix_en:"1.6 has one decimal place, so the answer has one, not two: 1.6 × 3 = 4.8.",
+  fix_fr:"1,6 a une décimale, donc la réponse en a une, pas deux : 1,6 × 3 = 4,8."}
 },
 
 "fdp": {
@@ -1746,7 +2406,27 @@ const TEACH = {
    {ask_en:"As a decimal", ask_fr:"En décimal", a:"0.25"},
    {ask_en:"As a percentage", ask_fr:"En pourcentage", a:"25%"},
    {ask_en:"And what is 1/5 as a decimal?", ask_fr:"Et 1/5 en décimal ?", a:"0.2"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"40% → fraction",
+   steps:[
+    {line:"40% → 40/100", en:"Per cent means out of 100. 40% is 40 out of 100.", fr:"Pour cent veut dire sur 100. 40 %, c'est 40 sur 100.", why_en:"Write the percentage over 100 to make a fraction.", why_fr:"Écris le pourcentage sur 100 pour faire une fraction."},
+    {line:"40 ÷ 20 = 2  and  100 ÷ 20 = 5", en:"Divide the numerator and the denominator by the same number.", fr:"Divise le numérateur et le dénominateur par le même nombre.", why_en:"Simplify: find a number that divides both the top and the bottom. 20 goes into both.", why_fr:"Simplifie : trouve un nombre qui divise le haut et le bas. 20 va dans les deux."},
+    {line:"40/100 = 2/5", en:"40% is 2/5.", fr:"40 %, c'est 2/5.", why_en:"Always simplify a fraction answer as far as it goes.", why_fr:"Simplifie toujours une fraction le plus possible."},
+    {line:"40 ÷ 100 = 0.4", en:"And as a decimal, 0.4. So 2/5 = 0.4 = 40%.", fr:"Et en décimal, 0,4. Donc 2/5 = 0,4 = 40 %.", why_en:"To go from a percentage to a decimal, divide by 100.", why_fr:"Pour passer d'un pourcentage à un décimal, divise par 100."}]}],
+ word:{en:"Zara gets 3/5 of her spelling test right. Leo gets 55% right. Who did better?",
+  fr:"Zara a juste 3/5 de sa dictée. Léo a juste 55 %. Qui a fait mieux ?",
+  show:"3/5 or 55%",
+  steps:[
+   {line:"3 ÷ 5 = 0.6", en:"Turn Zara's fraction into a decimal: divide the top by the bottom.", fr:"Change la fraction de Zara en décimal : divise le haut par le bas.", why_en:"Put both scores in the same coat before you compare them.", why_fr:"Mets les deux notes sous le même habit avant de comparer."},
+   {line:"0.6 × 100 = 60", en:"0.6 is 60%.", fr:"0,6, c'est 60 %.", why_en:"Decimal to percentage: multiply by 100.", why_fr:"Décimal vers pourcentage : multiplie par 100."},
+   {line:"60% > 55%", en:"Zara did better, by 5%.", fr:"Zara a fait mieux, de 5 %.", why_en:"Now they are both percentages, compare them and answer the question with a name.", why_fr:"Maintenant que ce sont deux pourcentages, compare-les et réponds avec un prénom."}]},
+ mistake:{show:"0.3 → %",
+  lines:["0.3 → %", "0.3 × 100 = 3", "0.3 = 3%"],
+  wrong:1,
+  fix_en:"× 100 moves the digits two places, not one. 0.3 × 100 = 30, so 0.3 = 30%.",
+  fix_fr:"× 100 déplace les chiffres de deux places, pas d'une. 0,3 × 100 = 30, donc 0,3 = 30 %."}
 },
 
 "ratioShare": {
@@ -1774,7 +2454,38 @@ const TEACH = {
    {ask_en:"How many shares altogether?", ask_fr:"Combien de parts en tout ?", a:"8"},
    {ask_en:"What is one share worth?", ask_fr:"Combien vaut une part ?", a:"5"},
    {ask_en:"So the bigger amount is", ask_fr:"Donc la plus grande part est", a:"25"},
- ]}
+ ]},
+ /* v15: further examples */
+ lvl2:{show:"360 in the ratio 4 : 5",
+  pic:{ask:"share", show:"360", r1:4, r2:5},
+  steps:[
+   {line:"4 + 5 = 9 shares", line_fr:"4 + 5 = 9 parts", en:"Add the numbers in the ratio to find how many shares there are.", fr:"Additionne les nombres du rapport pour trouver le nombre de parts.", why_en:"Add the numbers in the ratio first, to count the shares. Bigger numbers, same first step.", why_fr:"Additionne d'abord les nombres du rapport pour compter les parts. Nombres plus grands, même première étape."},
+   {line:"360 ÷ 9 = 40", en:"Divide the total by the number of shares. One share is 40.", fr:"Divise le total par le nombre de parts. Une part vaut 40.", why_en:"Divide the total by the number of shares. 36 ÷ 9 = 4, so 360 ÷ 9 = 40.", why_fr:"Divise le total par le nombre de parts. 36 ÷ 9 = 4, donc 360 ÷ 9 = 40."},
+   {line:"4 × 40 = 160  and  5 × 40 = 200", en:"160 and 200. They add back to 360.", fr:"160 et 200. Ensemble, ils refont 360.", why_en:"Always add your two answers back. If they do not make the total, something is wrong.", why_fr:"Additionne toujours tes deux réponses. Si ça ne fait pas le total, il y a une erreur."}],
+  guided:{show:"420 in the ratio 3 : 4",
+   steps:[
+    {ask_en:"How many shares altogether?", ask_fr:"Combien de parts en tout ?", a:"7"},
+    {ask_en:"What is one share worth?", ask_fr:"Combien vaut une part ?", a:"60"},
+    {ask_en:"So the bigger amount is", ask_fr:"Donc la plus grande part est", a:"240"}]}},
+ examples:[
+  {show:"45 in the ratio 4 : 1",
+   steps:[
+    {line:"4 + 1 = 5 shares", line_fr:"4 + 1 = 5 parts", en:"The 1 is a share too. 4 shares and 1 share make 5.", fr:"Le 1 est aussi une part. 4 parts et 1 part font 5.", why_en:"Add both numbers in the ratio, even the 1. It is not 4 shares.", why_fr:"Additionne les deux nombres du rapport, même le 1. Ce n'est pas 4 parts."},
+    {line:"45 ÷ 5 = 9", en:"One share is 9.", fr:"Une part vaut 9.", why_en:"Divide the total by the number of shares.", why_fr:"Divise le total par le nombre de parts."},
+    {line:"4 × 9 = 36  and  1 × 9 = 9", en:"36 and 9. They add back to 45.", fr:"36 et 9. Ensemble, ils refont 45.", why_en:"Multiply each number in the ratio by one share, then add them back to check.", why_fr:"Multiplie chaque nombre du rapport par une part, puis additionne pour vérifier."}]}],
+ word:{en:"Amina and Kofi share £48 in the ratio 5 : 3. How much more money does Amina get than Kofi?",
+  fr:"Amina et Kofi se partagent 48 £ dans le rapport 5 : 3. Combien d'argent Amina a-t-elle de plus que Kofi ?",
+  show:"£48 in the ratio 5 : 3",
+  steps:[
+   {line:"5 + 3 = 8 shares", line_fr:"5 + 3 = 8 parts", en:"Count the shares first.", fr:"Compte d'abord les parts.", why_en:"Add the numbers in the ratio to find how many shares there are.", why_fr:"Additionne les nombres du rapport pour trouver le nombre de parts."},
+   {line:"48 ÷ 8 = 6", en:"One share is £6.", fr:"Une part vaut 6 £.", why_en:"Divide the total by the number of shares.", why_fr:"Divise le total par le nombre de parts."},
+   {line:"5 × 6 = 30  and  3 × 6 = 18", en:"Amina gets £30 and Kofi gets £18. That adds to £48.", fr:"Amina a 30 £ et Kofi a 18 £. Ça fait bien 48 £.", why_en:"Find both amounts and add them back to check.", why_fr:"Trouve les deux montants et additionne-les pour vérifier."},
+   {line:"30 − 18 = 12", en:"Amina gets £12 more than Kofi.", fr:"Amina a 12 £ de plus que Kofi.", why_en:"Read the question again. “How much more” means take away.", why_fr:"Relis la question. « Combien de plus » veut dire soustraire."}]},
+ mistake:{show:"20 in the ratio 3 : 2",
+  lines:["3 : 2", "20 ÷ 2 = 10", "3 × 10 = 30"],
+  wrong:1,
+  fix_en:"Count the shares, not the people: 3 + 2 = 5 shares. 20 ÷ 5 = 4, so 3 × 4 = 12 and 2 × 4 = 8.",
+  fix_fr:"Compte les parts, pas les personnes : 3 + 2 = 5 parts. 20 ÷ 5 = 4, donc 3 × 4 = 12 et 2 × 4 = 8."}
 },
 
 "metric": {
@@ -1802,7 +2513,26 @@ const TEACH = {
    {ask_en:"How many grams in a kilogram?", ask_fr:"Combien de grammes dans un kilogramme ?", a:"1000"},
    {ask_en:"Bigger or smaller number? Multiply.", ask_fr:"Plus grand ou plus petit ? Multiplie.", a:"2400"},
    {ask_en:"Now 350 cm → m", ask_fr:"Maintenant 350 cm → m", a:"3.5"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"2 350 g → kg",
+   steps:[
+    {line:"1 kg = 1 000 g", en:"A kilogram is a thousand grams.", fr:"Un kilogramme, c'est mille grammes.", why_en:"Start with the fact: kg to g is 1 000.", why_fr:"Pars du fait connu : de kg à g, c'est 1 000."},
+    {line:"bigger unit → smaller number", line_fr:"unité plus grande → nombre plus petit", en:"This time we go to a bigger unit, so there are fewer of them. Divide.", fr:"Cette fois, on va vers une unité plus grande, il y en a moins. On divise.", why_en:"Ask: will the answer be bigger or smaller? Fewer kilograms than grams, so divide.", why_fr:"Demande-toi : la réponse sera-t-elle plus grande ou plus petite ? Moins de kg que de g, donc divise."},
+    {line:"2 350 ÷ 1 000 = 2.35", en:"2.35 kilograms.", fr:"2,35 kilogrammes.", why_en:"÷ 1 000 moves the digits three places to the right. Check: 2 350 g is a bit over 2 kg.", why_fr:"÷ 1 000 déplace les chiffres de trois places vers la droite. Vérifie : 2 350 g, c'est un peu plus de 2 kg."}]}],
+ word:{en:"A fun run is 3.2 km long. Ola has run 1 750 m so far. How many more metres does she have to run?",
+  fr:"Une course fait 3,2 km. Ola a déjà couru 1 750 m. Combien de mètres lui reste-t-il à courir ?",
+  show:"3.2 km − 1 750 m",
+  steps:[
+   {line:"1 km = 1 000 m", en:"The answer is in metres, so change the km to m first.", fr:"La réponse est en mètres, donc change d'abord les km en m.", why_en:"Make both amounts the same unit before you subtract.", why_fr:"Mets les deux quantités dans la même unité avant de soustraire."},
+   {line:"3.2 × 1 000 = 3 200", en:"3.2 km is 3 200 m.", fr:"3,2 km, c'est 3 200 m.", why_en:"Smaller unit, bigger number: multiply by 1 000.", why_fr:"Unité plus petite, nombre plus grand : multiplie par 1 000."},
+   {line:"3 200 − 1 750 = 1 450", en:"Ola has 1 450 m still to run.", fr:"Il reste 1 450 m à courir pour Ola.", why_en:"Now take away. Check: 1 450 + 1 750 = 3 200.", why_fr:"Maintenant, soustrais. Vérifie : 1 450 + 1 750 = 3 200."}]},
+ mistake:{show:"4.5 m → cm",
+  lines:["1 m = 100 cm", "4.5 ÷ 100 = 0.045"],
+  wrong:1,
+  fix_en:"Centimetres are smaller, so the number must get bigger. Multiply: 4.5 × 100 = 450 cm.",
+  fix_fr:"Les centimètres sont plus petits, donc le nombre doit grandir. Multiplie : 4,5 × 100 = 450 cm."}
 },
 
 "areaRect": {
@@ -1830,7 +2560,26 @@ const TEACH = {
    {ask_en:"Multiply them", ask_fr:"Multiplie-les", a:"84"},
    {ask_en:"A square with sides of 9", ask_fr:"Un carré de côté 9", a:"81"},
    {ask_en:"6 by 15", ask_fr:"6 sur 15", a:"90"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"a square, side 7 cm",
+   steps:[
+    {line:"7 rows of 7 squares", line_fr:"7 rangées de 7 carrés", en:"A square has all four sides the same. So it is 7 long and 7 wide.", fr:"Un carré a ses quatre côtés égaux. Il fait donc 7 de long et 7 de large.", why_en:"When you are given one side of a square, use it for the length and the width.", why_fr:"Quand on te donne un côté d'un carré, utilise-le pour la longueur et la largeur."},
+    {line:"7 × 7 = 49", en:"Forty-nine squares.", fr:"Quarante-neuf carrés.", why_en:"Multiply the side by itself. 7 × 4 = 28 is the perimeter, not the area.", why_fr:"Multiplie le côté par lui-même. 7 × 4 = 28, c'est le périmètre, pas l'aire."},
+    {line:"49 cm²", en:"Square centimetres.", fr:"Centimètres carrés.", why_en:"Write the units as squares: cm².", why_fr:"Écris l'unité au carré : cm²."}]}],
+ word:{en:"Priya's bedroom floor is a rectangle 4 m long and 3 m wide. Carpet costs £12 for each square metre. How much does the carpet cost?",
+  fr:"Le sol de la chambre de Priya est un rectangle de 4 m sur 3 m. La moquette coûte 12 £ le mètre carré. Combien coûte la moquette ?",
+  show:"4 m × 3 m, £12 per m²",
+  steps:[
+   {line:"4 × 3 = 12", en:"The floor is 12 m².", fr:"Le sol fait 12 m².", why_en:"Find the area first: length × width.", why_fr:"Trouve d'abord l'aire : longueur × largeur."},
+   {line:"12 × 12 = 144", en:"12 square metres at £12 each.", fr:"12 mètres carrés à 12 £ chacun.", why_en:"Each square metre costs £12, so multiply the area by 12.", why_fr:"Chaque mètre carré coûte 12 £, donc multiplie l'aire par 12."},
+   {line:"£144", en:"The carpet costs £144.", fr:"La moquette coûte 144 £.", why_en:"Answer the question asked: it wants the cost, so give pounds.", why_fr:"Réponds à la question posée : elle demande le prix, donc donne des livres."}]},
+ mistake:{show:"9 cm × 4 cm",
+  lines:["9 cm × 4 cm", "9 + 4 = 13", "13 cm²"],
+  wrong:1,
+  fix_en:"Area is multiply, not add. 9 × 4 = 36, so the area is 36 cm².",
+  fix_fr:"L'aire, c'est multiplier, pas additionner. 9 × 4 = 36, donc l'aire est 36 cm²."}
 },
 
 "areaTri": {
@@ -1858,7 +2607,26 @@ const TEACH = {
    {ask_en:"The rectangle first", ask_fr:"Le rectangle d'abord", a:"40"},
    {ask_en:"Now halve it", ask_fr:"Divise par deux", a:"20"},
    {ask_en:"base 14, height 6", ask_fr:"base 14, hauteur 6", a:"42"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"parallelogram: base 9, height 4",
+   steps:[
+    {line:"cut off the triangle, slide it across", line_fr:"coupe le triangle, fais-le glisser de l'autre côté", en:"Cut the triangle off one end and stick it on the other. It makes a rectangle.", fr:"Coupe le triangle d'un bout et colle-le à l'autre. Ça fait un rectangle.", why_en:"Picture the parallelogram turning into a rectangle with the same base and height.", why_fr:"Imagine le parallélogramme qui devient un rectangle de même base et même hauteur."},
+    {line:"rectangle: 9 × 4 = 36", en:"The rectangle is 9 by 4.", fr:"Le rectangle fait 9 sur 4.", why_en:"Multiply the base by the height straight up, not by the sloping side.", why_fr:"Multiplie la base par la hauteur verticale, pas par le côté incliné."},
+    {line:"36 cm²", en:"No halving this time. Nothing was cut away.", fr:"Pas de division par deux cette fois. On n'a rien enlevé.", why_en:"Halve only for a triangle. A parallelogram is base × height.", why_fr:"Divise par deux seulement pour un triangle. Un parallélogramme, c'est base × hauteur."}]}],
+ word:{en:"A boat has a triangle-shaped sail. Its base is 5 m and its height is 7 m. What is the area of the sail?",
+  fr:"Un bateau a une voile en forme de triangle. Sa base fait 5 m et sa hauteur 7 m. Quelle est l'aire de la voile ?",
+  show:"base 5 m, height 7 m",
+  steps:[
+   {line:"rectangle: 5 × 7 = 35", line_fr:"rectangle : 5 × 7 = 35", en:"Find the rectangle the sail fits inside.", fr:"Trouve le rectangle qui entoure la voile.", why_en:"Multiply the base by the height first.", why_fr:"Multiplie d'abord la base par la hauteur."},
+   {line:"35 ÷ 2 = 17.5", en:"Half of 35 is 17.5.", fr:"La moitié de 35 fait 17,5.", why_en:"Halve it. Half of an odd number ends in .5, so the answer can be a decimal.", why_fr:"Divise par deux. La moitié d'un nombre impair finit par ,5, donc la réponse peut être décimale."},
+   {line:"17.5 m²", en:"The sail is 17.5 square metres.", fr:"La voile fait 17,5 mètres carrés.", why_en:"The lengths were in metres, so the units are m².", why_fr:"Les longueurs étaient en mètres, donc l'unité est le m²."}]},
+ mistake:{show:"triangle: base 12, height 5",
+  lines:["12 × 5 = 60", "60 cm²"],
+  wrong:1,
+  fix_en:"A triangle is half the rectangle. You forgot to halve: 60 ÷ 2 = 30, so it is 30 cm².",
+  fix_fr:"Un triangle, c'est la moitié du rectangle. Tu as oublié de diviser par deux : 60 ÷ 2 = 30, donc 30 cm²."}
 },
 
 "volume": {
@@ -1886,7 +2654,27 @@ const TEACH = {
    {ask_en:"Bottom layer: 2 × 6", ask_fr:"Couche du bas : 2 × 6", a:"12"},
    {ask_en:"Times 4 layers", ask_fr:"Fois 4 couches", a:"48"},
    {ask_en:"A cube with sides of 3", ask_fr:"Un cube de côté 3", a:"27"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"a cube with sides of 6 cm",
+   show_fr:"un cube de côté 6 cm",
+   steps:[
+    {line:"bottom layer: 6 × 6 = 36", line_fr:"couche du bas : 6 × 6 = 36", en:"A cube has every side the same, so the base is 6 by 6.", fr:"Un cube a tous ses côtés pareils, donc le fond fait 6 sur 6.", why_en:"Use the one side you are given for the length and the width.", why_fr:"Prends le seul côté donné pour la longueur et la largeur."},
+    {line:"6 layers", line_fr:"6 couches", en:"It is 6 cubes tall too.", fr:"Il fait aussi 6 cubes de haut.", why_en:"Use the same side again for the height. A cube is as tall as it is long.", why_fr:"Reprends le même côté pour la hauteur. Un cube est aussi haut que long."},
+    {line:"36 × 6 = 216 cm³", en:"Two hundred and sixteen cubic centimetres.", fr:"Deux cent seize centimètres cubes.", why_en:"Multiply three sixes, not 6 × 3. Write cm³ because you counted cubes.", why_fr:"Multiplie trois fois 6, pas 6 × 3. Écris cm³ parce que tu as compté des cubes."}]}],
+ word:{en:"Kofi's box of sugar cubes is 8 cm long, 5 cm wide and 4 cm tall. Each sugar cube is 1 cm³. How many sugar cubes fill the box?",
+  fr:"La boîte de sucres de Kofi fait 8 cm de long, 5 cm de large et 4 cm de haut. Chaque sucre fait 1 cm³. Combien de sucres remplissent la boîte ?",
+  show:"8 × 5 × 4",
+  steps:[
+   {line:"bottom layer: 8 × 5 = 40", line_fr:"couche du bas : 8 × 5 = 40", en:"Forty sugar cubes cover the bottom.", fr:"Quarante sucres couvrent le fond.", why_en:"Find the bottom layer first: length × width.", why_fr:"Trouve d'abord la couche du bas : longueur × largeur."},
+   {line:"4 layers", line_fr:"4 couches", en:"The box is 4 cubes tall.", fr:"La boîte fait 4 sucres de haut.", why_en:"The height tells you how many layers there are.", why_fr:"La hauteur te dit combien il y a de couches."},
+   {line:"40 × 4 = 160", en:"160 sugar cubes fill the box.", fr:"160 sucres remplissent la boîte.", why_en:"Multiply the layer by the number of layers. Each cube is 1 cm³, so the volume is 160 cm³.", why_fr:"Multiplie la couche par le nombre de couches. Chaque sucre fait 1 cm³, donc le volume est 160 cm³."}]},
+ mistake:{show:"4 × 3 × 5 cm",
+  lines:["4 × 3 × 5", "4 + 3 + 5 = 12", "12 cm³"],
+  wrong:1,
+  fix_en:"You added the sides. Volume means multiply them: 4 × 3 = 12, then 12 × 5 = 60 cm³.",
+  fix_fr:"Tu as additionné les côtés. Pour le volume, on multiplie : 4 × 3 = 12, puis 12 × 5 = 60 cm³."}
 },
 
 "angles": {
@@ -1914,7 +2702,28 @@ const TEACH = {
    {ask_en:"What do the three angles add to?", ask_fr:"Que font les trois angles ensemble ?", a:"180"},
    {ask_en:"70 + 60 =", ask_fr:"70 + 60 =", a:"130"},
    {ask_en:"So the missing one is", ask_fr:"Donc le manquant est", a:"50"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"110° + 90° + ? = 360°",
+   steps:[
+    {line:"angles round a point are 360°", line_fr:"les angles autour d'un point font 360°", en:"These angles go all the way round a point, not along a line.", fr:"Ces angles font tout le tour d'un point, pas une ligne droite.", why_en:"Look at the picture. All the way round means 360°, so use 360 as your total.", why_fr:"Regarde le dessin. Tout le tour, c'est 360°, donc ton total est 360."},
+    {line:"110 + 90 = 200", en:"Add the angles you know.", fr:"Additionne les angles connus.", why_en:"Add up the angles you already have first.", why_fr:"Additionne d'abord les angles que tu as déjà."},
+    {line:"360 − 200 = 160", en:"Take that away from the whole turn.", fr:"Enlève-le du tour complet.", why_en:"Take the angles you know away from 360.", why_fr:"Enlève les angles connus de 360."},
+    {line:"160°", en:"It should look bigger than a right angle. Check the picture agrees.", fr:"Il doit paraître plus grand qu'un angle droit. Vérifie que le dessin est d'accord.", why_en:"Check: 110 + 90 + 160 = 360. If you used 180 you would get a minus number.", why_fr:"Vérifie : 110 + 90 + 160 = 360. Avec 180, tu tomberais sur un nombre négatif."}]}],
+ word:{en:"In triangle ABC, angle A is 48° and angle B is 75°. Work out the size of angle C.",
+  fr:"Dans le triangle ABC, l'angle A mesure 48° et l'angle B mesure 75°. Calcule l'angle C.",
+  show:"48° + 75° + ? = 180°",
+  steps:[
+   {line:"a triangle is 180°", line_fr:"un triangle fait 180°", en:"The three angles inside a triangle always add to 180.", fr:"Les trois angles d'un triangle font toujours 180 ensemble.", why_en:"It is a triangle, so use 180° as your total.", why_fr:"C'est un triangle, donc ton total est 180°."},
+   {line:"48 + 75 = 123", en:"Add the two angles you know.", fr:"Additionne les deux angles connus.", why_en:"Add the two angles you are given.", why_fr:"Additionne les deux angles donnés."},
+   {line:"180 − 123 = 57", en:"Take that away from 180.", fr:"Enlève-le de 180.", why_en:"Take the total you have away from 180.", why_fr:"Enlève ce que tu as de 180."},
+   {line:"angle C = 57°", line_fr:"angle C = 57°", en:"Angle C is 57 degrees.", fr:"L'angle C mesure 57 degrés.", why_en:"Check: 48 + 75 + 57 = 180. Write the ° sign.", why_fr:"Vérifie : 48 + 75 + 57 = 180. Écris le signe °."}]},
+ mistake:{show:"△ 50°, 70°, ?",
+  lines:["50° + 70° + ?", "50 + 70 = 120", "360 − 120 = 240"],
+  wrong:2,
+  fix_en:"A triangle adds to 180°, not 360°. 180 − 120 = 60, so the missing angle is 60°.",
+  fix_fr:"Un triangle fait 180°, pas 360°. 180 − 120 = 60, donc l'angle manquant fait 60°."}
 },
 
 "mean": {
@@ -1942,7 +2751,27 @@ const TEACH = {
    {ask_en:"Add them", ask_fr:"Additionne", a:"20"},
    {ask_en:"How many are there?", ask_fr:"Combien y en a-t-il ?", a:"4"},
    {ask_en:"So the mean is", ask_fr:"Donc la moyenne est", a:"5"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"6, 0, 9, 5",
+   steps:[
+    {line:"6 + 0 + 9 + 5 = 20", en:"Add them all, the zero too.", fr:"Additionne-les toutes, le zéro aussi.", why_en:"Add all the numbers. The zero adds nothing, but leave it in the list.", why_fr:"Additionne tous les nombres. Le zéro n'ajoute rien, mais garde-le dans la liste."},
+    {line:"4 numbers", line_fr:"4 valeurs", en:"There are four numbers, because the zero counts.", fr:"Il y a quatre valeurs, car le zéro compte.", why_en:"Count every number in the list, the zero as well. That gives 4, not 3.", why_fr:"Compte chaque valeur de la liste, le zéro aussi. Ça fait 4, pas 3."},
+    {line:"20 ÷ 4 = 5", en:"Divide the total by how many there were.", fr:"Divise le total par le nombre de valeurs.", why_en:"Divide by how many numbers there are.", why_fr:"Divise par le nombre de valeurs."},
+    {line:"mean = 5", line_fr:"moyenne = 5", en:"The mean is 5.", fr:"La moyenne est 5.", why_en:"Check it sits between the smallest (0) and the biggest (9).", why_fr:"Vérifie qu'elle est entre le plus petit (0) et le plus grand (9)."}]}],
+ word:{en:"Sam scores 7, 9, 4, 8 and 12 in five spelling tests. What is his mean score?",
+  fr:"Sam obtient 7, 9, 4, 8 et 12 à cinq dictées. Quelle est sa note moyenne ?",
+  show:"7, 9, 4, 8, 12",
+  steps:[
+   {line:"7 + 9 + 4 + 8 + 12 = 40", en:"Add all five scores.", fr:"Additionne les cinq notes.", why_en:"Add all the scores together first.", why_fr:"Additionne d'abord toutes les notes."},
+   {line:"40 ÷ 5 = 8", en:"Five tests, so divide by 5.", fr:"Cinq dictées, donc divise par 5.", why_en:"Divide by how many tests there were, not by the biggest score.", why_fr:"Divise par le nombre de dictées, pas par la plus grande note."},
+   {line:"mean = 8", line_fr:"moyenne = 8", en:"His mean score is 8.", fr:"Sa note moyenne est 8.", why_en:"Check: 8 is between 4 and 12, so it makes sense.", why_fr:"Vérifie : 8 est entre 4 et 12, donc c'est logique."}]},
+ mistake:{show:"3, 7, 8",
+  lines:["3 + 7 + 8 = 18", "mean = 18"],
+  wrong:1,
+  fix_en:"18 is the total, not the mean. Divide by how many numbers there are: 18 ÷ 3 = 6.",
+  fix_fr:"18 est le total, pas la moyenne. Divise par le nombre de valeurs : 18 ÷ 3 = 6."}
 },
 
 "formula": {
@@ -1970,7 +2799,27 @@ const TEACH = {
    {ask_en:"What is 5 × 6?", ask_fr:"Combien fait 5 × 6 ?", a:"30"},
    {ask_en:"Now add 2", ask_fr:"Ajoute 2", a:"32"},
    {ask_en:"If x = 10, what is y?", ask_fr:"Si x = 10, que vaut y ?", a:"52"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"y = 4x − 7,  x = 5",
+   steps:[
+    {line:"put 5 where x is", line_fr:"mets 5 à la place de x", en:"Swap the letter for 5.", fr:"Remplace la lettre par 5.", why_en:"4x means 4 × x, so it becomes 4 × 5. It is not 45.", why_fr:"4x veut dire 4 × x, donc ça devient 4 × 5. Ce n'est pas 45."},
+    {line:"4 × 5 = 20", en:"Multiply first.", fr:"Multiplie d'abord.", why_en:"Do the multiplying before the taking away.", why_fr:"Fais la multiplication avant la soustraction."},
+    {line:"20 − 7 = 13", en:"So y is 13.", fr:"Donc y vaut 13.", why_en:"This time the sign is minus, so take the 7 away. Read the sign before you work.", why_fr:"Cette fois le signe est moins, donc enlève 7. Lis le signe avant de calculer."}]}],
+ word:{en:"To cook a chicken, use t = 40w + 20. t is the time in minutes and w is the mass in kg. Amina's chicken is 3 kg. How long should she cook it?",
+  fr:"Pour cuire un poulet, on utilise t = 40w + 20. t est le temps en minutes et w la masse en kg. Le poulet d'Amina fait 3 kg. Combien de temps doit-elle le cuire ?",
+  show:"t = 40w + 20,  w = 3",
+  steps:[
+   {line:"put 3 where w is", line_fr:"mets 3 à la place de w", en:"The chicken is 3 kg, so w is 3.", fr:"Le poulet fait 3 kg, donc w vaut 3.", why_en:"Find the number that goes with the letter, then swap it in. 40w means 40 × w.", why_fr:"Trouve le nombre qui va avec la lettre, puis remplace-la. 40w veut dire 40 × w."},
+   {line:"40 × 3 = 120", en:"Forty minutes for each kilogram.", fr:"Quarante minutes par kilo.", why_en:"Multiply first, before you add.", why_fr:"Multiplie d'abord, avant d'additionner."},
+   {line:"120 + 20 = 140", en:"Add the extra 20 minutes.", fr:"Ajoute les 20 minutes en plus.", why_en:"Then add the 20.", why_fr:"Puis ajoute 20."},
+   {line:"140 minutes", line_fr:"140 minutes", en:"She should cook it for 140 minutes.", fr:"Elle doit le cuire 140 minutes.", why_en:"Give the answer in minutes, because t is in minutes.", why_fr:"Donne la réponse en minutes, car t est en minutes."}]},
+ mistake:{show:"y = 3x + 5,  x = 4",
+  lines:["y = 3x + 5", "3x = 34", "34 + 5 = 39"],
+  wrong:1,
+  fix_en:"3x means 3 × x, not 3 next to 4. 3 × 4 = 12, then 12 + 5 = 17.",
+  fix_fr:"3x veut dire 3 × x, pas 3 à côté de 4. 3 × 4 = 12, puis 12 + 5 = 17."}
 },
 
 "twoUnknowns": {
@@ -1998,7 +2847,28 @@ const TEACH = {
    {ask_en:"Pairs that multiply to 20: 4 × ?", ask_fr:"Paires qui font 20 : 4 × ?", a:"5"},
    {ask_en:"Do 4 and 5 add to 9?  1 yes, 0 no", ask_fr:"4 et 5 font-ils 9 ? 1 oui, 0 non", a:"1"},
    {ask_en:"The smaller number is", ask_fr:"Le plus petit nombre est", a:"4"},
- ]}
+ ]},
+ /* v15: further examples */
+ examples:[
+  {show:"a + b = 12,  a × b = 36",
+   steps:[
+    {line:"pairs making 36: 1×36, 2×18, 3×12, 4×9, 6×6", line_fr:"les paires qui font 36 : 1×36, 2×18, 3×12, 4×9, 6×6", en:"List the pairs whose product is 36. Do not forget 6 × 6.", fr:"Liste les paires dont le produit fait 36. N'oublie pas 6 × 6.", why_en:"List the factor pairs of the product. A number times itself counts as a pair.", why_fr:"Liste les paires de diviseurs du produit. Un nombre fois lui-même compte aussi."},
+    {line:"which adds to 12? 6 + 6", line_fr:"laquelle fait 12 ? 6 + 6", en:"Only 6 and 6 add to 12.", fr:"Seuls 6 et 6 font 12.", why_en:"Check each pair against the sum. You have to use both facts.", why_fr:"Vérifie chaque paire avec la somme. Il faut se servir des deux faits."},
+    {line:"6 × 6 = 36", en:"And they multiply to 36.", fr:"Et leur produit fait 36.", why_en:"Test the pair in the other fact too.", why_fr:"Teste la paire dans l'autre fait aussi."},
+    {line:"6 and 6", line_fr:"6 et 6", en:"Both numbers are 6. They are allowed to be the same.", fr:"Les deux nombres valent 6. Ils ont le droit d'être pareils.", why_en:"Two unknowns can be equal. If the smaller is asked for, the answer is 6.", why_fr:"Deux inconnues peuvent être égales. Si on demande le plus petit, c'est 6."}]}],
+ word:{en:"Leo thinks of two whole numbers. They add up to 15. Their product is 56. What are Leo's two numbers?",
+  fr:"Leo pense à deux nombres entiers. Leur somme fait 15. Leur produit fait 56. Quels sont les deux nombres de Leo ?",
+  show:"a + b = 15,  a × b = 56",
+  steps:[
+   {line:"pairs making 56: 1×56, 2×28, 4×14, 7×8", line_fr:"les paires qui font 56 : 1×56, 2×28, 4×14, 7×8", en:"Product means multiply, so list the pairs that make 56.", fr:"Produit veut dire multiplier, donc liste les paires qui font 56.", why_en:"Start with the product. There are only a few pairs to try.", why_fr:"Commence par le produit. Il n'y a que quelques paires à essayer."},
+   {line:"which adds to 15? 7 + 8", line_fr:"laquelle fait 15 ? 7 + 8", en:"7 and 8 add to 15.", fr:"7 et 8 font 15.", why_en:"Check which pair adds up to 15.", why_fr:"Vérifie quelle paire fait 15 en somme."},
+   {line:"7 × 8 = 56", en:"And 7 × 8 is 56.", fr:"Et 7 × 8 font 56.", why_en:"Test the pair in both facts before you write it down.", why_fr:"Teste la paire dans les deux faits avant de l'écrire."},
+   {line:"7 and 8", line_fr:"7 et 8", en:"Leo's numbers are 7 and 8.", fr:"Les nombres de Leo sont 7 et 8.", why_en:"Give both numbers as your answer.", why_fr:"Donne les deux nombres comme réponse."}]},
+ mistake:{show:"a + b = 8,  a × b = 12",
+  lines:["pairs making 12: 1×12, 2×6, 3×4", "3 and 4"],
+  wrong:1,
+  fix_en:"3 × 4 = 12, but 3 + 4 = 7, not 8. Use both facts: 2 + 6 = 8 and 2 × 6 = 12, so the numbers are 2 and 6.",
+  fix_fr:"3 × 4 = 12, mais 3 + 4 = 7, pas 8. Sers-toi des deux faits : 2 + 6 = 8 et 2 × 6 = 12, donc les nombres sont 2 et 6."}
 },
 
 "tables": {
@@ -2022,7 +2892,26 @@ const TEACH = {
  guided:{show:"", steps:[
    {ask_en:"8 \u00d7 7", ask_fr:"8 \u00d7 7", a:"56"},
    {ask_en:"And so 7 \u00d7 8?", ask_fr:"Et donc 7 \u00d7 8 ?", a:"56"},
-   {ask_en:"9 \u00d7 6", ask_fr:"9 \u00d7 6", a:"54"}]}
+   {ask_en:"9 \u00d7 6", ask_fr:"9 \u00d7 6", a:"54"}]},
+ /* v15: further examples */
+ examples:[
+  {show:"12 × 9",
+   steps:[
+    {line:"10 × 9 = 90", en:"Past ten? Split 12 into 10 and 2. Ten nines are 90.", fr:"Plus de dix ? Coupe 12 en 10 et 2. Dix fois neuf font 90.", why_en:"Break the big number into 10 and what is left. Do the ten first.", why_fr:"Coupe le grand nombre en 10 et le reste. Fais d'abord le dix."},
+    {line:"2 × 9 = 18", en:"Two nines are 18.", fr:"Deux fois neuf font 18.", why_en:"Now do the small part with the same 9.", why_fr:"Fais maintenant la petite partie avec le même 9."},
+    {line:"90 + 18 = 108", en:"Add them. The product of 12 and 9 is 108.", fr:"Additionne-les. Le produit de 12 par 9 est 108.", why_en:"Add the two parts back together to get the whole answer.", why_fr:"Rassemble les deux parties pour avoir la réponse entière."}]}],
+ word:{en:"Eggs come in boxes of 6. Kofi buys 9 boxes. How many eggs does he buy?",
+  fr:"Les œufs sont vendus par boîtes de 6. Kofi achète 9 boîtes. Combien d'œufs achète-t-il ?",
+  show:"9 × 6",
+  steps:[
+   {line:"5 × 6 = 30", en:"Start from a fact you know: 5 boxes are 30 eggs.", fr:"Pars d'un fait connu : 5 boîtes font 30 œufs.", why_en:"If you are stuck, split it. Fives are easy, so start there.", why_fr:"Si tu bloques, coupe. Les cinq sont faciles, commence par là."},
+   {line:"4 × 6 = 24", en:"The other 4 boxes are 24 eggs.", fr:"Les 4 autres boîtes font 24 œufs.", why_en:"5 boxes and 4 boxes make the 9 boxes.", why_fr:"5 boîtes et 4 boîtes font les 9 boîtes."},
+   {line:"30 + 24 = 54", en:"Kofi buys 54 eggs.", fr:"Kofi achète 54 œufs.", why_en:"Add the two parts. Then learn it: 9 × 6 = 54.", why_fr:"Additionne les deux parties. Puis retiens-le : 9 × 6 = 54."}]},
+ mistake:{show:"7 × 8",
+  lines:["7 × 8", "7 × 7 = 49", "49 + 8 = 57"],
+  wrong:2,
+  fix_en:"7 × 8 is eight sevens. From seven sevens, one more lot is one more 7: 49 + 7 = 56.",
+  fix_fr:"7 × 8, c'est huit fois sept. Depuis sept fois sept, une fois de plus, c'est un 7 de plus : 49 + 7 = 56."}
 },
 };
 
@@ -2128,6 +3017,16 @@ const T={
  goback:{en:"Back",fr:"Retour"},
  /* v13 */
  howto:{en:"How to get there",fr:"Comment y arriver"},
+ /* v15: more examples */
+ another:{en:"Another one",fr:"Un autre exemple"},
+ inword:{en:"In a word problem",fr:"Dans un probl\u00e8me"},
+ showhow:{en:"Show me how",fr:"Montre-moi comment"},
+ hide:{en:"Hide",fr:"Cacher"},
+ spot:{en:"Spot the mistake",fr:"Trouve l\u2019erreur"},
+ spotsub:{en:"Someone worked this out and went wrong. Tap the line where it first goes wrong.",
+          fr:"Quelqu\u2019un a fait ce calcul et s\u2019est tromp\u00e9. Touche la ligne o\u00f9 \u00e7a d\u00e9raille."},
+ notthat:{en:"Not that one: that line is fine. Look again.",fr:"Pas celle-l\u00e0 : cette ligne est juste. Regarde encore."},
+ found:{en:"Found it.",fr:"Trouv\u00e9."},
 };
 let L=localStorage.getItem("cl3.lang")||"en";
 const t=k=>(T[k]||{})[L]||(T[k]||{}).en||k;
@@ -2289,7 +3188,8 @@ function numberLine(from,to,marks,jumps,o){
   for(let k=0;k<=n;k++){ const v=from+k*o.step, [x,y]=P(v), big=o.every&&Math.abs((v-from)/o.every-Math.round((v-from)/o.every))<1e-6;
    s+=o.vertical?`<line x1="${x-(big?7:4)}" y1="${y}" x2="${x}" y2="${y}" stroke="${big?C.ink:C.off}" stroke-width="${big?1.6:1}"/>`
                 :`<line x1="${x}" y1="${y-(big?6:4)}" x2="${x}" y2="${y+(big?6:4)}" stroke="${big?C.ink:C.off}" stroke-width="${big?1.6:1}"/>`;
-   if(big) s+=o.vertical?tx(x-10,y+3,o.fmt(v),{a:"end",fs:o.fs}):tx(x,y+18,o.fmt(v),{fs:o.fs});
+   /* the end labels hang inwards so a long number is not cut off at the edge */
+   if(big) s+=o.vertical?tx(x-10,y+3,o.fmt(v),{a:"end",fs:o.fs}):tx(x,y+18,o.fmt(v),{fs:o.fs,a:k===0?"start":k===n?"end":"middle"});
   } }
  (jumps||[]).forEach(j=>{ const [ax,ay]=P(j.a), [bx,by]=P(j.b), c=j.color||C.on;
   if(o.vertical){ const mx=ax+28; s+=`<path d="M${ax+4} ${ay} Q${mx} ${(ay+by)/2} ${bx+4} ${by}" fill="none" stroke="${c}" stroke-width="2.4"/>`+
@@ -3178,7 +4078,7 @@ function sessionHTML(){
   <p class="step">${esc(t("todays"))} \u00b7 ${V.i+1} ${esc(t("of"))} ${V.qs.length}</p>
   <div class="sesbar"><i style="width:${V.i/V.qs.length*100}%"></i></div>
   <p class="sestop">${esc(cur.s[L]||cur.s.en)}</p>
-  <div class="card">${!V.shown&&V.miss>=2?stuckNote(cur.s.g,"sesShow"):""}
+  <div class="card">${!V.shown&&V.miss>=2?stuckNote(cur.s,"sesShow"):""}
    ${V.shown?revealHTML(cur.q,cur.s,false):SESBODY(cur.q,cur.s)}
    <div class="tally">${dots}</div></div>
   ${V.shown?`<button class="go2" onclick="sesNext()">${esc(t("moveon"))}</button>`:""}
@@ -3303,10 +4203,22 @@ function shelfHTML(){
 function shelfTap(ci){V.open=V.open===ci?null:ci;render()}
 
 const byId=id=>ALL.filter(s=>s.id===id)[0];
+/* v15: the twelve level 2 subtopics used to repeat level 1's example word for
+   word ("Dividing by two digits" taught 486 ÷ 18 again). Where a lesson has
+   lvl2, a level 2 subtopic uses its example, steps and guided practice
+   instead. Its situation is the subtopic's own one-line introduction, and its
+   drawing is the question drawing for its numbers, because the level 1 story
+   and picture are about different numbers. */
+function EX(s){
+ const T2=TEACH[s.g]; if(!T2) return T2;
+ return (s.lvl===2&&T2.lvl2)?Object.assign({},T2,T2.lvl2,{isL2:true}):T2;
+}
+const lineOf=st=>st["line_"+L]||st.line;
+const showOf=x=>x["show_"+L]||x.show;
 function openStop(id){
  const s=byId(id), has=!!TEACH[s.g];
  V={s:"stop",id:id,ph:has?"story":"drill",i:0,step:0,g:0,typed:"",bad:0,miss:0,pick:null,q:null,
-    why:{},topicFrom:lastTopic};
+    why:{},open:{},topicFrom:lastTopic};
  if(!has) newQ();
  S.at={id:id,ph:V.ph,i:0}; save();
  render();
@@ -3328,7 +4240,7 @@ function phaseBar(now){
 }
 /* ---------- the four phases ---------- */
 function stopHTML(){
- const s=byId(V.id), T2=TEACH[s.g];
+ const s=byId(V.id), T2=EX(s);
  if(V.ph==="story"||V.ph==="watch") return lessonHTML(s,T2);
  if(V.ph==="guided") return guidedHTML(s,T2);
  if(V.ph==="done")   return doneHTML(s);
@@ -3362,8 +4274,8 @@ const mmss=n=>Math.floor(n/60)+":"+String(n%60).padStart(2,"0");
    at a time, then the buttons. The bare steps moved into practice, where a
    child halfway through a question actually wants them. */
 function lessonHTML(s,T2){
- const story=T2.story.slice(0,2);
- const src=(VIDEO[s.g]||{})[L];
+ const story=T2.isL2?[{em:T2.story[0].em,en:s.t_en,fr:s.t_fr}]:T2.story.slice(0,2);
+ const src=T2.isL2?null:(VIDEO[s.g]||{})[L];
  const back=V.resumeAt!==undefined;
  const written=`<h2 class="lh">${esc(t("situation"))}</h2>
   ${story.map(c=>`<div class="card story"><div class="storyem">${c.em}</div>
@@ -3385,6 +4297,7 @@ function lessonHTML(s,T2){
      ? `<button class="linkbtn readit" onclick="toggleRead()">${esc(t("hideit"))}</button>${written}`
      : `<button class="go2 quiet readit" onclick="toggleRead()">${esc(t("readit"))}</button>`)
    :written}
+  ${extrasHTML(TEACH[s.g])}
   <button class="go2" onclick="toGuided()">${esc(back?t("backq"):t("trywith"))}</button>
   ${back?"":`<button class="go2 quiet" onclick="skipTeach()">${esc(t("iknow"))}</button>`}</div>`;
 }
@@ -3394,28 +4307,63 @@ function lessonHTML(s,T2){
 function exampleHTML(s,T2){
  const n=T2.steps.length, upto=Math.min(V.step||0,n-1), last=upto>=n-1;
  return `<div class="card lesson ex" id="ex">
-  <div class="qmid num">${esc(T2.show)}</div>
-  ${ART[s.g]?`<div class="artbox">${ART[s.g](upto)}</div>`:""}
+  <div class="qmid num">${esc(showOf(T2))}</div>
+  ${T2.isL2?(T2.pic&&(QART[T2.pic.ask]||QART[s.g])?`<div class="artbox">${(QART[T2.pic.ask]||QART[s.g])(T2.pic)}</div>`:"")
+    :ART[s.g]?`<div class="artbox">${ART[s.g](upto)}</div>`:""}
   <div class="exsteps">${T2.steps.slice(0,upto+1).map((st,i)=>{
    const open=!!(V.why||{})[i];
    return `<button class="sbtn${i<upto?" old":""}" onclick="showWhy(${i})" aria-expanded="${open}">
-    <b class="num">${esc(st.line)}</b><span>${esc(st[L]||st.en)}</span>
+    <b class="num">${esc(lineOf(st))}</b><span>${esc(st[L]||st.en)}</span>
     ${open?`<i>${esc(w(st,"why"))}</i>`:(i===upto?`<small>${esc(t("tapwhy"))}</small>`:"")}</button>`;
   }).join("")}</div>
   ${last?"":`<div class="exnav"><button class="go2" onclick="stepNext()">${esc(t("nextstep"))}</button>
    <button class="linkbtn" onclick="allSteps()">${esc(t("allsteps"))}</button></div>`}
  </div>`;
 }
-function allSteps(){ V.step=TEACH[byId(V.id).g].steps.length-1; render(); }
+function allSteps(){ V.step=EX(byId(V.id)).steps.length-1; render(); }
+/* ---- v15: after the main example ----
+   Another one, folded away for a child who wants it; a word problem shown as
+   the test would ask it, with the working behind a tap so they can think
+   first; and a short worked attempt with one wrong line to find. */
+function stepsList(steps,key){
+ return `<div class="exsteps">${steps.map((st,i)=>{ const k=key+i, open=!!(V.why||{})[k];
+  return `<button class="sbtn" onclick="showWhy('${k}')" aria-expanded="${open}">
+   <b class="num">${esc(lineOf(st))}</b><span>${esc(st[L]||st.en)}</span>
+   ${open?`<i>${esc(w(st,"why"))}</i>`:""}</button>`; }).join("")}</div>`;
+}
+function extrasHTML(T2){
+ if(!T2) return "";
+ const op=V.open||{}; let h="";
+ const ex=(T2.examples||[])[0];
+ if(ex) h+=`<button class="fold" onclick="openX('ex')" aria-expanded="${!!op.ex}">${esc(t("another"))}
+   <small class="num">${op.ex?esc(t("hide")):(showOf(ex).length>16?"":esc(showOf(ex))+" ")+"\u25be"}</small></button>
+  ${op.ex?`<div class="card lesson ex"><div class="qmid num">${esc(showOf(ex))}</div>${stepsList(ex.steps,"x")}</div>`:""}`;
+ const wd=T2.word;
+ if(wd) h+=`<h2 class="lh">${esc(t("inword"))}</h2>
+  <div class="card lesson ex"><p class="wq">${esc(wd[L]||wd.en)}</p>
+   ${op.word?`<div class="qmid num">${esc(showOf(wd))}</div>${stepsList(wd.steps,"w")}`
+    :`<button class="go2 quiet small" onclick="openX('word')">${esc(t("showhow"))}</button>`}</div>`;
+ const m=T2.mistake;
+ if(m){ const lines=m["lines_"+L]||m.lines, found=V.mk===m.wrong;
+  h+=`<h2 class="lh">${esc(t("spot"))}</h2><p class="lhsub">${esc(t("spotsub"))}</p>
+  <div class="card lesson ex"><div class="mlines">${lines.map((ln,i)=>{
+    const cls=found&&i===m.wrong?" bad":(V.mk===i&&i!==m.wrong?" nope":"");
+    return `<button class="mline num${cls}" onclick="spot(${i})">${esc(ln)}</button>`; }).join("")}</div>
+   ${found?`<div class="note fixnote"><b>${esc(t("found"))}</b> ${esc(w(m,"fix"))}</div>`
+    :V.mk!==undefined?`<p class="hint" style="margin-top:8px">${esc(t("notthat"))}</p>`:""}</div>`; }
+ return h;
+}
+function openX(k){ if(!V.open) V.open={}; V.open[k]=!V.open[k]; render(); }
+function spot(i){ V.mk=i; render(); }
 function toggleRead(){ V.read=!V.read; render(); }
 /* The bare steps, for a glance mid-question. Closed until asked for. */
 function peekHTML(T2){
  if(!T2) return "";
  if(!V.peek) return `<button class="linkbtn peekbtn" onclick="togglePeek()">${esc(t("peek"))}</button>`;
  return `<div class="card peekcard" id="peek"><div class="peekhead">
-   <div class="qmid num">${esc(T2.show)}</div>
+   <div class="qmid num">${esc(showOf(T2))}</div>
    <button class="linkbtn" onclick="togglePeek()">${esc(t("close"))}</button></div>
-  <ol class="rsteps">${T2.steps.map(st=>`<li class="num">${esc(st.line)}</li>`).join("")}</ol></div>`;
+  <ol class="rsteps">${T2.steps.map(st=>`<li class="num">${esc(lineOf(st))}</li>`).join("")}</ol></div>`;
 }
 function togglePeek(){ V.peek=!V.peek; if(V.peek){ V.focus="peek"; V.near=true; } render(); }
 function seekTo(sec){
@@ -3431,7 +4379,7 @@ function showWhy(i){ if(!V.why) V.why={}; V.why[i]=!V.why[i]; render(); }
    out in full and scrolled to, so the child lands on the method rather than on
    the story they have already read. */
 function backToWatch(){ const keep=V.i, s=byId(V.id); V.ph="watch"; V.why={}; V.resumeAt=keep;
- V.step=TEACH[s.g].steps.length-1; V.read=true;
+ V.step=EX(s).steps.length-1; V.read=true;
  if(!(VIDEO[s.g]||{})[L]) V.focus="ex";
  S.at={id:V.id,ph:"watch",i:0}; save(); render(); }
 function toGuided(){
@@ -3443,7 +4391,7 @@ function toGuided(){
 function guidedHTML(s,T2){
  const g=T2.guided, q=g.steps[Math.min(V.g,g.steps.length-1)];
  return `<div class="wrap"><p class="step">${esc(s[L]||s.en)}</p>${phaseBar(1)}
-  <div class="card">${g.show?`<div class="qmid num">${esc(g.show)}</div>`:""}
+  <div class="card">${g.show?`<div class="qmid num">${esc(showOf(g))}</div>`:""}
    <div class="steps">${g.steps.slice(0,V.g).map(x=>
      `<div class="stepline done"><b class="num">${esc(x.a)}</b><span>${esc(w(x,"ask"))}</span></div>`).join("")}</div>
    <p class="guideq">${esc(w(q,"ask"))}</p>
@@ -3471,7 +4419,7 @@ function pvMark(q){
    picture gets a child started and the rest they do as the test will ask.
    The reveal always shows it. */
 /* v14 helpers for the question drawings */
-const nums=q=>(String(q.show).replace(/\u2009/g,"").match(/\d+(\.\d+)?/g)||[]).map(Number);
+const nums=q=>(String(q.show).replace(/(\d)[ \u2009\u00a0](?=\d{3}(?!\d))/g,"$1").match(/\d+(\.\d+)?/g)||[]).map(Number);
 const QSVG=(w,h,inner,label)=>`<svg class="qart" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img"${label?` aria-label="${esc(wl(label))}"`:""}>${inner}</svg>`;
 const PVHEAD=n=>["100 000","10 000","1000","100","10","1"].slice(-n);
 const QART={
@@ -3665,7 +4613,7 @@ const QART={
  decAdd(q){ const [a,b]=q.show.split(" + ");
   return QSVG(220,110,pvColumns([a,b,""],"show",{},{x:220-COLW([a,b])*28-30,y:34,cw:28,op:"+",rule:2}),
    Lb("The two decimals with their points lined up","Les deux décimaux avec les virgules alignées")); },
- decMul(q){ const [a,b]=q.show.split(" × "), w=Math.round(+a*10);
+ decMul(q){ const [a,b]=q.show.split(" × "), w=+a.replace(".","");
   return QSVG(250,64,pvColumns([a],"cover",{},{x:30,y:44,fs:24})+tx(120,32,`${w} × ${b}`,{a:"start",c:C.on,b:true,fs:14})+
    tx(120,50,Lb("then put the point back","puis remets la virgule"),{a:"start",fs:10}),
    Lb(`${a} with the point covered`,`${a} avec la virgule cachée`)); },
@@ -3725,8 +4673,8 @@ function revealHTML(q,s,canBack){
 /* It sits at the TOP of the card, with the way out inside it. Under the
    keypad it was below the bottom of a phone screen, so a child who had
    missed twice pressed \u2713 and saw nothing change. */
-function stuckNote(g,giveFn,extra){
- const T2=TEACH[g], n=T2?T2.steps.length:0, hit=V.trap;
+function stuckNote(s,giveFn,extra){
+ const T2=EX(s), n=T2?T2.steps.length:0, hit=V.trap;
  const txt = (hit!==undefined&&typeof hit==="object") ? wl(hit)
   : T2 ? w(T2.steps[Math.min(typeof hit==="number"?hit:n-1,n-1)],"why") : "";
  return `<div class="note stuck">${txt?`<span>${esc(t("look"))} \u2014 ${esc(txt)}</span>`:""}
@@ -3750,7 +4698,7 @@ function drillHTML(s){
      their own rectangle, their own jump across zero. */
   body=qHead(q,s,V.i<2)+keypad();
  }
- const T2=TEACH[s.g];
+ const T2=EX(s);
  return `<div class="wrap"><p class="step">${who} ${esc(s[L]||s.en)} \u00b7 ${V.i+1} ${esc(t("of"))} ${s.n}</p>
   ${T2?phaseBar(2):""}
   ${!V.shown&&V.i===0&&TRAP[s.g]?`<div class="trap">\u26a0\ufe0f ${esc(TRAP[s.g][L]||TRAP[s.g].en)}</div>`:""}
@@ -3762,7 +4710,7 @@ function drillHTML(s){
   ${""/* v7: a learner missing these repeatedly is sent back to the explainer
        for this subtopic. This is why the videos are indexed by subtopic rather
        than sitting in a playlist. */}
-  <div class="card">${!V.shown&&V.miss>=2?stuckNote(s.g,"giveUp",V.bad>=3?againBtn(s):""):""}
+  <div class="card">${!V.shown&&V.miss>=2?stuckNote(s,"giveUp",V.bad>=3?againBtn(s):""):""}
   ${V.shown?revealHTML(q,s,true):body+peekHTML(T2)}
   ${!V.shown&&V.miss<2&&V.bad>=3?againBtn(s):""}
   <div class="tally">${dots}</div></div>
@@ -3807,7 +4755,7 @@ function check(){
  if(V.typed==="")return;
  V.said=null;
  if(V.ph==="guided"){
-  const steps=TEACH[byId(V.id).g].guided.steps;
+  const steps=EX(byId(V.id)).guided.steps;
   if(norm(V.typed)===norm(steps[V.g].a)){
    V.g++; V.typed=""; V.miss=0;
    if(V.g>=steps.length){ V.ph="drill"; V.i=0; V.bad=0; newQ();
