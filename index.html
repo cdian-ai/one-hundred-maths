@@ -2602,6 +2602,168 @@ Object.assign(GEN,{
  },
 });
 
+/* ================= v2: the teaching for the new parts =================
+   The same shape as TEACH: two lines of situation, the worked example (show),
+   and its steps, each with the reason behind it. This is what the video says:
+   scripts/ks2-video-scripts-v2.csv is generated from it, so a film and its part
+   can't drift apart. Keyed by part id. TEACHX holds the extra steps for parts
+   that widened an original subtopic, added after that film's own steps. */
+const TEACH2={
+"np.0":{story:[{em:"🚶",en:"Hawaa counts the steps up a hill in sevens: 7, 14, 21."},{em:"🌡️",en:"Overnight, the temperature drops 4 degrees every hour, from 6 degrees, down past zero."}],show:"6, 2, −2, ☐",
+ steps:[{line:"6 − 2 = 4",en:"Find the step: each number is 4 less than the one before.",why_en:"A sequence is a rule, used again and again. Find the rule first."},
+  {line:"−2 − 4 = −6",en:"Keep taking 4 away, even below zero.",why_en:"From −2, count 4 more down the number line: −3, −4, −5, −6."},
+  {line:"☐ = −6",en:"The missing number is −6.",why_en:"Check it: −6 is 4 less than −2."}]},
+"np.2":{story:[{em:"🏛️",en:"An old clock in Freetown has Roman numerals instead of numbers."},{em:"📜",en:"Films show the year they were made in Roman numerals too: MMXXVI."}],show:"XLIV",
+ steps:[{line:"XL = 40",en:"X is 10 and L is 50. X before L means 50 take away 10.",why_en:"A smaller letter before a bigger one is taken away. That is the only trick."},
+  {line:"IV = 4",en:"I before V means 5 take away 1.",why_en:"IV, IX, XL, XC, CD and CM are the six take-away pairs."},
+  {line:"XLIV = 44",en:"Add the parts: 40 and 4 make 44.",why_en:"Read left to right in chunks, then add the chunks."}]},
+"np.6":{story:[{em:"❄️",en:"In Labé it was −3 degrees before dawn. By noon it was 18 degrees."},{em:"📰",en:"A newspaper says 42,000 people came to the match. The real number was 41,768."}],show:"−3°C → 18°C",
+ steps:[{line:"−3 → 0 is 3",en:"Count up from −3 to zero: that is 3 degrees.",why_en:"Zero is a stepping stone. Getting there first makes the sum easy."},
+  {line:"0 → 18 is 18",en:"Then count on from zero to 18.",why_en:"Above zero it is ordinary counting."},
+  {line:"3 + 18 = 21",en:"Together the temperature rose 21 degrees.",why_en:"Rise is always counted going up, so the answer is positive."}]},
+"calc.0":{story:[{em:"🛒",en:"Mariama has £4,600 saved and adds £2,700 more."},{em:"🧠",en:"There is no need for columns. These numbers are friendly."}],show:"3,999 + 2,450",
+ steps:[{line:"3,999 ≈ 4,000",en:"3,999 is one less than 4,000.",why_en:"Numbers just below a round number are easier to round, then fix."},
+  {line:"4,000 + 2,450 = 6,450",en:"Add the round number.",why_en:"Adding thousands is quick in your head."},
+  {line:"6,450 − 1 = 6,449",en:"Take the 1 back off.",why_en:"You added one too many, so take it away again."}]},
+"calc.2":{story:[{em:"🧾",en:"A shopkeeper adds up a bill: £3,189 + £2,906. Is £6,095 right?"},{em:"🔍",en:"A quick estimate catches big mistakes, and the inverse proves the answer."}],show:"3,189 + 2,906",
+ steps:[{line:"≈ 3,200 + 2,900",en:"Round each number to the nearest hundred.",why_en:"Rounded numbers are easy to add in your head."},
+  {line:"≈ 6,100",en:"The answer should be about 6,100.",why_en:"6,095 is close to 6,100, so it is sensible."},
+  {line:"6,095 − 2,906 = 3,189",en:"Check it exactly: take one number back off.",why_en:"Taking away undoes adding. If you get back where you started, the answer is right."}]},
+"calc.3":{story:[{em:"🏟️",en:"A stadium holds 48,500 people. 31,276 tickets are sold."},{em:"❓",en:"The question asks how many seats are left."}],show:"48,500 − 31,276",
+ steps:[{line:"left = take away",en:"Seats left means the total take away the seats sold.",why_en:"Look for the words that tell you which operation: left, more, fewer, altogether."},
+  {line:"48,500 − 31,276 = 17,224",en:"Use column subtraction.",why_en:"Line up the places and exchange where you need to."},
+  {line:"17,224 + 31,276 = 48,500 ✓",en:"Check by adding back.",why_en:"The inverse proves it."}]},
+"calc.8":{story:[{em:"🚌",en:"125 children are going on a trip to Kinkon. Each coach holds 40."},{em:"🤔",en:"125 ÷ 40 doesn’t come out exactly. What do you do with the leftover?"}],show:"125 ÷ 40",
+ steps:[{line:"125 ÷ 40 = 3 r 5",en:"Three coaches hold 120 children, and 5 are left over.",why_en:"The remainder is real people, not a number to ignore."},
+  {line:"5 children still need a seat",en:"So you need another coach.",why_en:"When everyone must fit, round up."},
+  {line:"4 coaches",en:"4 coaches are needed.",why_en:"If the question were how many full coaches, the answer would be 3. Read what it asks."}]},
+"fdp.0":{story:[{em:"🍕",en:"Alfaa cuts a pizza into 8 slices and eats 4. Sara cuts hers into 2 and eats 1."},{em:"⚖️",en:"They ate the same amount: 4/8 and 1/2 are equivalent."}],show:"12/18",
+ steps:[{line:"12 and 18 ÷ 6",en:"Find the biggest number that goes into both: 6.",why_en:"Dividing top and bottom by the same number keeps the fraction the same size."},
+  {line:"12 ÷ 6 = 2, 18 ÷ 6 = 3",en:"Divide the top and the bottom by 6.",why_en:"Do the same to both, always."},
+  {line:"12/18 = 2/3",en:"2/3 is the simplest form.",why_en:"Nothing else goes into 2 and 3, so it can’t be simplified further."}]},
+"fdp.1":{story:[{em:"🥤",en:"Two cups of juice: one is 3/4 full, the other is 5/8 full."},{em:"👀",en:"Which has more? The bottoms are different, so you can’t just look at the tops."}],show:"3/4 or 5/8",
+ steps:[{line:"3/4 = 6/8",en:"Change 3/4 into eighths: multiply top and bottom by 2.",why_en:"Fractions are easy to compare when their bottoms match."},
+  {line:"6/8 > 5/8",en:"Now compare the tops: 6 is more than 5.",why_en:"Same-sized pieces, so more pieces means more juice."},
+  {line:"3/4 is greater",en:"So 3/4 is the greater fraction.",why_en:"A bigger bottom number means smaller pieces, not a bigger fraction."}]},
+"fdp.5":{story:[{em:"💷",en:"Three quarters of a pound is 75p, which is £0.75."},{em:"➗",en:"A fraction is a division waiting to happen."}],show:"3/8",
+ steps:[{line:"3/8 = 3 ÷ 8",en:"The fraction line means divide.",why_en:"Top divided by bottom always gives the decimal."},
+  {line:"3 ÷ 8 = 0.375",en:"Use short division: 3.000 ÷ 8.",why_en:"Add zeros after the decimal point until it divides exactly."},
+  {line:"3/8 = 0.375",en:"So 3/8 is 0.375.",why_en:"Learn the common ones: 1/2 = 0.5, 1/4 = 0.25, 1/5 = 0.2, 1/8 = 0.125."}]},
+"fdp.6":{story:[{em:"🏃",en:"Usumaani runs 100 metres in 14.36 seconds."},{em:"📋",en:"The results board shows times to one decimal place."}],show:"14.36 → 1 dp",
+ steps:[{line:"14.3|6",en:"One decimal place: draw a line after the tenths.",why_en:"Everything after the line will go."},
+  {line:"6 ≥ 5",en:"Look at the next digit: 6. It is 5 or more.",why_en:"5 or more rounds up, less than 5 stays."},
+  {line:"14.4",en:"Round the tenths up: 14.4 seconds.",why_en:"Never just cut the number off: 14.3 would be wrong."}]},
+"fdp.7":{story:[{em:"🥇",en:"In the long jump, Hawaa jumps 3.6 metres and Ama jumps 3.58 metres."},{em:"🤷",en:"3.58 has more digits. Does that mean it’s further?"}],show:"3.6 or 3.58",
+ steps:[{line:"3.60 and 3.58",en:"Give them the same number of decimal places.",why_en:"Adding a zero at the end doesn’t change a decimal."},
+  {line:"6 tenths > 5 tenths",en:"Compare place by place: the ones match, then the tenths.",why_en:"The first place that differs decides it."},
+  {line:"3.6 is greater",en:"Hawaa jumped further.",why_en:"More digits doesn’t mean bigger."}]},
+"meas.0":{story:[{em:"🧺",en:"Three bags of rice weigh 1.2 kg, 950 g and 1,150 g."},{em:"🔄",en:"They use different units, so change them all to the same one first."}],show:"1.2 kg, 950 g, 1,150 g",
+ steps:[{line:"1.2 kg = 1,200 g",en:"Change kilograms to grams: × 1,000.",why_en:"1 kg is 1,000 g."},
+  {line:"1,200, 950, 1,150",en:"Now they are all in grams.",why_en:"Same unit, so you can compare the numbers."},
+  {line:"1.2 kg is heaviest",en:"1,200 g is the largest.",why_en:"Always give the answer in the form the question used."}]},
+"meas.1":{story:[{em:"⚖️",en:"Mariama weighs flour on a kitchen scale. The pointer is between two numbers."},{em:"📏",en:"The trick is to work out what each little mark is worth."}],show:"0 to 100, 5 gaps",
+ steps:[{line:"100 ÷ 5 = 20",en:"Between 0 and 100 there are 5 gaps, so each mark is 20.",why_en:"Count the gaps, not the marks."},
+  {line:"3 marks past 0",en:"The pointer is 3 marks along.",why_en:"Count from the last numbered mark."},
+  {line:"3 × 20 = 60",en:"So it reads 60 grams.",why_en:"Check it sits between the labelled numbers."}]},
+"meas.2":{story:[{em:"📚",en:"Alfaa buys a book for £3.45 and a pen for £1.80."},{em:"💵",en:"He pays with a £10 note. How much change?"}],show:"£10 − (£3.45 + £1.80)",
+ steps:[{line:"£3.45 + £1.80 = £5.25",en:"Add the prices, lining up the decimal points.",why_en:"Pounds under pounds, pence under pence."},
+  {line:"£10.00 − £5.25",en:"Write £10 as £10.00, then take away.",why_en:"The zeros hold the pence places."},
+  {line:"= £4.75",en:"His change is £4.75.",why_en:"Check: £5.25 + £4.75 = £10."}]},
+"meas.3":{story:[{em:"🚌",en:"The bus leaves Dugun at 08:50 and reaches the market at 09:35."},{em:"⏱️",en:"How long is the journey? Time doesn’t work in hundreds."}],show:"08:50 → 09:35",
+ steps:[{line:"08:50 → 09:00 = 10 min",en:"Count on to the next hour first.",why_en:"An hour has 60 minutes, so jump to the hour."},
+  {line:"09:00 → 09:35 = 35 min",en:"Then count on to the time.",why_en:"From an o’clock it’s easy to read."},
+  {line:"10 + 35 = 45 minutes",en:"The journey takes 45 minutes.",why_en:"Subtracting 850 from 935 gives 85, which is wrong: time isn’t base 10."}]},
+"meas.5":{story:[{em:"🛣️",en:"A road sign in England says Oxford 20 miles."},{em:"🚗",en:"In Guinea, distances are in kilometres. How far is that?"}],show:"20 miles",
+ steps:[{line:"5 miles ≈ 8 km",en:"Remember: 5 miles is about 8 kilometres.",why_en:"The SATs give this fact or expect you to know it."},
+  {line:"20 ÷ 5 = 4",en:"20 miles is 4 lots of 5 miles.",why_en:"Find how many groups of 5."},
+  {line:"4 × 8 = 32 km",en:"So it is about 32 kilometres.",why_en:"A kilometre is shorter than a mile, so there are more of them."}]},
+"meas.8":{story:[{em:"🧃",en:"A jug holds 2 litres of juice. Hawaa pours 6 glasses of 250 ml."},{em:"🫗",en:"How much is left in the jug?"}],show:"2 l − 6 × 250 ml",
+ steps:[{line:"2 l = 2,000 ml",en:"Put everything in the same unit: millilitres.",why_en:"You can’t take millilitres from litres directly."},
+  {line:"6 × 250 = 1,500 ml",en:"Work out how much was poured.",why_en:"One step at a time."},
+  {line:"2,000 − 1,500 = 500 ml",en:"500 ml is left.",why_en:"Check the answer is less than the jug held."}]},
+"geo.0":{story:[{em:"🎲",en:"A dice is a cube. A tent can be a triangular prism."},{em:"🔢",en:"Shapes have faces, edges and vertices you can count."}],show:"a triangular prism",
+ steps:[{line:"faces: 2 + 3 = 5",en:"Two triangle ends and three rectangle sides.",why_en:"Faces are the flat surfaces."},
+  {line:"edges: 3 + 3 + 3 = 9",en:"Three round each triangle, and three joining them.",why_en:"Edges are where two faces meet."},
+  {line:"vertices: 6",en:"Three corners on each triangle.",why_en:"Vertices are the corners."}]},
+"geo.1":{story:[{em:"🪁",en:"A kite, a rhombus and a trapezium are all quadrilaterals: four sides."},{em:"📐",en:"What makes them different is their sides and angles."}],show:"a trapezium",
+ steps:[{line:"4 straight sides",en:"It is a quadrilateral.",why_en:"Count the sides first."},
+  {line:"1 pair of parallel sides",en:"Only one pair of sides are parallel.",why_en:"Parallel lines never meet, like railway lines."},
+  {line:"= trapezium",en:"One pair of parallel sides makes a trapezium.",why_en:"Two pairs would make a parallelogram."}]},
+"geo.2":{story:[{em:"📦",en:"Flatten a cereal box and you get its net: the shape that folds up into the box."},{em:"✂️",en:"Every face of the box is one piece of the net."}],show:"2 triangles + 3 rectangles",
+ steps:[{line:"2 triangles",en:"Two triangles make the two ends.",why_en:"Matching end faces mean a prism."},
+  {line:"3 rectangles",en:"Three rectangles join the ends.",why_en:"A triangle has three sides, so three rectangles."},
+  {line:"= triangular prism",en:"It folds into a triangular prism.",why_en:"Count the faces and name the end shape."}]},
+"geo.4":{story:[{em:"⭕",en:"Draw a circle with a compass. The point is the centre."},{em:"📏",en:"The radius goes from the centre to the edge. The diameter goes right across."}],show:"radius 7 cm",
+ steps:[{line:"diameter = 2 × radius",en:"The diameter is two radiuses end to end.",why_en:"It passes through the centre."},
+  {line:"2 × 7 = 14",en:"Double the radius.",why_en:"Halve the diameter to get the radius."},
+  {line:"= 14 cm",en:"The diameter is 14 cm.",why_en:"The diameter is always the longer one."}]},
+"geo.5":{story:[{em:"🦋",en:"Fold a picture of a butterfly down the middle. The halves match."},{em:"🪞",en:"The fold is a line of symmetry."}],show:"a regular hexagon",
+ steps:[{line:"corner to corner: 3",en:"Fold from each corner to the opposite corner.",why_en:"Each fold that matches is a line of symmetry."},
+  {line:"side to side: 3",en:"Fold from the middle of each side to the opposite side.",why_en:"Check every way, not just one."},
+  {line:"= 6 lines",en:"A regular hexagon has 6 lines of symmetry.",why_en:"A regular shape has as many lines as it has sides."}]},
+"geo.6":{story:[{em:"♟️",en:"A counter on a grid slides 3 squares right and 2 squares down."},{em:"🗺️",en:"That is a translation: the shape moves but doesn’t turn."}],show:"(2, 4) → 3 right, 5 down",
+ steps:[{line:"x: 2 + 3 = 5",en:"Right adds to the x-coordinate.",why_en:"x is across, the first number."},
+  {line:"y: 4 − 5 = −1",en:"Down takes away from the y-coordinate.",why_en:"y is up, the second number. It can go below zero."},
+  {line:"(5, −1)",en:"The new point is (5, −1).",why_en:"Reflection is different: in the x-axis, y changes sign; in the y-axis, x does."}]},
+"geo.7":{story:[{em:"🏙️",en:"A map of Conakry has a grid. A point is found by going across, then up."},{em:"🧭",en:"Some points are left of zero or below it."}],show:"point A",
+ steps:[{line:"across: −3",en:"Go across first: 3 to the left of zero, so −3.",why_en:"Along the corridor, then up the stairs."},
+  {line:"up/down: 2",en:"Then up: 2.",why_en:"Below the x-axis would be negative."},
+  {line:"A = (−3, 2)",en:"Write x first, then y, in brackets.",why_en:"(2, −3) would be a different point."}]},
+"ras.0":{story:[{em:"🍚",en:"Cerno’s recipe for rice for 4 people uses 300 g of rice."},{em:"👪",en:"He’s cooking for 12. How much rice?"}],show:"4 → 300 g, 12 → ?",
+ steps:[{line:"12 ÷ 4 = 3",en:"12 people is 3 times as many as 4.",why_en:"Find how many times bigger."},
+  {line:"300 × 3 = 900",en:"So use 3 times as much rice.",why_en:"Everything in the recipe scales by the same amount."},
+  {line:"= 900 g",en:"He needs 900 g of rice.",why_en:"Adding 8 to the grams would be wrong: ratios multiply."}]},
+"ras.1":{story:[{em:"📝",en:"Ama got 18 out of 25 on one test and 34 out of 50 on another."},{em:"❓",en:"Which test did she do better on? The totals are different."}],show:"18/25",
+ steps:[{line:"× 4",en:"Make the bottom 100: 25 × 4 = 100.",why_en:"Percent means out of 100."},
+  {line:"18 × 4 = 72",en:"Do the same to the top.",why_en:"Same fraction, new form."},
+  {line:"= 72%",en:"18 out of 25 is 72%. 34 out of 50 is 68%, so the first was better.",why_en:"Percentages put scores on the same scale."}]},
+"ras.2":{story:[{em:"🖼️",en:"A photo is 4 cm by 6 cm. It is enlarged by a scale factor of 3."},{em:"🔍",en:"Every side gets three times longer."}],show:"4 cm by 6 cm, × 3",
+ steps:[{line:"4 × 3 = 12",en:"Multiply the short side by 3.",why_en:"A scale factor multiplies every length."},
+  {line:"6 × 3 = 18",en:"Multiply the long side by 3.",why_en:"The same factor, every side."},
+  {line:"12 cm by 18 cm",en:"The new photo is 12 cm by 18 cm.",why_en:"To find a scale factor, divide a new side by its old side."}]},
+"ras.4":{story:[{em:"📦",en:"A crate holds 3 equal sacks of rice. With the 4 kg crate, it all weighs 19 kg."},{em:"🔤",en:"Use a letter for what you don’t know. Each sack is n kg, so 3n + 4 = 19."}],show:"3n + 4 = 19",
+ steps:[{line:"3n = 19 − 4 = 15",en:"Take away the 4 from both sides.",why_en:"Undo the last thing done to n first."},
+  {line:"n = 15 ÷ 3",en:"Then divide by 3.",why_en:"3n means 3 × n, so divide to undo it."},
+  {line:"n = 5",en:"n is 5.",why_en:"Check: 3 × 5 + 4 = 19."}]},
+"ras.6":{story:[{em:"🪑",en:"Tables in a hall: 1 table seats 6, 2 tables seat 10, 3 tables seat 14."},{em:"🔁",en:"How many seats for 20 tables? Find the rule."}],show:"6, 10, 14, …",
+ steps:[{line:"+4 each time",en:"The sequence goes up by 4.",why_en:"The step tells you the multiplier."},
+  {line:"term = 4n + 2",en:"4 × 1 = 4, and the first term is 6, so add 2.",why_en:"Test the rule on the first term."},
+  {line:"4 × 20 + 2 = 82",en:"The 20th term is 82.",why_en:"Check with the second term: 4 × 2 + 2 = 10."}]},
+"ras.8":{story:[{em:"🥪",en:"A café has 3 sandwiches and 4 drinks."},{em:"🍽️",en:"How many different meals of one sandwich and one drink?"}],show:"3 sandwiches × 4 drinks",
+ steps:[{line:"each sandwich → 4 drinks",en:"Each sandwich can go with any of the 4 drinks.",why_en:"List one row to see the pattern."},
+  {line:"3 rows of 4",en:"There are 3 sandwiches, so 3 rows.",why_en:"A table of rows and columns shows every pair."},
+  {line:"3 × 4 = 12",en:"12 different meals.",why_en:"Adding 3 + 4 would miss most of them."}]},
+"ras.9":{story:[{em:"📊",en:"A bar chart shows how many children in a class chose each fruit."},{em:"🔎",en:"The scale goes up in 2s, so not every value has a line."}],show:"bar between 6 and 8",
+ steps:[{line:"each line = 2",en:"Read the scale: each line is 2.",why_en:"Always check the scale first."},
+  {line:"halfway = 7",en:"The bar stops halfway between 6 and 8.",why_en:"Halfway between two lines is one more than the lower."},
+  {line:"= 7",en:"So 7 children chose it.",why_en:"For a pie chart, use fractions of the circle instead."}]},
+"ras.10":{story:[{em:"🏫",en:"A table shows the boys and girls at three schools."},{em:"➕",en:"The question asks how many children at Labé school altogether."}],show:"Labé: 18 boys, 24 girls",
+ steps:[{line:"find the row",en:"Find Labé in the table.",why_en:"Read across the row, not down the column."},
+  {line:"18 + 24",en:"Altogether means add the boys and girls.",why_en:"Look for the word that tells you the operation."},
+  {line:"= 42",en:"42 children altogether.",why_en:"Check you used the right row and the right numbers."}]}
+};
+const TEACHX={
+"calc.4":[{line:"6.3 × 100 = 630",en:"Multiplying by 100 moves every digit two places to the left.",why_en:"The decimal point stays; the digits move."}],
+"calc.5":[{line:"46 × 27 = 1,242",en:"For two digits, multiply by the 7, then by the 20, then add.",why_en:"The second row starts with a zero because it’s tens."}],
+"calc.6":[{line:"45 ÷ 6 = 7 r 3",en:"When it doesn’t divide exactly, what’s left is the remainder.",why_en:"The remainder is always smaller than what you divide by."}],
+"np.5":[{line:"2, 3, 5, 7, 11",en:"A prime has exactly two factors: 1 and itself.",why_en:"1 is not prime: it has only one factor."},{line:"5² = 25, 2³ = 8",en:"Squared means times itself; cubed means three of it multiplied.",why_en:"5² is not 10."}],
+"fdp.2":[{line:"2/3 − 1/6 = 4/6 − 1/6 = 3/6",en:"Taking away works the same way: make the bottoms match first.",why_en:"Never take away the bottoms."},{line:"3 1/4 − 1 3/4 = 2 5/4 − 1 3/4",en:"For mixed numbers, exchange a whole if the fraction is too small.",why_en:"One whole is 4/4, so 3 1/4 is 2 5/4."}],
+"fdp.3":[{line:"6 of 9 shaded = 6/9 = 2/3",en:"For a shape, count the shaded parts over all the equal parts.",why_en:"Then simplify if you’re asked."}],
+"fdp.4":[{line:"2/5 × 3 = 6/5",en:"Times by a whole number: multiply the top only.",why_en:"The bottom says the size of the pieces, which doesn’t change."}],
+"fdp.8":[{line:"8.4 ÷ 4 = 2.1",en:"Short division with decimals: keep the decimal point in line.",why_en:"Dividing by 10 or 100 moves the digits to the right."}],
+"fdp.9":[{line:"7.50 − 2.86 = 4.64",en:"To take away decimals, line up the points and fill gaps with zeros.",why_en:"7.5 is the same as 7.50."}],
+"fdp.10":[{line:"35% = 35/100 = 7/20",en:"A percentage is a fraction out of 100. Simplify it.",why_en:"Divide top and bottom by 5."}],
+"fdp.11":[{line:"£60 − 20% = £60 − £12 = £48",en:"For a sale price, find the percentage, then take it off.",why_en:"The amount taken off isn’t the answer."}],
+"meas.6":[{line:"2 × (8 + 5) = 26 cm",en:"Perimeter is the distance all the way round: add every side.",why_en:"Area is the space inside. Don’t mix them up."}],
+"geo.3":[{line:"360 − 120 − 150 = 90",en:"Angles around a point add up to 360°.",why_en:"A full turn is 360°."}]
+};
+Object.assign(TEACH,TEACH2);
+/* the words-per-second the original films were cut at, so jump times can be
+   worked out for a film before it exists */
+function estMarks(T2,extra){const wc=s=>String(s||"").split(/\s+/).filter(Boolean).length;
+ let t=0;const m=[];(T2.story||[]).slice(0,2).forEach(c=>{t+=Math.round(wc(c.en)/2.4)+3;});t+=3;
+ T2.steps.concat(extra||[]).forEach(st=>{m.push(t);t+=Math.round(wc(st.en+" "+(st.why_en||""))/2.4)+3;});return {marks:m,end:t};}
+
 /* ================= v2: six topics, the SATs coverage map =================
    The course used to be five "camps" in the order they were written. It is now
    the six topics of the KS2 test framework, every sub-strand in the order a
@@ -2626,7 +2788,7 @@ const TOPICS=[
   {n:"Column addition and subtraction",old:["c2.3","c2.4","c2.5","c3.7"]},
   {n:"Estimating and checking",q:[["estimate",1]],code:"4C3 / 6C8",t:"Rounding to check an answer, and using the inverse to prove it."},
   {n:"Addition and subtraction problems",q:[["asProb",1]],code:"5C4 / 6C4",t:"Choosing what to add and what to take away in a word problem."},
-  {n:"Mental multiplication and division",old:["c2.0","c2.1","c2.2","c2.9"]},
+  {n:"Mental multiplication and division",teach:"mentalPV",old:["c2.0","c2.1","c2.2","c2.9"]},
   {n:"Short and long multiplication",old:["c2.6","c3.0","c3.1"]},
   {n:"Short and long division",old:["c2.7","c2.8","c3.2","c3.3"]},
   {n:"Order of operations",old:["c3.6"]},
@@ -2742,7 +2904,7 @@ TOPICS.forEach(tp=>tp.subs.forEach((s,i)=>{
  s.code=s.code||olds.map(o=>o.code).join(" / ");
  s.t=s.t||(olds[0]&&olds[0].t_en)||"";
  s.k=s.k||10;
- s.teach=s.teach||(s.gens.map(g=>g[0]).find(g=>TEACH[g])||null);
+ s.teach=s.teach||(TEACH2[s.id]?s.id:(s.gens.map(g=>g[0]).find(g=>TEACH[g])||null));
  s.built=s.gens.length>0;
  s.gens.forEach(g=>{if(!GSUB[g[0]])GSUB[g[0]]=s.id;});
  SUBS.push(s);
@@ -2916,8 +3078,11 @@ function retry(){V.ans.fb=null;render();}
    the method now and the page looks the same when the film arrives. Every step
    has a timestamp, so the list under the player jumps straight to it. */
 const VIDEO={};   /* e.g. "calc.6":{en:"vid/longDiv-en.mp4"} */
-function capsFor(s){const T2=TEACH[s.teach];return T2?T2.steps.map(x=>enNum(x.line)+": "+x.en):[s.t,"Watch the example, then try it yourself.","Pause any time. The captions stay on."];}
-function marksFor(s){const T2=TEACH[s.teach];if(!T2)return[];const m=VMARK[s.teach]||[];return T2.steps.map((x,i)=>m[i]!=null?m[i]:Math.round(8+i*11));}
+function stepsOf(s){const T2=TEACH[s.teach];return T2?T2.steps.concat(TEACHX[s.id]||[]):[];}
+function capsFor(s){const T2=TEACH[s.teach];return T2?stepsOf(s).map(x=>enNum(x.line)+": "+x.en):[s.t,"Watch the example, then try it yourself.","Pause any time. The captions stay on."];}
+function marksFor(s){const T2=TEACH[s.teach];if(!T2)return[];const vm=VMARK[s.teach];
+ if(!vm)return estMarks(T2,TEACHX[s.id]).marks;
+ const m=T2.steps.map((x,i)=>vm[i]!=null?vm[i]:Math.round(8+i*11));(TEACHX[s.id]||[]).forEach(()=>m.push(m[m.length-1]+13));return m;}
 const mmss=n=>Math.floor(n/60)+":"+String(n%60).padStart(2,"0");
 function videoHTML(s){
  const src=(VIDEO[s.id]||{}).en;
@@ -2986,12 +3151,12 @@ sub(){
  const nextS=tp.subs[s.i+1];
  return `${eb}<h2 style="font-size:26px">${esc(s.n)}</h2>${s.t?`<p style="font-weight:700">${fmt(s.t)}</p>`:""}
   ${videoHTML(s)}<p class="hint">Watch first. About 2 minutes, with captions, and it works with the sound off.</p>
-  ${T2?`<p class="eb">Jump to a step</p><div class="jumps">${T2.steps.map((st,i)=>`<button class="jump" onclick="seekTo(${marks[i]})"><span class="jt">${mmss(marks[i])}</span><span>${esc(enNum(st.en))}</span></button>`).join("")}</div>`:""}
+  ${T2?`<p class="eb">Jump to a step</p><div class="jumps">${stepsOf(s).map((st,i)=>`<button class="jump" onclick="seekTo(${marks[i]})"><span class="jt">${mmss(marks[i])}</span><span>${esc(enNum(st.en))}</span></button>`).join("")}</div>`:""}
   ${T2&&ART[s.teach]?`<div class="artbox">${ART[s.teach](T2.steps.length-1)}</div>`:""}
-  ${T2?`<div class="card recall"><span class="eb">Quick reminder</span><div class="show">${fmt(T2.show)}</div><ol class="rsteps">${T2.steps.map(x=>`<li>${fmt(x.line)}</li>`).join("")}</ol></div>`:""}
+  ${T2?`<div class="card recall"><span class="eb">Quick reminder</span><div class="show">${fmt(T2.show)}</div><ol class="rsteps">${stepsOf(s).map(x=>`<li>${fmt(x.line)}</li>`).join("")}</ol></div>`:""}
   ${T2&&noFilm?`<div class="card"><span class="eb">How it works</span>${T2.story.slice(0,2).map(c=>`<div class="story"><span class="em">${c.em}</span><span>${esc(enNum(c.en))}</span></div>`).join("")}
-    ${T2.steps.map((st,i)=>`<div class="stepline"><b>${fmt(st.line)}</b><span>${esc(enNum(st.en))}</span>${(V.why||{})[i]?`<i>${esc(enNum(w(st,"why")))}</i>`:`<button class="whybtn" onclick="showWhy(${i})">Why?</button>`}</div>`).join("")}</div>`:""}
-  ${!T2&&s.built?exampleHTML(s):""}
+    ${stepsOf(s).map((st,i)=>`<div class="stepline"><b>${fmt(st.line)}</b><span>${esc(enNum(st.en))}</span>${(V.why||{})[i]?`<i>${esc(enNum(w(st,"why")))}</i>`:`<button class="whybtn" onclick="showWhy(${i})">Why?</button>`}</div>`).join("")}</div>`:""}
+  ${s.built&&!(T2&&T2.guided)?exampleHTML(s):""}
   ${s.built?`${T2&&T2.guided?`<button class="btn" onclick="toGuided()">Try one with help ${arrow()}</button>`:""}
     <button class="btn${T2&&T2.guided?" sec":""}" onclick="toDrill()">${T2&&T2.guided?"Go straight to the questions":"Start practice · "+s.k+" questions"} ${arrow()}</button>`
    :`<div class="card"><b>The practice for this part is being written.</b><span class="small-note">It will be here soon, with its video. The SATs questions on it come from code ${esc(s.code)}.</span></div>
@@ -3117,7 +3282,7 @@ function watchAgain(){
  const s=SUB(V.q.sub),T2=TEACH[s.teach];if(!T2)return;
  const ov=document.createElement("div");ov.className="overlay";ov.setAttribute("role","dialog");ov.setAttribute("aria-label","Watch the video again");
  ov.innerHTML=`<div class="sheet"><div class="row" style="justify-content:space-between"><b>${esc(s.n)}</b><button class="btn sec" style="width:auto;min-height:44px" onclick="this.closest('.overlay').remove();clearInterval(VT);VT=null">Back to the question</button></div>${videoHTML(s)}
-  <div class="card recall"><span class="eb">Quick reminder</span><div class="show">${fmt(T2.show)}</div><ol class="rsteps">${T2.steps.map(x=>`<li>${fmt(x.line)}</li>`).join("")}</ol></div></div>`;
+  <div class="card recall"><span class="eb">Quick reminder</span><div class="show">${fmt(T2.show)}</div><ol class="rsteps">${stepsOf(s).map(x=>`<li>${fmt(x.line)}</li>`).join("")}</ol></div></div>`;
  document.body.append(ov);vInit(s);
 }
 function doneHTML(s){

@@ -33,7 +33,14 @@ remainder key, so "143 r 3" can be typed), the drawings and the arithmetic paper
   every topic, multi-step problems worth 2 marks). New questions each time; the
   review shows the working for every miss, and the latest three add up to a
   total out of 110 against the expected standard.
-- Still to come: the videos.
+- **Every part teaches before it asks**: the 33 new parts have their own
+  situation, worked example and steps (`TEACH2`), and 13 widened parts have
+  extra steps (`TEACHX`), so every part has a reminder card, a jump list and
+  captions.
+- **Video scripts v2**: `scripts/ks2-video-scripts-v2-2026-10-30.csv`, one film
+  per part, generated from that teaching: 33 new, 13 to re-record (the old film
+  plus the new steps), 11 already made. Attach a film with
+  `VIDEO["fdp.1"] = { en:"vid/fdp-1-en.mp4" }`.
 
 ## What it is built from
 

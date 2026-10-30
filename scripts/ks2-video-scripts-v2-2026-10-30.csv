@@ -1,0 +1,415 @@
+video_id,language,part_id,part,status,timecode,section,line
+np-0-en,en,np.0,Counting in steps and multiples,new,0:00,the situation,"Hawaa counts the steps up a hill in sevens: 7, 14, 21."
+np-0-en,en,np.0,Counting in steps and multiples,new,0:08,why it matters,"Overnight, the temperature drops 4 degrees every hour, from 6 degrees, down past zero."
+np-0-en,en,np.0,Counting in steps and multiples,new,0:17,into the method,Here is how to do it.
+np-0-en,en,np.0,Counting in steps and multiples,new,0:20,step 1 — 6 − 2 = 4,"Find the step: each number is 4 less than the one before. A sequence is a rule, used again and again. Find the rule first."
+np-0-en,en,np.0,Counting in steps and multiples,new,0:33,step 2 — −2 − 4 = −6,"Keep taking 4 away, even below zero. From −2, count 4 more down the number line: −3, −4, −5, −6."
+np-0-en,en,np.0,Counting in steps and multiples,new,0:44,step 3 — ☐ = −6,The missing number is −6. Check it: −6 is 4 less than −2.
+np-0-en,en,np.0,Counting in steps and multiples,new,0:52,close,That is the whole method. Try one yourself.
+pvDigit-en,en,np.1,Numbers to 10 million,reuse,0:00,the situation,"A stadium says 352,741 people came this season. Someone asks: is that a lot of 5s?"
+pvDigit-en,en,np.1,Numbers to 10 million,reuse,0:10,why it matters,There is one 5 in that number. But it is not worth five. It is worth fifty thousand.
+pvDigit-en,en,np.1,Numbers to 10 million,reuse,0:21,into the method,Here is how to do it.
+pvDigit-en,en,np.1,Numbers to 10 million,reuse,0:24,step 1 — 3 5 2   7 4 1,"Count the places from the right: ones, tens, hundreds, thousands, ten thousands, hundred thousands. Always from the right. The right-hand end is where counting starts."
+pvDigit-en,en,np.1,Numbers to 10 million,reuse,0:37,step 2 — 5 is in the ten thousands,"The 5 is the fifth place along, which is ten thousands. Each step left multiplies by ten. That is the whole idea of place value."
+pvDigit-en,en,np.1,Numbers to 10 million,reuse,0:50,"step 3 — 5 × 10,000 = 50,000","So the 5 is worth 50,000. Same digit, different place, different worth. Move it and the number changes completely."
+pvDigit-en,en,np.1,Numbers to 10 million,reuse,1:01,close,That is the whole method. Try one yourself.
+np-2-en,en,np.2,Place value and Roman numerals,new,0:00,the situation,An old clock in Freetown has Roman numerals instead of numbers.
+np-2-en,en,np.2,Place value and Roman numerals,new,0:08,why it matters,Films show the year they were made in Roman numerals too: MMXXVI.
+np-2-en,en,np.2,Place value and Roman numerals,new,0:16,into the method,Here is how to do it.
+np-2-en,en,np.2,Place value and Roman numerals,new,0:19,step 1 — XL = 40,X is 10 and L is 50. X before L means 50 take away 10. A smaller letter before a bigger one is taken away. That is the only trick.
+np-2-en,en,np.2,Place value and Roman numerals,new,0:35,step 2 — IV = 4,"I before V means 5 take away 1. IV, IX, XL, XC, CD and CM are the six take-away pairs."
+np-2-en,en,np.2,Place value and Roman numerals,new,0:46,step 3 — XLIV = 44,"Add the parts: 40 and 4 make 44. Read left to right in chunks, then add the chunks."
+np-2-en,en,np.2,Place value and Roman numerals,new,0:57,close,That is the whole method. Try one yourself.
+pvRound-en,en,np.3,Rounding and estimating,reuse,0:00,the situation,"A school trip needs coaches. 187 children are going, and each coach holds 50."
+pvRound-en,en,np.3,Rounding and estimating,reuse,0:09,why it matters,Nobody says “about 187”. They say “about 200”. Rounding is saying a number the way people actually say it.
+pvRound-en,en,np.3,Rounding and estimating,reuse,0:20,into the method,Here is how to do it.
+pvRound-en,en,np.3,Rounding and estimating,reuse,0:23,step 1 — look at the hundreds: 4,"To round to the nearest thousand, look at the digit one place to the right. That digit is the whole decision. Nothing to the right of it matters at all."
+pvRound-en,en,np.3,Rounding and estimating,reuse,0:39,step 2 — 4 is less than 5 → stay,"4 is less than 5, so the thousands stay as they are. It is nearer 3000 than 4000, and that is all rounding means: which is it closer to."
+pvRound-en,en,np.3,Rounding and estimating,reuse,0:54,"step 3 — 3,472 → 3,000","Everything after the thousands becomes zero. You are not deleting the digits, you are saying the number to the nearest thousand."
+pvRound-en,en,np.3,Rounding and estimating,reuse,1:06,close,That is the whole method. Try one yourself.
+pvNeg-en,en,np.4,Negative numbers,reuse,0:00,the situation,It was 3 degrees at breakfast. By night it had dropped to 5 below zero.
+pvNeg-en,en,np.4,Negative numbers,reuse,0:09,why it matters,"How far did it fall? Not 2. It fell 3 to reach zero, then 5 more. Eight."
+pvNeg-en,en,np.4,Negative numbers,reuse,0:19,into the method,Here is how to do it.
+pvNeg-en,en,np.4,Negative numbers,reuse,0:22,step 1 — count up to zero: 5,From −5 up to 0 is five steps. Zero is the meeting point. Always go there first and the sign stops confusing you.
+pvNeg-en,en,np.4,Negative numbers,reuse,0:35,step 2 — then on to 3: 3,From 0 up to 3 is three more. The second half is ordinary counting. The minus sign was only ever in the first half.
+pvNeg-en,en,np.4,Negative numbers,reuse,0:48,step 3 — 5 + 3 = 8,"Add the two halves: the gap is 8. Never subtract the two numbers. −5 and 3 are 8 apart, not 2."
+pvNeg-en,en,np.4,Negative numbers,reuse,1:00,close,That is the whole method. Try one yourself.
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,0:00,the situation,24 tiles. Can you lay them in a perfect rectangle?
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,0:07,why it matters,"1×24, 2×12, 3×8, 4×6. Every rectangle you can make gives you two factors."
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,0:15,into the method,Here is how to do it.
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,0:18,step 1 — 1 × 24,Start at 1. Every number has 1 and itself. Working in pairs means you never miss one and never repeat one.
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,0:30,"step 2 — 2 × 12,  3 × 8,  4 × 6","Try 2, then 3, then 4. Each that works gives a pair. Stop when the pair crosses over. After 4×6 comes 6×4, which you already have."
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,0:44,step 3 — 1 2 3 4 6 8 12 24,Eight factors. 5 is missing because 24 tiles will not make a rectangle five wide.
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,0:53,"step 4 — 2, 3, 5, 7, 11",A prime has exactly two factors: 1 and itself. 1 is not prime: it has only one factor.
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,1:04,"step 5 — 5² = 25, 2³ = 8",Squared means times itself; cubed means three of it multiplied. 5² is not 10.
+np-5-en,en,np.5,"Multiples, factors, primes, squares and cubes",re-record,1:13,close,That is the whole method. Try one yourself.
+np-6-en,en,np.6,Number problems,new,0:00,the situation,In Labé it was −3 degrees before dawn. By noon it was 18 degrees.
+np-6-en,en,np.6,Number problems,new,0:09,why it matters,"A newspaper says 42,000 people came to the match. The real number was 41,768."
+np-6-en,en,np.6,Number problems,new,0:18,into the method,Here is how to do it.
+np-6-en,en,np.6,Number problems,new,0:21,step 1 — −3 → 0 is 3,Count up from −3 to zero: that is 3 degrees. Zero is a stepping stone. Getting there first makes the sum easy.
+np-6-en,en,np.6,Number problems,new,0:33,step 2 — 0 → 18 is 18,Then count on from zero to 18. Above zero it is ordinary counting.
+np-6-en,en,np.6,Number problems,new,0:41,step 3 — 3 + 18 = 21,"Together the temperature rose 21 degrees. Rise is always counted going up, so the answer is positive."
+np-6-en,en,np.6,Number problems,new,0:51,close,That is the whole method. Try one yourself.
+calc-0-en,en,calc.0,Mental addition and subtraction,new,0:00,the situation,"Mariama has £4,600 saved and adds £2,700 more."
+calc-0-en,en,calc.0,Mental addition and subtraction,new,0:06,why it matters,There is no need for columns. These numbers are friendly.
+calc-0-en,en,calc.0,Mental addition and subtraction,new,0:13,into the method,Here is how to do it.
+calc-0-en,en,calc.0,Mental addition and subtraction,new,0:16,"step 1 — 3,999 ≈ 4,000","3,999 is one less than 4,000. Numbers just below a round number are easier to round, then fix."
+calc-0-en,en,calc.0,Mental addition and subtraction,new,0:27,"step 2 — 4,000 + 2,450 = 6,450",Add the round number. Adding thousands is quick in your head.
+calc-0-en,en,calc.0,Mental addition and subtraction,new,0:35,"step 3 — 6,450 − 1 = 6,449","Take the 1 back off. You added one too many, so take it away again."
+calc-0-en,en,calc.0,Mental addition and subtraction,new,0:44,close,That is the whole method. Try one yourself.
+colAdd-en,en,calc.1,Column addition and subtraction,reuse,0:00,the situation,"Two market stalls counted their takings: 2,456 and 1,837."
+colAdd-en,en,calc.1,Column addition and subtraction,reuse,0:07,why it matters,Too big to do in your head. Line them up so ones sit under ones.
+colAdd-en,en,calc.1,Column addition and subtraction,reuse,0:16,into the method,Here is how to do it.
+colAdd-en,en,calc.1,Column addition and subtraction,reuse,0:20,"step 1 — 6 + 7 = 13, write 3 carry 1","Start at the right. 13 is too big for one column. Only one digit fits in each column. The ten goes next door, where tens live."
+colAdd-en,en,calc.1,Column addition and subtraction,reuse,0:34,step 2 — 5 + 3 + 1 = 9,"Now the tens, and do not forget the one you carried. The carried digit is a real ten. Leaving it out loses ten from the answer."
+colAdd-en,en,calc.1,Column addition and subtraction,reuse,0:48,"step 3 — 4+8=12, 2+1=3 → 4,293","Carry on left. The answer is 4,293. Check it roughly: 2500 and 1800 is about 4300. It is."
+colAdd-en,en,calc.1,Column addition and subtraction,reuse,0:59,close,That is the whole method. Try one yourself.
+calc-2-en,en,calc.2,Estimating and checking,new,0:00,the situation,"A shopkeeper adds up a bill: £3,189 + £2,906. Is £6,095 right?"
+calc-2-en,en,calc.2,Estimating and checking,new,0:08,why it matters,"A quick estimate catches big mistakes, and the inverse proves the answer."
+calc-2-en,en,calc.2,Estimating and checking,new,0:16,into the method,Here is how to do it.
+calc-2-en,en,calc.2,Estimating and checking,new,0:19,"step 1 — ≈ 3,200 + 2,900",Round each number to the nearest hundred. Rounded numbers are easy to add in your head.
+calc-2-en,en,calc.2,Estimating and checking,new,0:29,"step 2 — ≈ 6,100","The answer should be about 6,100. 6,095 is close to 6,100, so it is sensible."
+calc-2-en,en,calc.2,Estimating and checking,new,0:38,"step 3 — 6,095 − 2,906 = 3,189","Check it exactly: take one number back off. Taking away undoes adding. If you get back where you started, the answer is right."
+calc-2-en,en,calc.2,Estimating and checking,new,0:51,close,That is the whole method. Try one yourself.
+calc-3-en,en,calc.3,Addition and subtraction problems,new,0:00,the situation,"A stadium holds 48,500 people. 31,276 tickets are sold."
+calc-3-en,en,calc.3,Addition and subtraction problems,new,0:07,why it matters,The question asks how many seats are left.
+calc-3-en,en,calc.3,Addition and subtraction problems,new,0:13,into the method,Here is how to do it.
+calc-3-en,en,calc.3,Addition and subtraction problems,new,0:16,step 1 — left = take away,"Seats left means the total take away the seats sold. Look for the words that tell you which operation: left, more, fewer, altogether."
+calc-3-en,en,calc.3,Addition and subtraction problems,new,0:29,"step 2 — 48,500 − 31,276 = 17,224",Use column subtraction. Line up the places and exchange where you need to.
+calc-3-en,en,calc.3,Addition and subtraction problems,new,0:37,"step 3 — 17,224 + 31,276 = 48,500 ✓",Check by adding back. The inverse proves it.
+calc-3-en,en,calc.3,Addition and subtraction problems,new,0:43,close,That is the whole method. Try one yourself.
+calc-4-en,en,calc.4,Mental multiplication and division,re-record,0:00,the situation,Binta has 30 boxes of eggs. Seven eggs in every box.
+calc-4-en,en,calc.4,Mental multiplication and division,re-record,0:08,why it matters,She already knows 3 sevens are 21. Thirty boxes is ten times three boxes.
+calc-4-en,en,calc.4,Mental multiplication and division,re-record,0:17,into the method,Here is how to do it.
+calc-4-en,en,calc.4,Mental multiplication and division,re-record,0:20,step 1 — 3 × 7 = 21,Do the easy one first. Three sevens are 21. You are not learning a new fact. You are using one you have.
+calc-4-en,en,calc.4,Mental multiplication and division,re-record,0:32,step 2 — 30 is 10 lots of 3,Thirty boxes is ten times as many as three boxes. Ten times bigger going in means ten times bigger coming out.
+calc-4-en,en,calc.4,Mental multiplication and division,re-record,0:44,step 3 — 21 × 10 = 210,So 30 × 7 is 210. This is the most-asked thing in the whole test. It is worth doing until it is automatic.
+calc-4-en,en,calc.4,Mental multiplication and division,re-record,0:57,step 4 — 6.3 × 100 = 630,Multiplying by 100 moves every digit two places to the left. The decimal point stays; the digits move.
+calc-4-en,en,calc.4,Mental multiplication and division,re-record,1:08,close,That is the whole method. Try one yourself.
+calc-5-en,en,calc.5,Short and long multiplication,re-record,0:00,the situation,A shop sells juice in crates of 6. There are 248 crates.
+calc-5-en,en,calc.5,Short and long multiplication,re-record,0:08,why it matters,"Break 248 into its columns and multiply each one, right to left."
+calc-5-en,en,calc.5,Short and long multiplication,re-record,0:16,into the method,Here is how to do it.
+calc-5-en,en,calc.5,Short and long multiplication,re-record,0:19,"step 1 — 8 × 6 = 48, write 8 carry 4","Ones first. 48 is four tens and eight. Same rule as adding: one digit per column, the rest moves left."
+calc-5-en,en,calc.5,Short and long multiplication,re-record,0:30,"step 2 — 4 × 6 = 24, +4 = 28","Tens next. Multiply, then add what you carried. Multiply first, add the carry after. Doing it the other way gives the wrong answer."
+calc-5-en,en,calc.5,Short and long multiplication,re-record,0:43,"step 3 — 2 × 6 = 12, +2 = 14 → 1,488","1,488 bottles. Roughly 250 × 6 = 1500, so 1,488 is believable."
+calc-5-en,en,calc.5,Short and long multiplication,re-record,0:52,"step 4 — 46 × 27 = 1,242","For two digits, multiply by the 7, then by the 20, then add. The second row starts with a zero because it’s tens."
+calc-5-en,en,calc.5,Short and long multiplication,re-record,1:05,close,That is the whole method. Try one yourself.
+calc-6-en,en,calc.6,Short and long division,re-record,0:00,the situation,852 sweets shared fairly between 4 children.
+calc-6-en,en,calc.6,Short and long division,re-record,0:06,why it matters,Work left to right this time — the opposite of adding. Share the biggest pieces first.
+calc-6-en,en,calc.6,Short and long division,re-record,0:16,into the method,Here is how to do it.
+calc-6-en,en,calc.6,Short and long division,re-record,0:19,step 1 — 8 ÷ 4 = 2,Start at the left. 8 hundreds shared by 4 is 2 hundreds each. Division starts at the big end because that is how you actually share things out.
+calc-6-en,en,calc.6,Short and long division,re-record,0:34,"step 2 — 5 ÷ 4 = 1 r 1, carry the 1","4 goes into 5 once, and 1 is left over. Carry it to the next digit. The leftover 1 is really 10, which is why it joins the next column."
+calc-6-en,en,calc.6,Short and long division,re-record,0:50,step 3 — 12 ÷ 4 = 3 → 213,The carried 1 makes 12. 12 ÷ 4 is 3. Each child gets 213. Check: 213 × 4 should give 852 back.
+calc-6-en,en,calc.6,Short and long division,re-record,1:02,step 4 — 45 ÷ 6 = 7 r 3,"When it doesn’t divide exactly, what’s left is the remainder. The remainder is always smaller than what you divide by."
+calc-6-en,en,calc.6,Short and long division,re-record,1:13,close,That is the whole method. Try one yourself.
+ooo-en,en,calc.7,Order of operations,reuse,0:00,the situation,Tickets cost £4. You buy 3 and you already had £5.
+ooo-en,en,calc.7,Order of operations,reuse,0:08,why it matters,5 + 3 × 4. Left to right gives 32. That is wrong — and it is wrong by a lot.
+ooo-en,en,calc.7,Order of operations,reuse,0:20,into the method,Here is how to do it.
+ooo-en,en,calc.7,Order of operations,reuse,0:23,step 1 — 3 × 4 = 12,"Multiplication happens first, wherever it sits. × and ÷ bind more tightly than + and −. They grab their numbers first."
+ooo-en,en,calc.7,Order of operations,reuse,0:35,step 2 — 5 + 12 = 17,"Then the addition. 17, not 32. Reading left to right is the single most expensive habit in arithmetic."
+ooo-en,en,calc.7,Order of operations,reuse,0:46,step 3 — brackets beat everything,"(5 + 3) × 4 = 32. Brackets say “do me first”. If you want the adding first, you have to say so with brackets."
+ooo-en,en,calc.7,Order of operations,reuse,0:59,close,That is the whole method. Try one yourself.
+calc-8-en,en,calc.8,Four-operation problems,new,0:00,the situation,125 children are going on a trip to Kinkon. Each coach holds 40.
+calc-8-en,en,calc.8,Four-operation problems,new,0:08,why it matters,125 ÷ 40 doesn’t come out exactly. What do you do with the leftover?
+calc-8-en,en,calc.8,Four-operation problems,new,0:17,into the method,Here is how to do it.
+calc-8-en,en,calc.8,Four-operation problems,new,0:20,step 1 — 125 ÷ 40 = 3 r 5,"Three coaches hold 120 children, and 5 are left over. The remainder is real people, not a number to ignore."
+calc-8-en,en,calc.8,Four-operation problems,new,0:31,step 2 — 5 children still need a seat,"So you need another coach. When everyone must fit, round up."
+calc-8-en,en,calc.8,Four-operation problems,new,0:39,step 3 — 4 coaches,"4 coaches are needed. If the question were how many full coaches, the answer would be 3. Read what it asks."
+calc-8-en,en,calc.8,Four-operation problems,new,0:51,close,That is the whole method. Try one yourself.
+fdp-0-en,en,fdp.0,Equivalent fractions and simplifying,new,0:00,the situation,Alfaa cuts a pizza into 8 slices and eats 4. Sara cuts hers into 2 and eats 1.
+fdp-0-en,en,fdp.0,Equivalent fractions and simplifying,new,0:11,why it matters,They ate the same amount: 4/8 and 1/2 are equivalent.
+fdp-0-en,en,fdp.0,Equivalent fractions and simplifying,new,0:18,into the method,Here is how to do it.
+fdp-0-en,en,fdp.0,Equivalent fractions and simplifying,new,0:21,step 1 — 12 and 18 ÷ 6,Find the biggest number that goes into both: 6. Dividing top and bottom by the same number keeps the fraction the same size.
+fdp-0-en,en,fdp.0,Equivalent fractions and simplifying,new,0:34,"step 2 — 12 ÷ 6 = 2, 18 ÷ 6 = 3","Divide the top and the bottom by 6. Do the same to both, always."
+fdp-0-en,en,fdp.0,Equivalent fractions and simplifying,new,0:43,step 3 — 12/18 = 2/3,"2/3 is the simplest form. Nothing else goes into 2 and 3, so it can’t be simplified further."
+fdp-0-en,en,fdp.0,Equivalent fractions and simplifying,new,0:54,close,That is the whole method. Try one yourself.
+fdp-1-en,en,fdp.1,Comparing and ordering fractions,new,0:00,the situation,"Two cups of juice: one is 3/4 full, the other is 5/8 full."
+fdp-1-en,en,fdp.1,Comparing and ordering fractions,new,0:08,why it matters,"Which has more? The bottoms are different, so you can’t just look at the tops."
+fdp-1-en,en,fdp.1,Comparing and ordering fractions,new,0:17,into the method,Here is how to do it.
+fdp-1-en,en,fdp.1,Comparing and ordering fractions,new,0:20,step 1 — 3/4 = 6/8,Change 3/4 into eighths: multiply top and bottom by 2. Fractions are easy to compare when their bottoms match.
+fdp-1-en,en,fdp.1,Comparing and ordering fractions,new,0:31,step 2 — 6/8 > 5/8,"Now compare the tops: 6 is more than 5. Same-sized pieces, so more pieces means more juice."
+fdp-1-en,en,fdp.1,Comparing and ordering fractions,new,0:41,step 3 — 3/4 is greater,"So 3/4 is the greater fraction. A bigger bottom number means smaller pieces, not a bigger fraction."
+fdp-1-en,en,fdp.1,Comparing and ordering fractions,new,0:51,close,That is the whole method. Try one yourself.
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,0:00,the situation,"A pizza cut into 8. You eat 3 slices, your brother eats 2."
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,0:08,why it matters,3 slices and 2 slices is 5 slices. The slices did not change size.
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,0:17,into the method,Here is how to do it.
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,0:20,step 1 — 3 + 2 = 5,Add the top numbers. The top counts how many slices. That is the only thing changing.
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,0:30,step 2 — bottom stays 8,"The bottom says what size the slices are. It does not change. 8 + 8 = 16 would mean the slices got smaller, and nobody cut anything."
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,0:44,step 3 — = 5/8,Five eighths of the pizza is gone. Adding bottoms is the commonest fraction mistake there is. Never do it.
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,0:55,step 4 — 2/3 − 1/6 = 4/6 − 1/6 = 3/6,Taking away works the same way: make the bottoms match first. Never take away the bottoms.
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,1:05,step 5 — 3 1/4 − 1 3/4 = 2 5/4 − 1 3/4,"For mixed numbers, exchange a whole if the fraction is too small. One whole is 4/4, so 3 1/4 is 2 5/4."
+fdp-2-en,en,fdp.2,Adding and subtracting fractions,re-record,1:17,close,That is the whole method. Try one yourself.
+fdp-3-en,en,fdp.3,Fractions of shapes and amounts,re-record,0:00,the situation,£60 in your pocket. You spend three quarters of it.
+fdp-3-en,en,fdp.3,Fractions of shapes and amounts,re-record,0:07,why it matters,Split the 60 into 4 equal parts first. Then take three of them.
+fdp-3-en,en,fdp.3,Fractions of shapes and amounts,re-record,0:15,into the method,Here is how to do it.
+fdp-3-en,en,fdp.3,Fractions of shapes and amounts,re-record,0:18,step 1 — 60 ÷ 4 = 15,Divide by the bottom number. That is one quarter. The bottom tells you how many pieces to cut the amount into.
+fdp-3-en,en,fdp.3,Fractions of shapes and amounts,re-record,0:30,step 2 — 15 × 3 = 45,"Multiply by the top number. You want three of those quarters. Bottom first, then top. Doing it the other way round still works but the numbers get ugly."
+fdp-3-en,en,fdp.3,Fractions of shapes and amounts,re-record,0:45,step 3 — = £45,Forty-five pounds spent. Three quarters should be most of it but not all. 45 out of 60 looks right.
+fdp-3-en,en,fdp.3,Fractions of shapes and amounts,re-record,0:56,step 4 — 6 of 9 shaded = 6/9 = 2/3,"For a shape, count the shaded parts over all the equal parts. Then simplify if you’re asked."
+fdp-3-en,en,fdp.3,Fractions of shapes and amounts,re-record,1:06,close,That is the whole method. Try one yourself.
+fdp-4-en,en,fdp.4,Multiplying and dividing fractions,re-record,0:00,the situation,Half a chocolate bar. You give a third of that half away.
+fdp-4-en,en,fdp.4,Multiplying and dividing fractions,re-record,0:08,why it matters,"A third of a half is a sixth. “Of” means multiply, and the answer gets smaller."
+fdp-4-en,en,fdp.4,Multiplying and dividing fractions,re-record,0:18,into the method,Here is how to do it.
+fdp-4-en,en,fdp.4,Multiplying and dividing fractions,re-record,0:21,step 1 — tops: 1 × 1 = 1,Multiply the top numbers together. No common bottom needed. This is the easiest of the four and it looks the hardest.
+fdp-4-en,en,fdp.4,Multiplying and dividing fractions,re-record,0:33,step 2 — bottoms: 3 × 2 = 6,"Multiply the bottom numbers together. The pieces get smaller, so the bottom number gets bigger. That is the sense of it."
+fdp-4-en,en,fdp.4,Multiplying and dividing fractions,re-record,0:45,step 3 — = 1/6,One sixth of the bar. Multiplying two fractions always makes something smaller than both. That is your check.
+fdp-4-en,en,fdp.4,Multiplying and dividing fractions,re-record,0:56,step 4 — 2/5 × 3 = 6/5,"Times by a whole number: multiply the top only. The bottom says the size of the pieces, which doesn’t change."
+fdp-4-en,en,fdp.4,Multiplying and dividing fractions,re-record,1:07,close,That is the whole method. Try one yourself.
+fdp-5-en,en,fdp.5,Fraction and decimal equivalents,new,0:00,the situation,"Three quarters of a pound is 75p, which is £0.75."
+fdp-5-en,en,fdp.5,Fraction and decimal equivalents,new,0:07,why it matters,A fraction is a division waiting to happen.
+fdp-5-en,en,fdp.5,Fraction and decimal equivalents,new,0:13,into the method,Here is how to do it.
+fdp-5-en,en,fdp.5,Fraction and decimal equivalents,new,0:16,step 1 — 3/8 = 3 ÷ 8,The fraction line means divide. Top divided by bottom always gives the decimal.
+fdp-5-en,en,fdp.5,Fraction and decimal equivalents,new,0:24,step 2 — 3 ÷ 8 = 0.375,Use short division: 3.000 ÷ 8. Add zeros after the decimal point until it divides exactly.
+fdp-5-en,en,fdp.5,Fraction and decimal equivalents,new,0:34,step 3 — 3/8 = 0.375,"So 3/8 is 0.375. Learn the common ones: 1/2 = 0.5, 1/4 = 0.25, 1/5 = 0.2, 1/8 = 0.125."
+fdp-5-en,en,fdp.5,Fraction and decimal equivalents,new,0:45,close,That is the whole method. Try one yourself.
+fdp-6-en,en,fdp.6,Rounding decimals,new,0:00,the situation,Usumaani runs 100 metres in 14.36 seconds.
+fdp-6-en,en,fdp.6,Rounding decimals,new,0:06,why it matters,The results board shows times to one decimal place.
+fdp-6-en,en,fdp.6,Rounding decimals,new,0:13,into the method,Here is how to do it.
+fdp-6-en,en,fdp.6,Rounding decimals,new,0:16,step 1 — 14.3|6,One decimal place: draw a line after the tenths. Everything after the line will go.
+fdp-6-en,en,fdp.6,Rounding decimals,new,0:25,step 2 — 6 ≥ 5,"Look at the next digit: 6. It is 5 or more. 5 or more rounds up, less than 5 stays."
+fdp-6-en,en,fdp.6,Rounding decimals,new,0:36,step 3 — 14.4,Round the tenths up: 14.4 seconds. Never just cut the number off: 14.3 would be wrong.
+fdp-6-en,en,fdp.6,Rounding decimals,new,0:46,close,That is the whole method. Try one yourself.
+fdp-7-en,en,fdp.7,Comparing and ordering decimals,new,0:00,the situation,"In the long jump, Hawaa jumps 3.6 metres and Ama jumps 3.58 metres."
+fdp-7-en,en,fdp.7,Comparing and ordering decimals,new,0:08,why it matters,3.58 has more digits. Does that mean it’s further?
+fdp-7-en,en,fdp.7,Comparing and ordering decimals,new,0:15,into the method,Here is how to do it.
+fdp-7-en,en,fdp.7,Comparing and ordering decimals,new,0:18,step 1 — 3.60 and 3.58,Give them the same number of decimal places. Adding a zero at the end doesn’t change a decimal.
+fdp-7-en,en,fdp.7,Comparing and ordering decimals,new,0:29,step 2 — 6 tenths > 5 tenths,"Compare place by place: the ones match, then the tenths. The first place that differs decides it."
+fdp-7-en,en,fdp.7,Comparing and ordering decimals,new,0:39,step 3 — 3.6 is greater,Hawaa jumped further. More digits doesn’t mean bigger.
+fdp-7-en,en,fdp.7,Comparing and ordering decimals,new,0:45,close,That is the whole method. Try one yourself.
+fdp-8-en,en,fdp.8,Multiplying and dividing decimals,re-record,0:00,the situation,Petrol is £1.40 a litre. You buy 6 litres.
+fdp-8-en,en,fdp.8,Multiplying and dividing decimals,re-record,0:07,why it matters,Cover the point. Do 14 × 6. Then put the point back where it belongs.
+fdp-8-en,en,fdp.8,Multiplying and dividing decimals,re-record,0:16,into the method,Here is how to do it.
+fdp-8-en,en,fdp.8,Multiplying and dividing decimals,re-record,0:19,step 1 — ignore the point: 14 × 6 = 84,Pretend it is a whole number for a moment. Whole-number multiplication is something you can already do. Use it.
+fdp-8-en,en,fdp.8,Multiplying and dividing decimals,re-record,0:30,"step 2 — one decimal place in, one out","1.4 had one digit after the point, so the answer has one. Count the places you started with. That is exactly how many you end with."
+fdp-8-en,en,fdp.8,Multiplying and dividing decimals,re-record,0:44,step 3 — = 8.4,"£8.40 of petrol. Check roughly: 1.4 is nearly 1.5, and 1.5 × 6 = 9. Close enough to trust."
+fdp-8-en,en,fdp.8,Multiplying and dividing decimals,re-record,0:55,step 4 — 8.4 ÷ 4 = 2.1,Short division with decimals: keep the decimal point in line. Dividing by 10 or 100 moves the digits to the right.
+fdp-8-en,en,fdp.8,Multiplying and dividing decimals,re-record,1:07,close,That is the whole method. Try one yourself.
+fdp-9-en,en,fdp.9,Fraction and decimal problems,re-record,0:00,the situation,A drink at £1.45 and a sandwich at £2.30.
+fdp-9-en,en,fdp.9,Fraction and decimal problems,re-record,0:07,why it matters,"Line up the points, not the ends. That is the whole rule."
+fdp-9-en,en,fdp.9,Fraction and decimal problems,re-record,0:15,into the method,Here is how to do it.
+fdp-9-en,en,fdp.9,Fraction and decimal problems,re-record,0:18,step 1 — point under point,Write them with the decimal points in a vertical line. The point is where the whole numbers stop. Line that up and every column is right.
+fdp-9-en,en,fdp.9,Fraction and decimal problems,re-record,0:32,step 2 — fill gaps with zeros,"If one has fewer digits, put zeros in the empty places. 3.5 is 3.50. The zero changes nothing except making the columns match."
+fdp-9-en,en,fdp.9,Fraction and decimal problems,re-record,0:45,step 3 — = 3.75,"Add as normal, and keep the point in line. The point in the answer sits directly under the others. Never move it."
+fdp-9-en,en,fdp.9,Fraction and decimal problems,re-record,0:57,step 4 — 7.50 − 2.86 = 4.64,"To take away decimals, line up the points and fill gaps with zeros. 7.5 is the same as 7.50."
+fdp-9-en,en,fdp.9,Fraction and decimal problems,re-record,1:08,close,That is the whole method. Try one yourself.
+fdp-10-en,en,fdp.10,"Fractions, decimals and percentages together",re-record,0:00,the situation,A shirt is half price. Another is 50% off. Another is 0.5 of the price.
+fdp-10-en,en,fdp.10,"Fractions, decimals and percentages together",re-record,0:09,why it matters,All three shops are saying exactly the same thing in three different costumes.
+fdp-10-en,en,fdp.10,"Fractions, decimals and percentages together",re-record,0:17,into the method,Here is how to do it.
+fdp-10-en,en,fdp.10,"Fractions, decimals and percentages together",re-record,0:20,step 1 — 1/2 → 0.5,Divide the top by the bottom: 1 ÷ 2 = 0.5. A fraction is a division waiting to happen. That is all the line means.
+fdp-10-en,en,fdp.10,"Fractions, decimals and percentages together",re-record,0:33,step 2 — 0.5 → 50%,"Multiply by 100. Per cent means out of a hundred. Decimal to percentage is always × 100. Two steps left, then a % sign."
+fdp-10-en,en,fdp.10,"Fractions, decimals and percentages together",re-record,0:46,step 3 — learn the common ones,"1/4, 1/5, 3/4, 1/10 — know these without thinking. There are about eight worth memorising. They come up in every paper."
+fdp-10-en,en,fdp.10,"Fractions, decimals and percentages together",re-record,0:58,step 4 — 35% = 35/100 = 7/20,A percentage is a fraction out of 100. Simplify it. Divide top and bottom by 5.
+fdp-10-en,en,fdp.10,"Fractions, decimals and percentages together",re-record,1:08,close,That is the whole method. Try one yourself.
+fdp-11-en,en,fdp.11,Percentages of amounts,re-record,0:00,the situation,A pair of trainers costs £60. The shop takes 15% off in the sale.
+fdp-11-en,en,fdp.11,Percentages of amounts,re-record,0:09,why it matters,Per cent means “out of a hundred”. 15% means 15 for every 100.
+fdp-11-en,en,fdp.11,Percentages of amounts,re-record,0:17,into the method,Here is how to do it.
+fdp-11-en,en,fdp.11,Percentages of amounts,re-record,0:20,step 1 — 10% of 60 = 6,10% is one tenth. Divide by 10. 10% is the one you should never have to think about. Everything else is built from it.
+fdp-11-en,en,fdp.11,Percentages of amounts,re-record,0:33,step 2 — 5% of 60 = 3,"5% is half of 10%. Half of 6 is 3. Halving is easier than dividing by 20, and it is the same thing."
+fdp-11-en,en,fdp.11,Percentages of amounts,re-record,0:46,step 3 — 6 + 3 = 9,"15% is 10% and 5% together. £9 off. Any percentage can be built from 10%, 5% and 1%. You never need a formula."
+fdp-11-en,en,fdp.11,Percentages of amounts,re-record,0:59,step 4 — £60 − 20% = £60 − £12 = £48,"For a sale price, find the percentage, then take it off. The amount taken off isn’t the answer."
+fdp-11-en,en,fdp.11,Percentages of amounts,re-record,1:10,close,That is the whole method. Try one yourself.
+meas-0-en,en,meas.0,Comparing and ordering measures,new,0:00,the situation,"Three bags of rice weigh 1.2 kg, 950 g and 1,150 g."
+meas-0-en,en,meas.0,Comparing and ordering measures,new,0:08,why it matters,"They use different units, so change them all to the same one first."
+meas-0-en,en,meas.0,Comparing and ordering measures,new,0:16,into the method,Here is how to do it.
+meas-0-en,en,meas.0,Comparing and ordering measures,new,0:19,"step 1 — 1.2 kg = 1,200 g","Change kilograms to grams: × 1,000. 1 kg is 1,000 g."
+meas-0-en,en,meas.0,Comparing and ordering measures,new,0:27,"step 2 — 1,200, 950, 1,150","Now they are all in grams. Same unit, so you can compare the numbers."
+meas-0-en,en,meas.0,Comparing and ordering measures,new,0:36,step 3 — 1.2 kg is heaviest,"1,200 g is the largest. Always give the answer in the form the question used."
+meas-0-en,en,meas.0,Comparing and ordering measures,new,0:45,close,That is the whole method. Try one yourself.
+meas-1-en,en,meas.1,Reading scales,new,0:00,the situation,Mariama weighs flour on a kitchen scale. The pointer is between two numbers.
+meas-1-en,en,meas.1,Reading scales,new,0:08,why it matters,The trick is to work out what each little mark is worth.
+meas-1-en,en,meas.1,Reading scales,new,0:16,into the method,Here is how to do it.
+meas-1-en,en,meas.1,Reading scales,new,0:19,step 1 — 100 ÷ 5 = 20,"Between 0 and 100 there are 5 gaps, so each mark is 20. Count the gaps, not the marks."
+meas-1-en,en,meas.1,Reading scales,new,0:30,step 2 — 3 marks past 0,The pointer is 3 marks along. Count from the last numbered mark.
+meas-1-en,en,meas.1,Reading scales,new,0:38,step 3 — 3 × 20 = 60,So it reads 60 grams. Check it sits between the labelled numbers.
+meas-1-en,en,meas.1,Reading scales,new,0:46,close,That is the whole method. Try one yourself.
+meas-2-en,en,meas.2,Money,new,0:00,the situation,Alfaa buys a book for £3.45 and a pen for £1.80.
+meas-2-en,en,meas.2,Money,new,0:08,why it matters,He pays with a £10 note. How much change?
+meas-2-en,en,meas.2,Money,new,0:15,into the method,Here is how to do it.
+meas-2-en,en,meas.2,Money,new,0:18,step 1 — £3.45 + £1.80 = £5.25,"Add the prices, lining up the decimal points. Pounds under pounds, pence under pence."
+meas-2-en,en,meas.2,Money,new,0:27,step 2 — £10.00 − £5.25,"Write £10 as £10.00, then take away. The zeros hold the pence places."
+meas-2-en,en,meas.2,Money,new,0:35,step 3 — = £4.75,His change is £4.75. Check: £5.25 + £4.75 = £10.
+meas-2-en,en,meas.2,Money,new,0:42,close,That is the whole method. Try one yourself.
+meas-3-en,en,meas.3,Time and timetables,new,0:00,the situation,The bus leaves Dugun at 08:50 and reaches the market at 09:35.
+meas-3-en,en,meas.3,Time and timetables,new,0:08,why it matters,How long is the journey? Time doesn’t work in hundreds.
+meas-3-en,en,meas.3,Time and timetables,new,0:15,into the method,Here is how to do it.
+meas-3-en,en,meas.3,Time and timetables,new,0:18,step 1 — 08:50 → 09:00 = 10 min,"Count on to the next hour first. An hour has 60 minutes, so jump to the hour."
+meas-3-en,en,meas.3,Time and timetables,new,0:28,step 2 — 09:00 → 09:35 = 35 min,Then count on to the time. From an o’clock it’s easy to read.
+meas-3-en,en,meas.3,Time and timetables,new,0:36,step 3 — 10 + 35 = 45 minutes,"The journey takes 45 minutes. Subtracting 850 from 935 gives 85, which is wrong: time isn’t base 10."
+meas-3-en,en,meas.3,Time and timetables,new,0:47,close,That is the whole method. Try one yourself.
+metric-en,en,meas.4,Converting metric units,reuse,0:00,the situation,A bottle says 1.5 litres. The recipe asks for millilitres.
+metric-en,en,meas.4,Converting metric units,reuse,0:07,why it matters,Milli means a thousandth. So one litre is a thousand of them.
+metric-en,en,meas.4,Converting metric units,reuse,0:15,into the method,Here is how to do it.
+metric-en,en,meas.4,Converting metric units,reuse,0:18,step 1 — 1 l = 1000 ml,"Know the four that matter: km–m, m–cm, kg–g, l–ml. Three of those four are × 1000. Only m to cm is × 100."
+metric-en,en,meas.4,Converting metric units,reuse,0:31,step 2 — smaller unit → bigger number,"Going to a smaller unit means more of them, so multiply. Ask yourself: is the answer going to be bigger or smaller? Then you cannot pick the wrong way."
+metric-en,en,meas.4,Converting metric units,reuse,0:46,step 3 — 1.5 × 1000 = 1500 ml,Fifteen hundred millilitres. 1.5 litres could never be 0.0015 of anything. The size check catches the slip.
+metric-en,en,meas.4,Converting metric units,reuse,0:56,close,That is the whole method. Try one yourself.
+meas-5-en,en,meas.5,Metric and imperial units,new,0:00,the situation,A road sign in England says Oxford 20 miles.
+meas-5-en,en,meas.5,Metric and imperial units,new,0:07,why it matters,"In Guinea, distances are in kilometres. How far is that?"
+meas-5-en,en,meas.5,Metric and imperial units,new,0:14,into the method,Here is how to do it.
+meas-5-en,en,meas.5,Metric and imperial units,new,0:17,step 1 — 5 miles ≈ 8 km,Remember: 5 miles is about 8 kilometres. The SATs give this fact or expect you to know it.
+meas-5-en,en,meas.5,Metric and imperial units,new,0:28,step 2 — 20 ÷ 5 = 4,20 miles is 4 lots of 5 miles. Find how many groups of 5.
+meas-5-en,en,meas.5,Metric and imperial units,new,0:37,step 3 — 4 × 8 = 32 km,"So it is about 32 kilometres. A kilometre is shorter than a mile, so there are more of them."
+meas-5-en,en,meas.5,Metric and imperial units,new,0:48,close,That is the whole method. Try one yourself.
+meas-6-en,en,meas.6,Perimeter and area,re-record,0:00,the situation,A garden 8 metres long and 5 metres wide. How much turf?
+meas-6-en,en,meas.6,Perimeter and area,re-record,0:08,why it matters,Picture it as rows of one-metre squares: 5 rows of 8.
+meas-6-en,en,meas.6,Perimeter and area,re-record,0:16,into the method,Here is how to do it.
+meas-6-en,en,meas.6,Perimeter and area,re-record,0:19,step 1 — 5 rows of 8 squares,"Area is just counting squares, arranged in rows. That is why it is length times width — it is a multiplication table drawn out."
+meas-6-en,en,meas.6,Perimeter and area,re-record,0:32,step 2 — 8 × 5 = 40,"Forty squares. Do not add. 8 + 5 = 13 is the perimeter's half, not the area."
+meas-6-en,en,meas.6,Perimeter and area,re-record,0:42,step 3 — 40 m²,"Square metres, because you counted squares. The little 2 is not decoration. An answer in m instead of m² loses the mark."
+meas-6-en,en,meas.6,Perimeter and area,re-record,0:54,step 4 — 2 × (8 + 5) = 26 cm,Perimeter is the distance all the way round: add every side. Area is the space inside. Don’t mix them up.
+meas-6-en,en,meas.6,Perimeter and area,re-record,1:05,close,That is the whole method. Try one yourself.
+volume-en,en,meas.7,Volume,reuse,0:00,the situation,A box 4 cm by 3 cm by 5 cm. How many centimetre cubes fit?
+volume-en,en,meas.7,Volume,reuse,0:09,why it matters,"Fill the bottom layer first, then count how many layers."
+volume-en,en,meas.7,Volume,reuse,0:16,into the method,Here is how to do it.
+volume-en,en,meas.7,Volume,reuse,0:19,step 1 — bottom layer: 4 × 3 = 12,Twelve cubes cover the base. The base is just an area. You already know how to do that bit.
+volume-en,en,meas.7,Volume,reuse,0:30,step 2 — 5 layers,The box is 5 cubes tall. Volume is area with a third dimension stacked on top of it.
+volume-en,en,meas.7,Volume,reuse,0:41,step 3 — 12 × 5 = 60 cm³,"Sixty cubic centimetres. Little 3 this time, because you counted cubes rather than squares."
+volume-en,en,meas.7,Volume,reuse,0:50,close,That is the whole method. Try one yourself.
+meas-8-en,en,meas.8,Measurement problems,new,0:00,the situation,A jug holds 2 litres of juice. Hawaa pours 6 glasses of 250 ml.
+meas-8-en,en,meas.8,Measurement problems,new,0:09,why it matters,How much is left in the jug?
+meas-8-en,en,meas.8,Measurement problems,new,0:15,into the method,Here is how to do it.
+meas-8-en,en,meas.8,Measurement problems,new,0:18,"step 1 — 2 l = 2,000 ml",Put everything in the same unit: millilitres. You can’t take millilitres from litres directly.
+meas-8-en,en,meas.8,Measurement problems,new,0:27,"step 2 — 6 × 250 = 1,500 ml",Work out how much was poured. One step at a time.
+meas-8-en,en,meas.8,Measurement problems,new,0:35,"step 3 — 2,000 − 1,500 = 500 ml",500 ml is left. Check the answer is less than the jug held.
+meas-8-en,en,meas.8,Measurement problems,new,0:43,close,That is the whole method. Try one yourself.
+geo-0-en,en,geo.0,Naming 2D and 3D shapes,new,0:00,the situation,A dice is a cube. A tent can be a triangular prism.
+geo-0-en,en,geo.0,Naming 2D and 3D shapes,new,0:08,why it matters,"Shapes have faces, edges and vertices you can count."
+geo-0-en,en,geo.0,Naming 2D and 3D shapes,new,0:15,into the method,Here is how to do it.
+geo-0-en,en,geo.0,Naming 2D and 3D shapes,new,0:18,step 1 — faces: 2 + 3 = 5,Two triangle ends and three rectangle sides. Faces are the flat surfaces.
+geo-0-en,en,geo.0,Naming 2D and 3D shapes,new,0:26,step 2 — edges: 3 + 3 + 3 = 9,"Three round each triangle, and three joining them. Edges are where two faces meet."
+geo-0-en,en,geo.0,Naming 2D and 3D shapes,new,0:35,step 3 — vertices: 6,Three corners on each triangle. Vertices are the corners.
+geo-0-en,en,geo.0,Naming 2D and 3D shapes,new,0:42,close,That is the whole method. Try one yourself.
+geo-1-en,en,geo.1,Describing and classifying shapes,new,0:00,the situation,"A kite, a rhombus and a trapezium are all quadrilaterals: four sides."
+geo-1-en,en,geo.1,Describing and classifying shapes,new,0:08,why it matters,What makes them different is their sides and angles.
+geo-1-en,en,geo.1,Describing and classifying shapes,new,0:15,into the method,Here is how to do it.
+geo-1-en,en,geo.1,Describing and classifying shapes,new,0:18,step 1 — 4 straight sides,It is a quadrilateral. Count the sides first.
+geo-1-en,en,geo.1,Describing and classifying shapes,new,0:24,step 2 — 1 pair of parallel sides,"Only one pair of sides are parallel. Parallel lines never meet, like railway lines."
+geo-1-en,en,geo.1,Describing and classifying shapes,new,0:33,step 3 — = trapezium,One pair of parallel sides makes a trapezium. Two pairs would make a parallelogram.
+geo-1-en,en,geo.1,Describing and classifying shapes,new,0:42,close,That is the whole method. Try one yourself.
+geo-2-en,en,geo.2,Drawing shapes and nets,new,0:00,the situation,Flatten a cereal box and you get its net: the shape that folds up into the box.
+geo-2-en,en,geo.2,Drawing shapes and nets,new,0:10,why it matters,Every face of the box is one piece of the net.
+geo-2-en,en,geo.2,Drawing shapes and nets,new,0:18,into the method,Here is how to do it.
+geo-2-en,en,geo.2,Drawing shapes and nets,new,0:21,step 1 — 2 triangles,Two triangles make the two ends. Matching end faces mean a prism.
+geo-2-en,en,geo.2,Drawing shapes and nets,new,0:29,step 2 — 3 rectangles,"Three rectangles join the ends. A triangle has three sides, so three rectangles."
+geo-2-en,en,geo.2,Drawing shapes and nets,new,0:37,step 3 — = triangular prism,It folds into a triangular prism. Count the faces and name the end shape.
+geo-2-en,en,geo.2,Drawing shapes and nets,new,0:46,close,That is the whole method. Try one yourself.
+geo-3-en,en,geo.3,"Angles, including missing angles",re-record,0:00,the situation,A door swings open. How far did it turn?
+geo-3-en,en,geo.3,"Angles, including missing angles",re-record,0:07,why it matters,"Three facts cover almost every angle question: a line is 180°, a point is 360°, a triangle is 180°."
+geo-3-en,en,geo.3,"Angles, including missing angles",re-record,0:18,into the method,Here is how to do it.
+geo-3-en,en,geo.3,"Angles, including missing angles",re-record,0:21,step 1 — a straight line is 180°,"Angles sitting on a straight line always add to 180. Half a full turn. If you can picture the turn, you never have to remember the number."
+geo-3-en,en,geo.3,"Angles, including missing angles",re-record,0:35,step 2 — 180 − 130 = 50,Subtract what you have from what it should be. Every missing-angle question is a subtraction once you know which total to use.
+geo-3-en,en,geo.3,"Angles, including missing angles",re-record,0:47,step 3 — 50°,"And it should look like an acute angle. Check the picture agrees. If your answer is 150° but the angle looks tiny, you have used the wrong total."
+geo-3-en,en,geo.3,"Angles, including missing angles",re-record,1:02,step 4 — 360 − 120 − 150 = 90,Angles around a point add up to 360°. A full turn is 360°.
+geo-3-en,en,geo.3,"Angles, including missing angles",re-record,1:10,close,That is the whole method. Try one yourself.
+geo-4-en,en,geo.4,Circles,new,0:00,the situation,Draw a circle with a compass. The point is the centre.
+geo-4-en,en,geo.4,Circles,new,0:08,why it matters,The radius goes from the centre to the edge. The diameter goes right across.
+geo-4-en,en,geo.4,Circles,new,0:17,into the method,Here is how to do it.
+geo-4-en,en,geo.4,Circles,new,0:20,step 1 — diameter = 2 × radius,The diameter is two radiuses end to end. It passes through the centre.
+geo-4-en,en,geo.4,Circles,new,0:28,step 2 — 2 × 7 = 14,Double the radius. Halve the diameter to get the radius.
+geo-4-en,en,geo.4,Circles,new,0:35,step 3 — = 14 cm,The diameter is 14 cm. The diameter is always the longer one.
+geo-4-en,en,geo.4,Circles,new,0:43,close,That is the whole method. Try one yourself.
+geo-5-en,en,geo.5,Symmetry and patterns,new,0:00,the situation,Fold a picture of a butterfly down the middle. The halves match.
+geo-5-en,en,geo.5,Symmetry and patterns,new,0:08,why it matters,The fold is a line of symmetry.
+geo-5-en,en,geo.5,Symmetry and patterns,new,0:14,into the method,Here is how to do it.
+geo-5-en,en,geo.5,Symmetry and patterns,new,0:17,step 1 — corner to corner: 3,Fold from each corner to the opposite corner. Each fold that matches is a line of symmetry.
+geo-5-en,en,geo.5,Symmetry and patterns,new,0:27,step 2 — side to side: 3,"Fold from the middle of each side to the opposite side. Check every way, not just one."
+geo-5-en,en,geo.5,Symmetry and patterns,new,0:37,step 3 — = 6 lines,A regular hexagon has 6 lines of symmetry. A regular shape has as many lines as it has sides.
+geo-5-en,en,geo.5,Symmetry and patterns,new,0:48,close,That is the whole method. Try one yourself.
+geo-6-en,en,geo.6,Translation and reflection,new,0:00,the situation,A counter on a grid slides 3 squares right and 2 squares down.
+geo-6-en,en,geo.6,Translation and reflection,new,0:08,why it matters,That is a translation: the shape moves but doesn’t turn.
+geo-6-en,en,geo.6,Translation and reflection,new,0:15,into the method,Here is how to do it.
+geo-6-en,en,geo.6,Translation and reflection,new,0:18,step 1 — x: 2 + 3 = 5,"Right adds to the x-coordinate. x is across, the first number."
+geo-6-en,en,geo.6,Translation and reflection,new,0:26,step 2 — y: 4 − 5 = −1,"Down takes away from the y-coordinate. y is up, the second number. It can go below zero."
+geo-6-en,en,geo.6,Translation and reflection,new,0:36,"step 3 — (5, −1)","The new point is (5, −1). Reflection is different: in the x-axis, y changes sign; in the y-axis, x does."
+geo-6-en,en,geo.6,Translation and reflection,new,0:47,close,That is the whole method. Try one yourself.
+geo-7-en,en,geo.7,Coordinates in four quadrants,new,0:00,the situation,"A map of Conakry has a grid. A point is found by going across, then up."
+geo-7-en,en,geo.7,Coordinates in four quadrants,new,0:10,why it matters,Some points are left of zero or below it.
+geo-7-en,en,geo.7,Coordinates in four quadrants,new,0:17,into the method,Here is how to do it.
+geo-7-en,en,geo.7,Coordinates in four quadrants,new,0:20,step 1 — across: −3,"Go across first: 3 to the left of zero, so −3. Along the corridor, then up the stairs."
+geo-7-en,en,geo.7,Coordinates in four quadrants,new,0:31,step 2 — up/down: 2,Then up: 2. Below the x-axis would be negative.
+geo-7-en,en,geo.7,Coordinates in four quadrants,new,0:38,"step 3 — A = (−3, 2)","Write x first, then y, in brackets. (2, −3) would be a different point."
+geo-7-en,en,geo.7,Coordinates in four quadrants,new,0:47,close,That is the whole method. Try one yourself.
+ras-0-en,en,ras.0,Ratio and relative sizes,new,0:00,the situation,Cerno’s recipe for rice for 4 people uses 300 g of rice.
+ras-0-en,en,ras.0,Ratio and relative sizes,new,0:08,why it matters,He’s cooking for 12. How much rice?
+ras-0-en,en,ras.0,Ratio and relative sizes,new,0:14,into the method,Here is how to do it.
+ras-0-en,en,ras.0,Ratio and relative sizes,new,0:17,step 1 — 12 ÷ 4 = 3,12 people is 3 times as many as 4. Find how many times bigger.
+ras-0-en,en,ras.0,Ratio and relative sizes,new,0:26,step 2 — 300 × 3 = 900,So use 3 times as much rice. Everything in the recipe scales by the same amount.
+ras-0-en,en,ras.0,Ratio and relative sizes,new,0:36,step 3 — = 900 g,He needs 900 g of rice. Adding 8 to the grams would be wrong: ratios multiply.
+ras-0-en,en,ras.0,Ratio and relative sizes,new,0:46,close,That is the whole method. Try one yourself.
+ras-1-en,en,ras.1,Percentages for comparison,new,0:00,the situation,Ama got 18 out of 25 on one test and 34 out of 50 on another.
+ras-1-en,en,ras.1,Percentages for comparison,new,0:10,why it matters,Which test did she do better on? The totals are different.
+ras-1-en,en,ras.1,Percentages for comparison,new,0:18,into the method,Here is how to do it.
+ras-1-en,en,ras.1,Percentages for comparison,new,0:21,step 1 — × 4,Make the bottom 100: 25 × 4 = 100. Percent means out of 100.
+ras-1-en,en,ras.1,Percentages for comparison,new,0:30,step 2 — 18 × 4 = 72,"Do the same to the top. Same fraction, new form."
+ras-1-en,en,ras.1,Percentages for comparison,new,0:37,step 3 — = 72%,"18 out of 25 is 72%. 34 out of 50 is 68%, so the first was better. Percentages put scores on the same scale."
+ras-1-en,en,ras.1,Percentages for comparison,new,0:50,close,That is the whole method. Try one yourself.
+ras-2-en,en,ras.2,Scale factors,new,0:00,the situation,A photo is 4 cm by 6 cm. It is enlarged by a scale factor of 3.
+ras-2-en,en,ras.2,Scale factors,new,0:10,why it matters,Every side gets three times longer.
+ras-2-en,en,ras.2,Scale factors,new,0:16,into the method,Here is how to do it.
+ras-2-en,en,ras.2,Scale factors,new,0:19,step 1 — 4 × 3 = 12,Multiply the short side by 3. A scale factor multiplies every length.
+ras-2-en,en,ras.2,Scale factors,new,0:27,step 2 — 6 × 3 = 18,"Multiply the long side by 3. The same factor, every side."
+ras-2-en,en,ras.2,Scale factors,new,0:35,step 3 — 12 cm by 18 cm,"The new photo is 12 cm by 18 cm. To find a scale factor, divide a new side by its old side."
+ras-2-en,en,ras.2,Scale factors,new,0:47,close,That is the whole method. Try one yourself.
+ratioShare-en,en,ras.3,Unequal sharing and grouping,reuse,0:00,the situation,"30 sweets shared between two brothers, 3 for one and 2 for the other each time."
+ratioShare-en,en,ras.3,Unequal sharing and grouping,reuse,0:10,why it matters,"Count the shares first. 3 and 2 makes 5 shares, not 2."
+ratioShare-en,en,ras.3,Unequal sharing and grouping,reuse,0:18,into the method,Here is how to do it.
+ratioShare-en,en,ras.3,Unequal sharing and grouping,reuse,0:21,step 1 — 3 + 2 = 5 shares,"Add the numbers in the ratio to find how many shares there are. This step is the one everybody skips, and skipping it makes every answer wrong."
+ratioShare-en,en,ras.3,Unequal sharing and grouping,reuse,0:35,step 2 — 30 ÷ 5 = 6,"Divide the total by the number of shares. One share is 6. Now you know what a single share is worth, and the rest is multiplying."
+ratioShare-en,en,ras.3,Unequal sharing and grouping,reuse,0:49,step 3 — 3 × 6 = 18  and  2 × 6 = 12,"18 and 12. They add back to 30. Always add your two answers back. If they do not make the total, something is wrong."
+ratioShare-en,en,ras.3,Unequal sharing and grouping,reuse,1:02,close,That is the whole method. Try one yourself.
+ras-4-en,en,ras.4,Missing numbers as algebra,new,0:00,the situation,"A crate holds 3 equal sacks of rice. With the 4 kg crate, it all weighs 19 kg."
+ras-4-en,en,ras.4,Missing numbers as algebra,new,0:11,why it matters,"Use a letter for what you don’t know. Each sack is n kg, so 3n + 4 = 19."
+ras-4-en,en,ras.4,Missing numbers as algebra,new,0:22,into the method,Here is how to do it.
+ras-4-en,en,ras.4,Missing numbers as algebra,new,0:25,step 1 — 3n = 19 − 4 = 15,Take away the 4 from both sides. Undo the last thing done to n first.
+ras-4-en,en,ras.4,Missing numbers as algebra,new,0:34,step 2 — n = 15 ÷ 3,"Then divide by 3. 3n means 3 × n, so divide to undo it."
+ras-4-en,en,ras.4,Missing numbers as algebra,new,0:43,step 3 — n = 5,n is 5. Check: 3 × 5 + 4 = 19.
+ras-4-en,en,ras.4,Missing numbers as algebra,new,0:51,close,That is the whole method. Try one yourself.
+formula-en,en,ras.5,Formulae in words,reuse,0:00,the situation,"A recipe: cook a chicken for 40 minutes per kilogram, plus 20 minutes."
+formula-en,en,ras.5,Formulae in words,reuse,0:08,why it matters,In maths that is written t = 40w + 20. The letter is just a box waiting for a number.
+formula-en,en,ras.5,Formulae in words,reuse,0:19,into the method,Here is how to do it.
+formula-en,en,ras.5,Formulae in words,reuse,0:22,step 1 — put 4 where x is,"Swap the letter for the number you were given. 3x means 3 times x. The multiplication sign is hidden, not missing."
+formula-en,en,ras.5,Formulae in words,reuse,0:34,step 2 — 3 × 4 = 12,"Multiply first, because × comes before +. The order of operations still applies. It always applies."
+formula-en,en,ras.5,Formulae in words,reuse,0:44,step 3 — 12 + 5 = 17,So y is 17. Algebra is arithmetic with a gap in it. Fill the gap and it is ordinary sums.
+formula-en,en,ras.5,Formulae in words,reuse,0:55,close,That is the whole method. Try one yourself.
+ras-6-en,en,ras.6,Linear sequences,new,0:00,the situation,"Tables in a hall: 1 table seats 6, 2 tables seat 10, 3 tables seat 14."
+ras-6-en,en,ras.6,Linear sequences,new,0:10,why it matters,How many seats for 20 tables? Find the rule.
+ras-6-en,en,ras.6,Linear sequences,new,0:17,into the method,Here is how to do it.
+ras-6-en,en,ras.6,Linear sequences,new,0:20,step 1 — +4 each time,The sequence goes up by 4. The step tells you the multiplier.
+ras-6-en,en,ras.6,Linear sequences,new,0:28,step 2 — term = 4n + 2,"4 × 1 = 4, and the first term is 6, so add 2. Test the rule on the first term."
+ras-6-en,en,ras.6,Linear sequences,new,0:40,step 3 — 4 × 20 + 2 = 82,The 20th term is 82. Check with the second term: 4 × 2 + 2 = 10.
+ras-6-en,en,ras.6,Linear sequences,new,0:50,close,That is the whole method. Try one yourself.
+twoUnknowns-en,en,ras.7,Two unknowns,reuse,0:00,the situation,Two numbers. They add to 7. They multiply to 12.
+twoUnknowns-en,en,ras.7,Two unknowns,reuse,0:07,why it matters,Do not guess wildly. List the pairs that multiply to 12 and check which adds to 7.
+twoUnknowns-en,en,ras.7,Two unknowns,reuse,0:17,into the method,Here is how to do it.
+twoUnknowns-en,en,ras.7,Two unknowns,reuse,0:20,"step 1 — pairs making 12: 1×12, 2×6, 3×4","Start with the multiplying, because there are fewer options. Multiplication narrows things down fast. Addition has far too many pairs."
+twoUnknowns-en,en,ras.7,Two unknowns,reuse,0:31,step 2 — which adds to 7? 3 + 4,Check each pair against the second fact. Two facts about two numbers is always enough. You just have to use both.
+twoUnknowns-en,en,ras.7,Two unknowns,reuse,0:43,step 3 — 3 and 4,The numbers are 3 and 4. Test them both ways before you write anything down.
+twoUnknowns-en,en,ras.7,Two unknowns,reuse,0:52,close,That is the whole method. Try one yourself.
+ras-8-en,en,ras.8,Combinations,new,0:00,the situation,A café has 3 sandwiches and 4 drinks.
+ras-8-en,en,ras.8,Combinations,new,0:06,why it matters,How many different meals of one sandwich and one drink?
+ras-8-en,en,ras.8,Combinations,new,0:13,into the method,Here is how to do it.
+ras-8-en,en,ras.8,Combinations,new,0:16,step 1 — each sandwich → 4 drinks,Each sandwich can go with any of the 4 drinks. List one row to see the pattern.
+ras-8-en,en,ras.8,Combinations,new,0:26,step 2 — 3 rows of 4,"There are 3 sandwiches, so 3 rows. A table of rows and columns shows every pair."
+ras-8-en,en,ras.8,Combinations,new,0:36,step 3 — 3 × 4 = 12,12 different meals. Adding 3 + 4 would miss most of them.
+ras-8-en,en,ras.8,Combinations,new,0:44,close,That is the whole method. Try one yourself.
+ras-9-en,en,ras.9,"Tables, charts and line graphs",new,0:00,the situation,A bar chart shows how many children in a class chose each fruit.
+ras-9-en,en,ras.9,"Tables, charts and line graphs",new,0:08,why it matters,"The scale goes up in 2s, so not every value has a line."
+ras-9-en,en,ras.9,"Tables, charts and line graphs",new,0:16,into the method,Here is how to do it.
+ras-9-en,en,ras.9,"Tables, charts and line graphs",new,0:19,step 1 — each line = 2,Read the scale: each line is 2. Always check the scale first.
+ras-9-en,en,ras.9,"Tables, charts and line graphs",new,0:27,step 2 — halfway = 7,The bar stops halfway between 6 and 8. Halfway between two lines is one more than the lower.
+ras-9-en,en,ras.9,"Tables, charts and line graphs",new,0:38,step 3 — = 7,"So 7 children chose it. For a pie chart, use fractions of the circle instead."
+ras-9-en,en,ras.9,"Tables, charts and line graphs",new,0:47,close,That is the whole method. Try one yourself.
+ras-10-en,en,ras.10,Problems with data,new,0:00,the situation,A table shows the boys and girls at three schools.
+ras-10-en,en,ras.10,Problems with data,new,0:07,why it matters,The question asks how many children at Labé school altogether.
+ras-10-en,en,ras.10,Problems with data,new,0:14,into the method,Here is how to do it.
+ras-10-en,en,ras.10,Problems with data,new,0:17,step 1 — find the row,"Find Labé in the table. Read across the row, not down the column."
+ras-10-en,en,ras.10,Problems with data,new,0:25,step 2 — 18 + 24,Altogether means add the boys and girls. Look for the word that tells you the operation.
+ras-10-en,en,ras.10,Problems with data,new,0:35,step 3 — = 42,42 children altogether. Check you used the right row and the right numbers.
+ras-10-en,en,ras.10,Problems with data,new,0:43,close,That is the whole method. Try one yourself.
+mean-en,en,ras.11,The mean,reuse,0:00,the situation,"Three fish weighed 5 kg, 3 kg and 10 kg."
+mean-en,en,ras.11,The mean,reuse,0:07,why it matters,The mean is what each would weigh if you shared the weight out evenly.
+mean-en,en,ras.11,The mean,reuse,0:16,into the method,Here is how to do it.
+mean-en,en,ras.11,The mean,reuse,0:19,step 1 — 5 + 3 + 10 = 18,Add them all together. You are pooling everything before sharing it back out.
+mean-en,en,ras.11,The mean,reuse,0:27,step 2 — 18 ÷ 3 = 6,"Divide by how many there were. Count how many, not how big. Three fish means divide by three."
+mean-en,en,ras.11,The mean,reuse,0:38,step 3 — mean = 6 kg,"Six kilograms each, if they were all the same. The mean sits between the smallest and the biggest. If yours does not, check again."
+mean-en,en,ras.11,The mean,reuse,0:51,close,That is the whole method. Try one yourself.
