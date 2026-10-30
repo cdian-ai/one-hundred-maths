@@ -3,6 +3,45 @@
 A revision app for the Key Stage 2 maths tests. Years 5 and 6, ages 9 to 11.
 One HTML file, no build step, no backend, no dependencies. English and French.
 
+## v2: the Woven design (October 2026, branch `v2-woven-design`)
+
+The course now looks and runs like the One Hundred prototype from Claude Design:
+Home with six topic tiles and ten blocks each (block 8 is the "ready" line), topic
+pages with "You are here", a part page that starts with the video and a jump
+index, the daily ten, a forgiving streak (two rest days a week, freezes),
+"Ready for SATs", "For parents", Mocks, and Nuuru from Notice Me in the maths hat.
+Nunito, so it reads as part of Notice Me. English only for now; the French text
+is still in the data.
+
+Underneath it is the same engine: generated questions, the keypad (now with a
+remainder key, so "143 r 3" can be typed), the drawings and the arithmetic paper.
+
+- **Six topics, 57 parts**, in the order of the KS2 test framework. Each part
+  says which original subtopics it is built from (`TOPICS` in `index.html`).
+- **Fractions, decimals and percentages is complete**: 12 parts, with new
+  practice for equivalent fractions, comparing, subtracting and mixed numbers,
+  fractions of shapes, decimal equivalents, rounding, comparing and dividing
+  decimals, problems, and percentages in context.
+- **A wrong answer says what went wrong.** Questions carry the mistakes the mark
+  schemes name ("You added the tops and the bottoms…"); fractions are marked by
+  value unless the question asks for the simplest form.
+- **Every one of the 57 parts has practice** (stage 2 added 31 generators for
+  number, calculation, measurement, geometry, ratio, algebra and statistics,
+  with drawings of scales, timetables, shapes, grids, charts and tables).
+- **All three mock papers**: Paper 1 (arithmetic, 36 questions, 40 marks, 30
+  minutes) and Papers 2 and 3 (reasoning, 25 questions, 35 marks, 40 minutes,
+  every topic, multi-step problems worth 2 marks). New questions each time; the
+  review shows the working for every miss, and the latest three add up to a
+  total out of 110 against the expected standard.
+- **Every part teaches before it asks**: the 33 new parts have their own
+  situation, worked example and steps (`TEACH2`), and 13 widened parts have
+  extra steps (`TEACHX`), so every part has a reminder card, a jump list and
+  captions.
+- **Video scripts v2**: `scripts/ks2-video-scripts-v2-2026-10-30.csv`, one film
+  per part, generated from that teaching: 33 new, 13 to re-record (the old film
+  plus the new steps), 11 already made. Attach a film with
+  `VIDEO["fdp.1"] = { en:"vid/fdp-1-en.mp4" }`.
+
 ## What it is built from
 
 Not the programme of study. **The 2025 and 2026 mark schemes** — every question
