@@ -3,6 +3,30 @@
 A revision app for the Key Stage 2 maths tests. Years 5 and 6, ages 9 to 11.
 One HTML file, no build step, no backend, no dependencies. English and French.
 
+## v2: the Woven design (October 2026, branch `v2-woven-design`)
+
+The course now looks and runs like the One Hundred prototype from Claude Design:
+Home with six topic tiles and ten blocks each (block 8 is the "ready" line), topic
+pages with "You are here", a part page that starts with the video and a jump
+index, the daily ten, a forgiving streak (two rest days a week, freezes),
+"Ready for SATs", "For parents", Mocks, and Nuuru from Notice Me in the maths hat.
+Nunito, so it reads as part of Notice Me. English only for now; the French text
+is still in the data.
+
+Underneath it is the same engine: generated questions, the keypad (now with a
+remainder key, so "143 r 3" can be typed), the drawings and the arithmetic paper.
+
+- **Six topics, 57 parts**, in the order of the KS2 test framework. Each part
+  says which original subtopics it is built from (`TOPICS` in `index.html`).
+- **Fractions, decimals and percentages is complete**: 12 parts, with new
+  practice for equivalent fractions, comparing, subtracting and mixed numbers,
+  fractions of shapes, decimal equivalents, rounding, comparing and dividing
+  decimals, problems, and percentages in context.
+- **A wrong answer says what went wrong.** Questions carry the mistakes the mark
+  schemes name ("You added the tops and the bottoms…"); fractions are marked by
+  value unless the question asks for the simplest form.
+- 29 of 57 parts have practice. The rest are listed, marked "Coming soon".
+
 ## What it is built from
 
 Not the programme of study. **The 2025 and 2026 mark schemes** — every question

@@ -3,8 +3,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>One Hundred — Year 6 SATs maths</title><meta name="theme-color" content="#4E8C6A">
-<!-- Home screen. Without these iOS uses a screenshot of the page, and two
-     apps built from the same shell become two identical tiles. -->
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
@@ -13,350 +11,247 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="100 Maths">
 <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap">
 <style>
-/* ================= One Hundred =================
-   Built on the 2025 and 2026 KS2 papers rather than on the programme of study:
-   every stop names the content-domain codes it serves and carries as many
-   questions as that code's weight in the test deserves.
-   Paper 1 is 36 constructed answers, so arithmetic is typed on a keypad, never
-   chosen from four options — offering options would train a skill the test
-   does not reward. */
+/* v2: the Woven design from Claude Design (One Hundred, turn 2): square corners,
+   2px ink rules, a woven band in the course colour, progress as ten blocks with
+   block 8 as the "ready" line. Nunito, so it reads as part of Notice Me. */
 :root{
- --ink:#1B2430;--ink2:#4A5A6B;--muted:#8494A4;--paper:#FBF8F3;--card:#fff;--line:#E8E1D6;
- --band:#2F7D62;--sun:#E0A32E;--sun-bg:#FDF3DE;--yes:#2F7D57;--yes-bg:#E8F4EC;
- --no:#B0463C;--no-bg:#FBECEA;
- --t1:9px;--t2:11px;--t3:13px;--t4:15px;--t5:18px;--t6:22px;--t7:28px;--t8:40px;--t9:52px;}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;overflow:hidden}
-body{font:var(--t4)/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
- color:var(--ink);background:var(--paper);padding-top:env(safe-area-inset-top)}
-.num{font-variant-numeric:tabular-nums}
-header{padding:10px 14px 8px;background:var(--paper);position:relative;z-index:5}
-.hrow{display:flex;align-items:center;gap:10px}
-.htitle{flex:1 1 auto;min-width:0}
-.htitle b{display:block;font-size:var(--t5);font-weight:650;line-height:1.2}
-.htitle span{display:block;font-size:var(--t3);color:var(--muted)}
-.lang{display:flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden;background:#fff}
-.lang button{border:0;background:transparent;font:inherit;font-size:var(--t3);font-weight:700;
- color:var(--muted);padding:6px 11px;cursor:pointer}
-.lang button.on{background:var(--band);color:#fff}
-.track{height:6px;border-radius:999px;background:var(--line);margin-top:9px;overflow:hidden}
-.track i{display:block;height:100%;background:var(--band);width:0;transition:width .5s}
-main{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
- padding:0 14px calc(30px + env(safe-area-inset-bottom))}
-.pad{height:104px}
-.wrap{max-width:520px;margin:0 auto}
-.mhead{text-align:center;margin:16px 0 14px}
-.mhead h1{margin:0;font-size:var(--t7);font-weight:650}
-.mhead p{margin:4px 0 0;font-size:var(--t4);color:var(--ink2)}
-.mhead .alt{font-size:var(--t3);color:var(--muted);margin-top:6px}
-.paperbtn{display:flex;align-items:center;gap:12px;width:100%;padding:15px;margin:6px 0 16px;
- border-radius:18px;border:2px solid var(--sun);background:var(--sun-bg);cursor:pointer;
- font:inherit;text-align:left}
-.paperbtn b{display:block;font-size:var(--t5);color:#6A4A05}
-.paperbtn span{display:block;font-size:var(--t3);color:#8A6A25}
-.camp{margin:0 0 6px}
-.chead{display:flex;align-items:center;gap:11px;padding:12px 4px 8px}
-.chead .em{font-size:var(--t6)}
-.chead b{flex:1 1 auto;font-size:var(--t5);font-weight:650}
-.chead small{font-size:var(--t3);color:var(--muted);display:block;font-weight:400}
-.chead .cnt{font-size:var(--t3);color:var(--band);font-weight:700}
-.slope{display:flex;flex-direction:column-reverse}
-.stop{position:relative;display:flex;align-items:center;gap:11px;padding:7px 0}
-.stop:before{content:"";position:absolute;left:23px;top:0;bottom:0;width:3px;background:var(--line)}
-.stop.done:before{background:var(--band)}
-.stop:first-child:before{top:50%}.stop:last-child:before{bottom:50%}
-.pin{position:relative;z-index:2;width:48px;height:48px;border-radius:50%;flex:0 0 auto;
- display:flex;align-items:center;justify-content:center;font-size:var(--t4);font-weight:700;
- background:#fff;border:2.5px solid var(--line);cursor:pointer;font-family:inherit;color:var(--muted)}
-.pin.done{border-color:var(--band);background:var(--band);color:#fff}
-.pin.now{border-color:var(--band);color:var(--band);box-shadow:0 0 0 5px rgba(78,140,106,.16)}
-.si{flex:1 1 auto;min-width:0;text-align:left}
-.si b{display:block;font-size:var(--t4);font-weight:600}
-.si span{display:block;font-size:var(--t2);color:var(--muted)}
-.sc{font-size:var(--t3);color:var(--band);font-weight:700}
-.card{background:var(--card);border-radius:18px;padding:20px 16px;
- box-shadow:0 1px 2px rgba(27,36,48,.05),0 8px 24px rgba(27,36,48,.05);
- display:flex;flex-direction:column;align-items:center;text-align:center}
-.step{font-size:var(--t3);color:var(--muted);text-align:center;margin:10px 0 12px}
-.qbig{font-size:var(--t9);font-weight:600;line-height:1.1;letter-spacing:.01em;margin:14px 0}
-.qmid{font-size:var(--t7);font-weight:600;margin:14px 0}
-.hint{font-size:var(--t3);color:var(--muted);margin:0 0 4px}
-.slot{min-height:62px;display:flex;align-items:center;justify-content:center;
- font-size:var(--t8);font-weight:600;color:var(--band);margin:2px 0 6px}
-.slot.empty{color:var(--muted);opacity:.45}
-.slot{border-bottom:2.5px solid var(--line);width:72%;max-width:250px;margin:2px auto 8px}
-.slot.wrong{color:var(--no)}
-.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;max-width:320px;margin-top:8px}
-.key{border:1.5px solid var(--line);border-radius:14px;background:#fff;font:inherit;
- font-size:var(--t6);font-weight:600;padding:14px 0;cursor:pointer;font-variant-numeric:tabular-nums}
-.key:active{transform:translateY(1px)}
-.key.wide{grid-column:span 1}
-.key.go{background:var(--band);color:#fff;border-color:var(--band)}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;width:100%;margin-top:16px}
-.opt{border:1.5px solid var(--line);border-radius:14px;background:#fff;padding:14px 8px;font:inherit;
- font-size:var(--t5);font-weight:600;cursor:pointer;font-variant-numeric:tabular-nums;color:var(--ink)}
-.opt.yes{border-color:var(--yes);background:var(--yes-bg);color:var(--yes)}
-.opt.no{border-color:var(--no);background:var(--no-bg);color:var(--no)}
-.teach{font-size:var(--t4);line-height:1.6;margin:16px 6px 0;max-width:36ch;color:var(--ink)}
-.code{font-size:var(--t2);color:var(--muted);letter-spacing:.04em;margin-top:14px}
-.go2{width:100%;max-width:340px;border:0;border-radius:14px;background:var(--band);color:#fff;
- font:inherit;font-size:var(--t5);font-weight:700;padding:15px;margin-top:16px;cursor:pointer}
-.go2.quiet{background:#fff;color:var(--ink2);border:1.5px solid var(--line)}
-.back{position:fixed;left:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:6;
- width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line);background:#fff;
- font-size:var(--t5);color:var(--ink2);cursor:pointer}
-.tally{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-.tally i{width:7px;height:7px;border-radius:50%;background:var(--line)}
-.tally i.on{background:var(--band)}.tally i.bad{background:var(--no)}
-.note{margin-top:14px;padding:11px 13px;border-radius:14px;background:var(--sun-bg);
- font-size:var(--t3);line-height:1.55;color:#6A4A05;max-width:36ch}
-.timer{font-size:var(--t6);font-weight:700;color:var(--ink2);font-variant-numeric:tabular-nums}
-.timer.low{color:var(--no)}
-.pgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;width:100%;margin-top:12px}
-.pg{aspect-ratio:1;border-radius:9px;border:1.5px solid var(--line);background:#fff;
- font:inherit;font-size:var(--t2);color:var(--muted);cursor:pointer;padding:0}
-.pg.ans{border-color:var(--band);color:var(--band);font-weight:700}
-.pg.now{background:var(--band);color:#fff;border-color:var(--band)}
-.res{text-align:center}.res .em{font-size:var(--t8)}
-.res h2{margin:6px 0 2px;font-size:var(--t6)}
-.res p{margin:0;color:var(--muted);font-size:var(--t4)}
-.bar2{height:10px;border-radius:999px;background:var(--line);overflow:hidden;margin:12px 0 4px;width:100%;max-width:340px}
-.bar2 i{display:block;height:100%;background:var(--band)}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  --page:#dcdada; --ground:#f3f2f2; --tile:#ffffff; --ink:#201e1d; --muted:#4a4645; --outline:#7d7979; --try:#eae9e9;
+  --brand:#4E8C6A; --acc:#2f6b4b; --tint:#e3efe7; --acc-ink:#ffffff; --nu:#8fd0a8; --nu2:#2f6b4b; --warm:#E8A33C;
+  --dark-panel:#201e1d; --dark-ink:#f3f2f2;
+  --band:var(--acc); --line:var(--outline); --sun:var(--warm); --scree:var(--muted);
+  --f:"Nunito","Helvetica Neue",Arial,system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --page:#0f0e0d; --ground:#1a1817; --tile:#262322; --ink:#f3f2f2; --muted:#bab6b6; --outline:#9b9797; --try:#34312f;
+  --acc:#7cc79b; --tint:#2f3a33; --acc-ink:#1a1817; --dark-panel:#0f0e0d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --page:#0f0e0d; --ground:#1a1817; --tile:#262322; --ink:#f3f2f2; --muted:#bab6b6; --outline:#9b9797; --try:#34312f;
+  --acc:#7cc79b; --tint:#2f3a33; --acc-ink:#1a1817; --dark-panel:#0f0e0d; color-scheme:dark}
+html,body{min-height:100%}
+body{margin:0;background:var(--page);color:var(--ink);font:17px/1.5 var(--f)}
+*{box-sizing:border-box}
+button,input,textarea{font:inherit;color:inherit}
+button{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+h1,h2,h3{margin:0;font-weight:900;line-height:1.15;text-wrap:balance}
+p{margin:0}
+.app{max-width:560px;margin:0 auto;background:var(--ground);min-height:100vh;display:flex;flex-direction:column}
+@media (min-width:600px){.app{border-left:2px solid var(--ink);border-right:2px solid var(--ink)}}
+.band{height:12px;flex:none;background:repeating-linear-gradient(90deg,var(--acc) 0 12px,var(--ink) 12px 15px,var(--tint) 15px 27px,var(--ink) 27px 30px)}
+.top{position:sticky;top:0;z-index:5;background:var(--ground);padding-top:env(safe-area-inset-top,0px)}
+.hdr{display:flex;align-items:center;gap:10px;padding:8px 16px;min-height:62px;border-bottom:2px solid var(--ink)}
+.hdr .ttl{flex:1;display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.hdr .ttl b{font-size:19px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hdr .ttl span{font-size:14px;color:var(--muted);font-weight:600}
+.backb{width:44px;height:44px;border:2px solid var(--ink);background:var(--tile);display:grid;place-items:center;cursor:pointer;flex:none}
+.view{flex:1;padding:14px 16px calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:14px;min-width:0}
+.nu{flex:none;display:block}
+.greet{display:flex;gap:12px;align-items:center}
+.greet p{font-size:18px;line-height:1.4;font-weight:700}
+.btn{min-height:56px;width:100%;border:2px solid var(--acc);background:var(--acc);color:var(--acc-ink);font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 16px;text-align:left;cursor:pointer}
+.btn:hover{filter:brightness(1.07)}
+.btn.sec{background:var(--tile);color:var(--ink);border-color:var(--ink);min-height:52px;font-size:16px}
+.btn.sec:hover{filter:none;background:var(--try)}
+.btn.mid{justify-content:center}
+.btn.quiet{background:none;border-color:transparent;color:var(--muted);min-height:44px;justify-content:center;font-size:15px;text-decoration:underline}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{aspect-ratio:1.15;background:var(--tile);border:2px solid var(--ink);display:flex;flex-direction:column;text-align:left;padding:0;cursor:pointer;min-width:0}
+.tile:hover{background:color-mix(in srgb,var(--tint) 45%,var(--tile))}
+.tile .band{width:100%}
+.tile .in{flex:1;padding:10px 12px 12px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;width:100%;min-width:0}
+.tile .nm{font-size:16.5px;font-weight:800;line-height:1.25}
+.tile svg.ic{stroke:var(--acc)}
+.strip{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--tile);border:2px solid var(--ink);padding:10px 12px;text-align:left;cursor:pointer;width:100%}
+.strip:hover{background:var(--try)}
+.strip b{font-size:16px;white-space:nowrap}
+.strip small{font-size:13px;color:var(--muted);font-weight:700}
+.carry{grid-template-columns:auto 1fr auto}
+.carry .ar{font-weight:900}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;max-width:240px}
+.dy{display:grid;justify-items:center;gap:2px;font-size:11px;font-weight:800;color:var(--muted)}
+.dy i{width:100%;aspect-ratio:1;max-width:26px;border:1.5px solid var(--outline);display:grid;place-items:center;font-style:normal;color:var(--acc-ink);font-size:11px}
+.dy.p i{background:var(--acc);border-color:var(--acc)}
+.dy.r i{border:2px dashed var(--ink)}
+.dy.t i{box-shadow:0 0 0 2px var(--ink)}
+.blocks{display:grid;grid-template-columns:repeat(10,1fr);gap:2px}
+.blocks i{height:9px;background:var(--tile);box-shadow:inset 0 0 0 1.5px var(--outline)}
+.blocks i.f{background:var(--acc);box-shadow:none}
+.blocks i.rl{box-shadow:0 0 0 2px var(--ink)}
+.blocks i.f.rl{box-shadow:0 0 0 2px var(--ink)}
+.blocks.lg i{height:16px}
+.blocks i.new{animation:pop .5s .3s both}
+@keyframes pop{from{transform:scaleY(.2);opacity:.2}}
+.links{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--ink);background:var(--tile)}
+.links button{border:0;background:none;padding:10px 8px;font-weight:900;font-size:14.5px;cursor:pointer;text-align:left;display:grid;gap:2px;align-content:start}
+.links button+button{border-left:2px solid var(--ink)}
+.links button:hover{background:var(--try)}
+.links small{font-weight:700;color:var(--muted);font-size:12.5px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.eb{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card{background:var(--tile);border:2px solid var(--ink);padding:14px;display:grid;gap:10px}
+.small-note{font-size:14px;color:var(--muted);font-weight:600}
+.sublist{display:grid;border:2px solid var(--ink);background:var(--tile)}
+.sub{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:12px;border:0;background:none;text-align:left;cursor:pointer;min-height:58px;width:100%}
+.sub+.sub{border-top:1.5px solid var(--outline)}
+.sub:hover{background:var(--try)}
+.sub .n{width:30px;height:30px;border:2px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:14px}
+.sub.done .n{background:var(--ink);color:var(--ground)}
+.sub.here{background:var(--tint);box-shadow:inset 6px 0 0 var(--acc)}
+.sub.soon{color:var(--muted)}
+.sub .s{font-size:13px;color:var(--muted);font-weight:800;text-align:right}
+.sub.here .s{color:var(--ink)}
+.sub .t{font-weight:800;line-height:1.3}
+.sub .t small{display:block;font-weight:700;color:var(--muted);font-size:13px}
 
-.phases{display:flex;gap:5px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
-.pz{font-size:var(--t2);color:var(--muted);padding:4px 10px;border-radius:999px;background:#fff;
- border:1.5px solid var(--line)}
-.pz.on{background:var(--band);color:#fff;border-color:var(--band);font-weight:700}
-.pz.past{color:var(--band);border-color:var(--band)}
-.storyem{font-size:var(--t9);line-height:1;margin:8px 0 14px}
-.storyline{font-size:var(--t5);line-height:1.55;margin:0;max-width:32ch;color:var(--ink)}
-.steps{width:100%;display:flex;flex-direction:column;gap:9px;margin-top:14px;text-align:left}
-.stepline{border-left:3px solid var(--band);padding:8px 0 8px 12px}
-.stepline b{display:block;font-size:var(--t6);color:var(--ink)}
-.stepline span{display:block;font-size:var(--t4);color:var(--ink2);margin-top:3px;line-height:1.5}
-.stepline i{display:block;font-style:normal;font-size:var(--t3);color:var(--muted);margin-top:5px;line-height:1.5}
-.stepline.done{border-left-color:var(--line);opacity:.6}
-.stepline.done b{font-size:var(--t5);color:var(--band)}
-.guideq{font-size:var(--t5);line-height:1.5;margin:16px 4px 4px;max-width:32ch;color:var(--ink)}
+/* the video, and the jump index under it */
+.vid{background:#201e1d;color:#f3f2f2;border:2px solid var(--ink);display:grid}
+.vid video{width:100%;aspect-ratio:16/9;background:#000;display:block}
+.vid .scr{aspect-ratio:16/9;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:16px;position:relative}
+.vid .cap2{font-size:clamp(16px,4vw,20px);font-weight:800;line-height:1.35}
+.vid .tag{position:absolute;top:8px;left:10px;right:10px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#bab6b6}
+.vid .ctl{display:flex;align-items:center;gap:10px;padding:8px 10px;border-top:1px solid #444141}
+.vid .pp{width:44px;height:40px;border:2px solid #f3f2f2;background:none;color:#f3f2f2;cursor:pointer;display:grid;place-items:center}
+.vid .bar{flex:1;height:6px;background:#444141}
+.vid .bar i{display:block;height:100%;background:var(--brand);width:0}
+.vid .tm{font-size:13px;font-variant-numeric:tabular-nums}
+.vid .cc{font-size:11px;font-weight:900;border:1.5px solid #f3f2f2;padding:1px 4px}
+.hint{font-size:15px;color:var(--muted);font-weight:600}
+.jumps{display:grid;border:2px solid var(--ink);background:var(--tile)}
+.jump{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:baseline;border:0;background:none;padding:10px 12px;text-align:left;cursor:pointer;font-size:15.5px;font-weight:700}
+.jump+.jump{border-top:1.5px solid var(--outline)}
+.jump:hover{background:var(--try)}
+.jump .jt{font-weight:900;color:var(--acc);font-variant-numeric:tabular-nums}
+.recall .show{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.rsteps{margin:0;padding-left:22px;display:grid;gap:4px;font-weight:700;font-variant-numeric:tabular-nums}
+.stepline{display:grid;gap:4px;padding:10px 0;border-top:1.5px solid var(--outline)}
+.stepline:first-child{border-top:0;padding-top:0}
+.stepline b{font-variant-numeric:tabular-nums}
+.stepline i{font-style:normal;border-left:4px solid var(--acc);padding-left:10px;color:var(--muted);font-weight:600}
+.whybtn{justify-self:start;border:2px solid var(--ink);background:var(--tile);font-weight:800;font-size:14px;padding:2px 10px;cursor:pointer}
+.story{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.story .em{font-size:30px}
+svg.art,svg.qart{width:100%;height:auto;max-height:190px;display:block}
+.artbox{border:2px solid var(--ink);background:var(--tile);padding:10px}
 
-.cover{text-align:center;padding-top:14px}
-.covmark{font-size:56px;line-height:1}
-.covh{margin:10px 0 2px;font-size:var(--t7);font-weight:650;line-height:1.2}
-.covsub{margin:0 0 16px;font-size:var(--t4);color:var(--muted)}
-.covcard{align-items:flex-start;text-align:left;gap:0}
-.covwho{margin:0 0 12px;font-size:var(--t5);font-weight:600;line-height:1.45}
-.covp{margin:0 0 11px;font-size:var(--t4);line-height:1.6;color:var(--ink2)}
-.covsm{margin:4px 0 0;font-size:var(--t3);color:var(--muted)}
-.wcard{display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;margin-bottom:8px;
- border-radius:16px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font:inherit;text-align:left}
-.wcard.next{border-color:var(--band);background:#F2F8F4}
-.wm{flex:0 0 auto;min-width:34px;height:34px;border-radius:10px;background:var(--sun-bg);color:#6A4A05;
- display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--t4)}
-.wcard.next .wm{background:var(--band);color:#fff}
-.wx{flex:1 1 auto;min-width:0}
-.wx b{display:block;font-size:var(--t4);font-weight:600}
-.wx small{display:block;font-size:var(--t2);color:var(--muted)}
-.wa{color:var(--muted)}
-.shelfh{margin:16px 0 4px;font-size:var(--t3);color:var(--muted)}
-.strong{margin:0 0 6px;font-size:var(--t3);color:var(--ink2);line-height:1.6}
-.sh{display:flex;align-items:center;gap:12px;width:100%;padding:14px;margin-top:8px;
- border-radius:16px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font:inherit;text-align:left}
-.sh.open{border-color:var(--band);border-bottom-left-radius:0;border-bottom-right-radius:0}
-.sh .em{font-size:var(--t6)}
-.shx{flex:1 1 auto;min-width:0}
-.shx b{display:block;font-size:var(--t4);font-weight:650}
-.shx small{display:block;font-size:var(--t2);color:var(--muted)}
-.shc{font-size:var(--t3);color:var(--band);font-weight:700}
-.shbody{border:1.5px solid var(--band);border-top:0;border-radius:0 0 16px 16px;padding:4px;background:#fff}
-.row{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border:0;background:transparent;
- cursor:pointer;font:inherit;text-align:left;border-radius:11px}
-.row:active{background:#F2F8F4}
-.rm{flex:0 0 auto;width:22px;text-align:center;color:var(--muted)}
-.row.done .rm{color:var(--band)}
-.rx{flex:1 1 auto;min-width:0}
-.rx b{display:block;font-size:var(--t4);font-weight:500}
-.rx small{display:block;font-size:var(--t1);color:var(--muted);letter-spacing:.03em}
-.rs{font-size:var(--t3);color:var(--band);font-weight:700}
+/* a question */
+.qh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.qbar{display:flex;gap:3px;flex:1;max-width:240px}
+.qbar i{flex:1;height:6px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--outline)}
+.qbar i.d{background:var(--ink);box-shadow:none}.qbar i.c{background:var(--acc);box-shadow:none}
+.qtext{font-size:clamp(19px,4.8vw,22px);font-weight:800;line-height:1.4}
+.qshow{font-size:clamp(28px,8vw,40px);font-weight:900;line-height:1.25;font-variant-numeric:tabular-nums;text-align:center;padding:4px 0;overflow-wrap:anywhere}
+.qshow.mid{font-size:clamp(22px,6vw,30px)}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1;margin:0 4px;font-weight:900;justify-content:center}
+.fr span:first-child{border-bottom:3px solid currentColor;padding:0 4px 3px}
+.fr span:last-child{padding:3px 4px 0}
+.slot{display:flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--ink);background:var(--tile);min-height:60px;font-size:28px;font-weight:900;font-variant-numeric:tabular-nums}
+.slot.empty{color:var(--outline)}
+.slot.ok{border-color:var(--acc);box-shadow:inset 0 0 0 2px var(--acc)}
+.slot .u{font-size:18px;color:var(--muted)}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.key{min-height:54px;border:2px solid var(--ink);background:var(--tile);font-size:22px;font-weight:900;cursor:pointer;display:grid;place-items:center}
+.key:active{background:var(--try)}
+.key.go{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.key.sm{font-size:17px}
+.opts{display:grid;gap:8px}
+.opts.grid4{grid-template-columns:repeat(4,1fr)}
+.op{display:flex;gap:12px;align-items:center;border:2px solid var(--ink);background:var(--tile);padding:12px 14px;min-height:56px;text-align:left;font-size:18px;font-weight:800;cursor:pointer;width:100%}
+.op::before{content:"";width:20px;height:20px;flex:none;border:2px solid var(--ink);background:var(--tile)}
+.opts.grid4 .op{justify-content:center;padding:10px 6px;font-size:20px}
+.opts.grid4 .op::before{display:none}
+.op[aria-checked="true"]{background:var(--ink);color:var(--ground)}
+.op[aria-checked="true"]::before{background:var(--ground);box-shadow:inset 0 0 0 4px var(--ink)}
+.op.right{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.op.right::before{border-color:var(--acc-ink)}
+.op.miss{background:var(--try);border-style:dashed;color:var(--muted)}
+.op:disabled{cursor:default}
+.fbp{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px;align-items:start;border:2px solid var(--ink)}
+.fbp.ok{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.fbp.no{background:var(--try)}
+.fbp b.t{font-size:20px;font-weight:900;display:block;margin-bottom:4px}
+.fbp .acts{grid-column:1/-1;display:grid;gap:8px}
+.fbp .why{display:block;margin-top:6px;font-weight:600}
+.trap{border-left:6px solid var(--warm);background:var(--tile);padding:10px 12px;font-weight:800}
 
-.whybtn{margin-top:6px;border:1.5px solid var(--line);border-radius:999px;background:#fff;
- font:inherit;font-size:var(--t2);color:var(--muted);padding:3px 11px;cursor:pointer}
-.covlead{margin:0 0 18px;font-size:var(--t5);line-height:1.5;color:var(--ink)}
-.covmore{margin-top:18px;border:0;background:transparent;font:inherit;font-size:var(--t3);
- color:var(--muted);text-decoration:underline;cursor:pointer}
-.dgbar{display:flex;align-items:center;gap:10px;margin:2px 0 10px}
-.dgback{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:#fff;
- font-size:var(--t5);color:var(--ink2);cursor:pointer;flex:0 0 auto}
-.dgback:disabled{opacity:.3}
-.dgdots{flex:1 1 auto;display:flex;gap:5px;justify-content:center}
-.dgdots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
-.dgdots i.on{background:var(--band)}
-.dgdots i.now{box-shadow:0 0 0 3px rgba(78,140,106,.22)}
-.dgn{font-size:var(--t3);color:var(--muted);flex:0 0 auto}
-.shw{color:var(--band);font-weight:700}
-
-.shdots{display:inline-flex;gap:3px;vertical-align:middle;margin-right:5px}
-.shdots i{width:6px;height:6px;border-radius:50%;background:var(--line)}
-.shdots i.on{background:var(--band)}
-.gotline{margin:8px 0 0;font-size:var(--t3);color:var(--muted)}
-.gotline b{font-size:var(--t5);color:var(--band)}
-.go2.small{font-size:var(--t4);padding:11px;max-width:280px}
-
-.artbox{width:100%;display:flex;justify-content:center;margin:4px 0 10px}
-.art{width:100%;max-width:280px;height:auto;display:block}
-.trap{display:flex;gap:8px;align-items:flex-start;margin:0 0 10px;padding:10px 13px;border-radius:14px;
- background:var(--sun-bg);color:#6A4A05;font-size:var(--t3);line-height:1.5}
-.nice{margin:0 0 10px;padding:9px 14px;border-radius:999px;background:var(--yes-bg);color:var(--yes);
- font-size:var(--t4);font-weight:700;text-align:center;animation:pop .22s ease}
-.nice.fix{background:var(--sun-bg);color:#6A4A05}
-@keyframes pop{from{opacity:0;transform:translateY(6px) scale(.96)}to{opacity:1;transform:none}}
-.shfill{position:relative;flex:0 0 auto;width:34px;height:40px;border-radius:9px;background:var(--line);
- overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
-.shfill>span{position:absolute;left:0;right:0;bottom:0;background:var(--band);transition:height .4s ease}
-.shfill b{position:relative;font-size:var(--t1);color:var(--ink);width:100%;text-align:center;padding-bottom:3px}
-
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 14px}
-.tile{position:relative;aspect-ratio:1;border-radius:20px;border:1.5px solid var(--line);
- background:#fff;cursor:pointer;font:inherit;text-align:left;padding:14px;
- display:flex;flex-direction:column;align-items:flex-start;overflow:hidden}
-/* v9: 30px in a tile 170px across read as a stray character rather than
-   an icon. Big enough to be the thing you look at, and pushed to the
-   middle of the space above the label. */
-.tem{font-size:52px;line-height:1;margin:6px auto 0;display:block}
-.tname{margin-top:auto;padding-top:8px;font-size:var(--t4);font-weight:650;line-height:1.25;color:var(--ink)}
-.tsub{font-size:var(--t2);color:var(--muted);margin-top:2px}
-.tbar{width:100%;height:5px;border-radius:999px;background:var(--line);margin-top:9px;overflow:hidden}
-.tbar i{display:block;height:100%;background:var(--band);transition:width .4s ease}
-.tnum{position:absolute;top:14px;right:14px;font-size:var(--t2);color:var(--muted);font-weight:700}
-.sublist{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
-.subrow{display:flex;align-items:center;gap:11px;width:100%;padding:14px;border-radius:16px;
- border:1.5px solid var(--line);background:#fff;cursor:pointer;font:inherit;text-align:left}
-.subrow.done{border-color:var(--band)}
-.srm{flex:0 0 auto;width:24px;text-align:center;color:var(--muted);font-size:var(--t3)}
-.subrow.done .srm{color:var(--band)}
-.srx{flex:1 1 auto;min-width:0}
-.srx b{display:block;font-size:var(--t4);font-weight:600}
-.srx small{display:block;font-size:var(--t2);color:var(--muted)}
-.srs{font-size:var(--t3);color:var(--band);font-weight:700}
-.vidbox{margin:2px 0 12px}
-.vidph{display:flex;align-items:center;gap:13px;padding:16px;border-radius:18px;
- border:2px dashed var(--line);background:#fff}
-.vidplay{flex:0 0 auto;width:46px;height:46px;border-radius:50%;background:var(--sun-bg);
- color:var(--sun);display:flex;align-items:center;justify-content:center;font-size:var(--t5)}
-.vidt b{display:block;font-size:var(--t4);font-weight:650}
-.vidt small{display:block;font-size:var(--t2);color:var(--muted);letter-spacing:.02em}
-.card.story{align-items:flex-start;text-align:left;flex-direction:row;gap:13px;padding:15px;margin-bottom:8px}
-.card.story .storyem{font-size:28px;margin:0;line-height:1.1}
-.card.story .storyline{font-size:var(--t4);line-height:1.55;max-width:none;margin:0}
-.lh{margin:16px 0 8px;font-size:var(--t5);font-weight:650}
-.card.artcard{padding:14px;margin-bottom:8px}
-.card.lesson{align-items:stretch;text-align:left}
-.card.lesson .qmid{text-align:center;margin:0 0 4px}
-.go2.warm{background:var(--sun);color:#3B2A05}
-
-.lh.first{margin-top:6px}
-.vid{width:100%;border-radius:18px;display:block;background:#000;aspect-ratio:16/9}
-.jumph{margin:14px 0 7px;font-size:var(--t3);color:var(--muted)}
-.jumps{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.jump{display:flex;align-items:center;gap:11px;width:100%;padding:10px 13px;border-radius:13px;
- border:1.5px solid var(--line);background:#fff;cursor:pointer;font:inherit;text-align:left}
-.jump:active{background:#F2F8F4}
-.jt{flex:0 0 auto;font-size:var(--t2);color:var(--band);font-weight:700;min-width:32px}
-.jx{flex:1 1 auto;font-size:var(--t3);color:var(--ink2);line-height:1.4}
-.fallback{margin:0 0 10px;font-size:var(--t3);color:var(--muted);font-style:italic}
-
-.lhsub{margin:-4px 0 8px;font-size:var(--t3);color:var(--muted);line-height:1.5}
-.card.recall{align-items:stretch;text-align:left;padding:16px}
-.card.recall .qmid{text-align:center;margin:0 0 10px;font-size:var(--t6)}
-.rsteps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:7px}
-.rsteps li{font-size:var(--t5);font-weight:600;color:var(--ink);line-height:1.35}
-.rsteps li::marker{color:var(--muted);font-size:var(--t3);font-weight:400}
-
-.covart{width:100%;max-width:300px;height:auto;display:block;margin:6px auto 10px}
-.covgot{margin:2px 0 0;font-size:var(--t3);color:var(--muted)}
-.covgot b{font-size:var(--t6);color:var(--band);margin-right:5px}
-.insideh{margin:26px 0 9px;font-size:var(--t3);color:var(--muted);font-weight:600;text-align:center}
-.inside{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
-.ic{display:flex;flex-direction:column;align-items:center;gap:2px;padding:13px 6px;border-radius:16px;
- background:#fff;border:1.5px solid var(--line);font-size:var(--t2);color:var(--muted);
- text-align:center;line-height:1.3}
-.ic b{font-size:var(--t6);color:var(--ink);font-weight:650}
-.peek{display:flex;justify-content:center;gap:10px;margin-top:12px;font-size:23px}
-.pk{opacity:.75}
-.nameinput{width:100%;max-width:320px;border:2px solid var(--line);border-radius:16px;background:#fff;
- font:inherit;font-size:var(--t7);font-weight:600;text-align:center;padding:14px;color:var(--ink);
- margin:6px 0 4px}
-.nameinput:focus{outline:none;border-color:var(--band)}
-.greet{margin:0 0 2px;font-size:var(--t4);color:var(--band);font-weight:650}
-
-.brand{margin:0 0 3px;font-size:var(--t3);font-weight:700;letter-spacing:.14em;color:var(--band)}
-.covwhy{margin:9px 0 0;font-size:var(--t3);color:var(--muted);line-height:1.5;max-width:30ch}
-
-.reveal{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 0 6px}
-.rl{margin:0;font-size:var(--t3);color:var(--muted)}
-.ra{margin:0;font-size:var(--t8);font-weight:650;color:var(--band);line-height:1.2}
-
-/* ---- the house brand, course layer ---- */
-.mwrap{display:flex;justify-content:center;margin:2px 0 4px}
-.mascot{display:block}
-.ticon{display:block}
-.tem{margin:4px auto 0;display:block}
-.today{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:2px 0 6px;
- border-radius:22px;border:2px solid var(--band);background:#fff;cursor:pointer;font:inherit;text-align:left;
- box-shadow:0 2px 0 var(--band)}
-.today.did{border-color:var(--line);box-shadow:0 2px 0 var(--line)}
-.today .mascot{flex:0 0 auto;margin:-6px 0}
-.tdx{flex:1 1 auto;min-width:0}
-.tdx b{display:block;font-size:var(--t5);font-weight:700;color:var(--ink)}
-.tdx small{display:block;font-size:var(--t3);color:var(--muted)}
-.streak{display:flex;flex-direction:column;align-items:center;gap:0;flex:0 0 auto;
- background:var(--sun-bg);border-radius:14px;padding:7px 11px}
-.streak b{font-size:var(--t6);color:#6A4A05;line-height:1}
-.orpick{margin:14px 0 6px;font-size:var(--t3);color:var(--muted);text-align:center}
-.sesbar{height:8px;border-radius:999px;background:var(--line);overflow:hidden;margin:0 0 8px}
-.sesbar i{display:block;height:100%;background:var(--band);transition:width .35s ease}
-.sestop{margin:0 0 10px;text-align:center;font-size:var(--t3);color:var(--muted)}
-.streakbig{display:flex;align-items:center;justify-content:center;gap:9px;margin:14px 0 4px;
- background:var(--sun-bg);border-radius:999px;padding:10px 20px;color:#6A4A05}
-.streakbig b{font-size:var(--t7)}
-.streakbig span{font-size:var(--t4)}
-
-.qq{font-size:var(--t5);line-height:1.45;margin:2px 4px 10px;max-width:30ch;color:var(--ink);text-align:center}
-
-/* v10: the icon sat small in the top-left of a big tile with the label jammed
-   against the bottom, so a tile read as mostly empty space. Icon to 64,
-   everything centred, label given room. */
-.tile{align-items:center;text-align:center;padding:16px 12px;justify-content:center;gap:2px}
-.tem{margin:6px auto 2px;font-size:0}
-.tem svg{width:64px;height:64px;display:block;margin:0 auto}
-.tname{margin-top:8px;padding-top:0;text-align:center;line-height:1.25}
-.tsub{text-align:center;width:100%}
-.tbar{margin-top:10px}
-.tnum{top:10px;right:12px}
-
-.qartbox{width:100%;display:flex;justify-content:center;margin:2px 0 10px}
-.qart{width:100%;max-width:300px;height:auto;display:block}
+/* the end of a session, and the other pages */
+.mix{display:grid;border:2px solid var(--ink);background:var(--tile)}
+.mix div{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:12px;align-items:center}
+.mix div+div{border-top:1.5px solid var(--outline)}
+.mix .big{font-size:28px;font-weight:900;color:var(--acc)}
+.mix small{display:block;color:var(--muted);font-size:14px;font-weight:600}
+.end{background:var(--dark-panel);color:var(--dark-ink);margin:-14px -16px 0;padding:22px 18px;display:grid;gap:12px;border-bottom:2px solid var(--ink)}
+.end .score{font-size:clamp(88px,26vw,140px);font-weight:900;line-height:.85;letter-spacing:-.03em}
+.end .score small{font-size:28px;font-weight:900;letter-spacing:0}
+.end h2{font-size:32px}
+.end .tp{display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:#bab6b6}
+.mile{border:2px solid var(--ink);display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:14px;background:var(--tile)}
+.mile b{font-size:36px;font-weight:900;line-height:1;color:var(--acc)}
+.bigstreak{display:flex;align-items:baseline;gap:10px}
+.bigstreak b{font-size:72px;font-weight:900;line-height:1}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);font-weight:700}
+.legend span{display:flex;gap:6px;align-items:center}
+.legend i{width:14px;height:14px;border:1.5px solid var(--outline)}
+.legend .p{background:var(--acc);border-color:var(--acc)}.legend .r{border:2px dashed var(--ink)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.thirty{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.thirty i{aspect-ratio:1;background:var(--acc)}
+.thirty i.r{background:none;box-shadow:inset 0 0 0 2px var(--acc)}
+.thirty i.e{background:none;box-shadow:inset 0 0 0 1.5px var(--outline)}
+.rlist{display:grid;border:2px solid var(--ink);background:var(--tile)}
+.rrow{display:grid;gap:6px;padding:12px;border:0;background:none;text-align:left;width:100%;cursor:pointer}
+.rrow+.rrow{border-top:1.5px solid var(--outline)}
+.rrow .tp{display:flex;justify-content:space-between;gap:10px;font-weight:800}
+.st{font-size:13px;font-weight:900;padding:2px 8px;border:2px solid var(--ink);white-space:nowrap;height:fit-content}
+.st.ready{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.st.nearly{background:var(--tint)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--ink);background:var(--tile)}
+.kpis div{padding:10px;display:grid;gap:2px}
+.kpis div+div{border-left:2px solid var(--ink)}
+.kpis b{font-size:24px;font-weight:900;font-variant-numeric:tabular-nums}
+.kpis span{font-size:13px;color:var(--muted);font-weight:700}
+.ptab{display:grid;border:2px solid var(--ink);background:var(--tile)}
+.ptab .h{padding:8px 12px;font-weight:900;background:var(--acc);color:var(--acc-ink)}
+.ptab .r{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;font-size:15.5px;border-top:1px solid var(--outline);font-weight:600}
+.ptab .r b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.papers{display:grid;border:2px solid var(--ink);background:var(--tile)}
+.papers div{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;font-weight:700}
+.papers div+div{border-top:1.5px solid var(--outline)}
+.papers small{color:var(--muted);font-size:14px;white-space:nowrap}
+.mset{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;border:2px solid var(--ink);background:var(--tile);padding:12px 14px}
+.mset b{font-size:18px}
+.mset small{grid-column:1/-1;color:var(--muted);font-size:14px;font-weight:600}
+.timer{font-size:20px;font-weight:900;font-variant-numeric:tabular-nums;border:2px solid var(--ink);padding:2px 10px}
+.timer.low{background:var(--try)}
+.pgrid{display:grid;grid-template-columns:repeat(9,1fr);gap:3px}
+.pg{min-height:34px;border:1.5px solid var(--outline);background:var(--tile);font-size:13px;font-weight:800;cursor:pointer;padding:0}
+.pg.ans{background:var(--tint);border-color:var(--ink)}
+.pg.now{box-shadow:0 0 0 2px var(--ink);background:var(--ink);color:var(--ground)}
+.review{display:grid;border:2px solid var(--ink);background:var(--tile)}
+.review div{display:grid;grid-template-columns:28px 1fr auto;gap:10px;padding:9px 12px;align-items:center;font-size:15.5px;font-weight:700}
+.review div+div{border-top:1px solid var(--outline)}
+.review .m{font-weight:900;text-align:center}
+.review .ok{color:var(--acc)}
+.overlay{position:fixed;inset:0;background:color-mix(in srgb,#000 55%,transparent);display:grid;align-items:end;justify-items:center;z-index:20}
+.sheet{background:var(--ground);border-top:2px solid var(--ink);padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:12px;width:100%;max-width:560px;max-height:90vh;overflow:auto}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--ground);padding:10px 16px;opacity:0;transition:.25s;z-index:60;font-size:14px;font-weight:800;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:420px){.strip{grid-template-columns:1fr auto}.strip .week{display:none}.strip.carry{grid-template-columns:auto 1fr auto}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition:none!important}}
 </style></head><body>
-<header><div class="hrow">
- <div class="htitle"><b id="hT">One Hundred</b><span id="hS">Year 6 SATs maths</span></div>
- <div class="lang"><button id="lEN" class="on" onclick="setLang('en')">EN</button>
- <button id="lFR" onclick="setLang('fr')">FR</button></div></div>
- <div class="track"><i id="bar"></i></div></header>
-<main id="main"><div id="app"></div><div class="pad"></div></main>
-<button class="back" id="back" onclick="goMap()" hidden>&lsaquo;</button>
+<div class="app"><div class="top"><div class="band" aria-hidden="true"></div><div class="hdr" id="hdr"></div></div>
+<main class="view" id="view" aria-live="polite"></main></div>
+<div class="toast" id="toast" role="status"></div>
 <script>
-/* ================= question generators =================
-   The arithmetic paper is 36 constructed answers, not multiple choice, so most
-   of this course asks a child to WRITE a number. That also means questions can
-   be generated rather than listed: fluency needs volume, and a stop a child
-   returns to should not be the same twenty sums. Every generator takes a seed,
-   so a question is stable while it is on screen and different on the next
-   visit. */
+
+/* ================= the original engine (unchanged unless marked v2) ================= */
 const R = s => { let x = (s*1103515245 + 12345) & 0x7fffffff; return () => (x = (x*1103515245 + 12345) & 0x7fffffff) / 0x7fffffff; };
 const pick = (r,a) => a[Math.floor(r()*a.length)];
 const between = (r,a,b) => a + Math.floor(r()*(b-a+1));
-const sp = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "\u2009");
+const sp = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","); /* v2: English thousands */
 const gcd = (a,b) => b ? gcd(b,a%b) : a;
 const fr = (n,d) => { const g=gcd(n,d)||1; return [n/g,d/g]; };
 
@@ -1836,84 +1731,6 @@ const T={
  covlead:{en:"Let's find out what you can already do.",fr:"Voyons ce que tu sais d\u00e9j\u00e0 faire."},
  covmore:{en:"How this course was built",fr:"Comment ce cours a \u00e9t\u00e9 construit"},
 };
-let L=localStorage.getItem("cl3.lang")||"en";
-const t=k=>(T[k]||{})[L]||(T[k]||{}).en||k;
-const w=(o,k)=>o[k+"_"+L]!==undefined?o[k+"_"+L]:o[k+"_en"];
-const KEY="cl3.v1"; let S=(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{d:{},b:{},p:[]}}catch(e){return{d:{},b:{},p:[]}}})();
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-const ALL=[]; CAMPS.forEach((c,ci)=>c.stops.forEach((s,si)=>ALL.push(Object.assign({},s,{id:c.id+"."+si,camp:ci}))));
-const BANDS=["#2F7D62"];
-/* v2: a helper that returned undefined printed the word "undefined" on every
-   story screen, and the flow test passed because the phases still advanced.
-   esc now refuses to render nothing. */
-const esc=s=>(s===undefined||s===null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-const norm=x=>String(x).replace(/[\s\u2009,\u00a3%]/g,"").replace(",",".");
-let V={s:"cover"};
-function setLang(x){L=x;localStorage.setItem("cl3.lang",x);render()}
-function render(){
- const done=Object.keys(S.d).length;
- document.documentElement.style.setProperty("--band",BANDS[Math.min(4,Math.floor(done/10))]);
- lEN.className=L==="en"?"on":""; lFR.className=L==="fr"?"on":"";
- hT.textContent=t("title"); hS.textContent=t("sub");
- bar.style.width=Math.round(done/ALL.length*100)+"%";
- back.hidden=(V.s==="cover"||V.s==="shelf");
- back.onclick=(V.s==="stop"&&V.topicFrom!==undefined)?function(){openTopic(V.topicFrom)}:goMap;
- app.innerHTML = V.s==="session"?sessionHTML()
-  :V.s==="cover"?coverHTML():V.s==="diag"?diagHTML()
-  :V.s==="shelf"?homeHTML():V.s==="topic"?topicHTML()
-  :V.s==="stop"?stopHTML():paperHTML();
- if(V.s!=="paper") main.scrollTop=0;
-}
-function mapHTML(){
- const done=Object.keys(S.d).length;
- let h=`<div class="wrap"><div class="mhead"><h1>${esc(t("head"))}</h1>
-  <p>${esc(t("headsub"))}</p>
-  <p class="alt num">${done} ${esc(t("of"))} ${ALL.length} ${esc(t("done"))}</p></div>
-  <button class="paperbtn" onclick="openPaper()"><span style="font-size:26px">\u23f1\ufe0f</span>
-   <span><b>${esc(t("paper"))}</b><span>${esc(t("papersub"))}</span></span></button>`;
- for(let ci=CAMPS.length-1;ci>=0;ci--){
-  const c=CAMPS[ci], mine=ALL.filter(s=>s.camp===ci), dn=mine.filter(s=>S.d[s.id]).length;
-  h+=`<div class="camp"><div class="chead"><span class="em">${c.em}</span>
-    <b>${esc(c[L]||c.en)}<small>${esc(c["sub_"+L]||c.sub_en)}</small></b>
-    <span class="cnt num">${dn}/${mine.length}</span></div><div class="slope">`;
-  mine.forEach((s,i)=>{
-   const d=!!S.d[s.id], nx=!d&&mine.slice(0,i).every(x=>S.d[x.id]);
-   h+=`<div class="stop${d?" done":""}">
-     <button class="pin${d?" done":nx?" now":""}" onclick="openStop('${s.id}')">${d?"\u2713":(TEACH[s.g]?"\u{1f4d6}":s.n)}</button>
-     <span class="si"><b>${esc(s[L]||s.en)}</b><span>${esc(s.code)}</span></span>
-     ${d?`<span class="sc num">${S.b[s.id]||0}/${s.n}</span>`:""}</div>`;
-  });
-  h+=`</div></div>`;
- }
- return h+`</div>`;
-}
-
-/* ================= the front door =================
-   The mountain was the wrong shape for this product. A climb says "start at
-   the bottom and go up in order", and it opened on the LAST camp because the
-   slope had to be drawn upside down \u2014 so the first thing a child saw was the
-   least important content, thirty-seven stops from where they should begin.
-
-   But direction was the smaller problem. This is revision for a test. A child
-   opening it in March is not asking "where do I begin", they are asking "what
-   am I bad at, and what is worth fixing first" \u2014 and that is the one question
-   we can answer properly, because we counted the marks.
-
-   So: ten questions, then the app names the topics that would gain the most
-   marks, heaviest first. The topic shelf is still there to browse. The climb
-   is gone; it was decoration pretending to be navigation. */
-/* The share of marks each camp carries, counted from the 2025 and 2026 papers.
-   Camps 2 and 3 both teach calculation, so its 33% is split between them in
-   proportion to their stops rather than printed twice. */
-const SHARE=[11,19,14,23,33];
-/* ================= the pictures =================
-   Every story in this course promised an image and delivered a sentence. One
-   of them literally said "picture it", because the app would not draw it. At
-   nine to eleven maths is still concrete \u2014 fractions get cut, arrays get
-   arranged, digits get moved \u2014 so these are the nine places where the picture
-   IS the explanation, and they follow the worked example step by step: the
-   child watches the thing happen rather than reading that it happened.
-   Plain SVG, the app's own colours, no library. */
 const SVG=(vb,inner)=>`<svg class="art" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" role="img">${inner}</svg>`;
 const C={on:"var(--band)",off:"var(--line)",ink:"var(--ink)",mut:"var(--muted)",warm:"var(--sun)",paper:"#fff"};
 
@@ -2104,689 +1921,6 @@ const DIAG=[
    It shows what is inside rather than describing it. And there is something to
    look at, drawn in the same language as the rest of the app rather than
    bolted on from a cartoon. The name never leaves the phone. */
-function coverArt(){
- const bits=[["7","var(--band)",22,26,0],["\u00bd","var(--sun)",68,14,-9],
-  ["24","var(--scree)",118,30,6],["\u25b3","var(--band)",166,18,0],
-  ["%","var(--sun)",206,28,8],["8","var(--scree)",246,16,-6]];
- return `<svg class="covart" viewBox="0 0 280 62" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  ${bits.map(([ch,c,x,y,r])=>`<text x="${x}" y="${y+26}" font-size="30" font-weight="600"
-    fill="${c}" opacity=".9" transform="rotate(${r} ${x} ${y+26})">${ch}</text>`).join("")}
- </svg>`;
-}
-/* ================= who is using this =================
-   Asking a child their name once per course is the app admitting it does not
-   know who is using it. Inside Notice Me the child has already been chosen, so
-   the host tells the course and the course never asks. Opened on its own there
-   is nothing to ask about either — a name prompt in front of a revision app is
-   a form standing between a child and the thing they came for.
-   The Pular course keeps its prompt: that one is most often used alone, and
-   there the greeting is the point rather than an obstacle. */
-const COURSE="maths";
-/* ================= One Hundred \u2014 the house brand =================
-   Shared by both courses. Notice Me is deliberately untouched: if this earns
-   its place here, it can move up later.
-
-   The rule is that ONE layer changes between courses \u2014 a hue, a hat, a motif.
-   Everything else (type, spacing, radius, card, shadow, the character himself)
-   is identical, so the two read as siblings at a glance and are never confused
-   for each other. */
-const BRAND = {
-  maths:  { hue:"#2F7D62", hue2:"#E7F2EC", ink:"#16302A", hat:"cap",
-            warm:"#E8A33C", warmBg:"#FCF2E0", name:"Maths" },
-  english:{ hue:"#4C5BA8", hue2:"#EAECF8", ink:"#1C2140", hat:"mortar",
-            warm:"#E8A33C", warmBg:"#FCF2E0", name:"English" },
-};
-/* The ground is a warm off-white, not the cold grey it was. A child's app
-   should feel like paper, not like a dashboard. */
-const GROUND="#FBF8F3", CARD="#FFFFFF", LINE="#E8E1D6", MUTED="#8A8378";
-
-/* ---------- the character ----------
-   One hare across both courses, wearing what he is teaching. Drawn rather than
-   borrowed: an emoji is somebody else's artwork and renders differently on
-   every phone, which is why the shelf looked unfinished.
-   Poses: hello, think, cheer, point. Same construction every time \u2014 only the
-   ears, the arm and the mouth move, so he is recognisably one animal. */
-function MASCOT(pose, course, size){
-  const B=BRAND[course]||BRAND.maths;
-  const s=size||120;
-  /* A crow. Counts, uses tools, solves puzzles, and has a hard enough
-     silhouette not to read as soft \u2014 which matters for ten and eleven year
-     olds, who resent being talked down to more than any other age.
-     Two tones and one dark eye, same construction in every pose, so he is
-     recognisably one bird whichever hat he is wearing. */
-  const dk="#2B303B", md="#3C4352", lt="#4E5666", beak=B.warm, D="#1A1D24";
-  /* Wings grow out of the body rather than floating beside it, and there is a
-     tail, so the silhouette is a bird rather than two stacked circles. */
-  const wing = pose==="cheer"
-    ? `<path d="M70 126 C50 118 38 100 48 92 C58 84 68 106 78 124 Z" fill="${md}"/>
-       <path d="M130 126 C150 118 162 100 152 92 C142 84 132 106 122 124 Z" fill="${md}"/>`
-    : pose==="point"
-    ? `<path d="M64 126 C52 122 48 136 60 142 C70 147 76 136 74 126 Z" fill="${md}"/>
-       <path d="M136 124 C158 116 176 96 168 86 C160 76 142 92 132 116 Z" fill="${md}"/>
-       <circle cx="172" cy="83" r="5.5" fill="${beak}"/>`
-    : `<path d="M64 126 C52 122 48 136 60 142 C70 147 76 136 74 126 Z" fill="${md}"/>
-       <path d="M136 126 C148 122 152 136 140 142 C130 147 124 136 126 126 Z" fill="${md}"/>`;
-  /* The tail sat low and to the right, where it read as a single leg. It is
-     up and back now, and he has two actual feet. */
-  const tail = `<path d="M144 128 C166 122 186 124 190 132 L150 148 Z" fill="${dk}"/>`;
-  const feet = `<path d="M84 166 L84 174 M76 176 L84 174 L92 176" stroke="${beak}" stroke-width="4.5"
-      fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M116 166 L116 174 M108 176 L116 174 L124 176" stroke="${beak}" stroke-width="4.5"
-      fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
-  /* The head is front-on, so the beak must come FORWARD from between the eyes,
-     not sideways off the cheek. Drawing a profile beak on a face looking at you
-     is why he looked wrong: two viewpoints in one head.
-     The head spans y 41 to 107. Every hat is therefore built to sit across
-     y 26 to 58 so it overlaps the crown and rests on it, rather than hovering
-     above it or being pasted flat across it. */
-  const head = pose==="think" ? `rotate(-8 100 74)` : `rotate(0 100 74)`;
-  const beakShape = `<path d="M88 82 L100 106 L112 82 Z" fill="${beak}"/>
-    <path d="M92 94 L100 106 L108 94 Z" fill="#C07C1F"/>`;
-  const eyes = pose==="think"
-    ? `<circle cx="85" cy="70" r="8" fill="#fff"/><circle cx="87" cy="71" r="4.4" fill="${D}"/>
-       <circle cx="115" cy="70" r="8" fill="#fff"/><circle cx="117" cy="71" r="4.4" fill="${D}"/>
-       <path d="M74 56 C79 51 90 51 95 55" stroke="${D}" stroke-width="3" fill="none" stroke-linecap="round"/>`
-    : pose==="cheer"
-    ? `<path d="M77 70 C81 62 91 62 95 70" stroke="${D}" stroke-width="3.8" fill="none" stroke-linecap="round"/>
-       <path d="M105 70 C109 62 119 62 123 70" stroke="${D}" stroke-width="3.8" fill="none" stroke-linecap="round"/>`
-    : `<circle cx="85" cy="70" r="8.5" fill="#fff"/><circle cx="86" cy="71" r="4.6" fill="${D}"/>
-       <circle cx="115" cy="70" r="8.5" fill="#fff"/><circle cx="116" cy="71" r="4.6" fill="${D}"/>`;
-  /* Both hats are cut to the crown: the base line dips to y=58, well inside the
-     head, so the head shows through beneath them and they look worn. */
-  const hat = B.hat==="cap"
-    ? `<g transform="rotate(-7 100 44)">
-        <path d="M66 56 C66 33 82 24 100 24 C118 24 134 33 134 56 C120 51 80 51 66 56 Z" fill="${B.hue}"/>
-        <path d="M124 52 C142 50 156 52 158 57 C150 61 134 61 124 58 Z" fill="${B.hue}"/>
-        <circle cx="100" cy="26" r="4.5" fill="${B.warm}"/></g>`
-    : `<g transform="rotate(-6 100 42)">
-        <path d="M70 50 C70 34 84 28 100 28 C116 28 130 34 130 50 C116 46 84 46 70 50 Z" fill="${B.hue}" opacity=".95"/>
-        <path d="M58 44 L100 29 L142 44 L100 59 Z" fill="${B.hue}"/>
-        <path d="M139 45 L139 64" stroke="${B.warm}" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="139" cy="66" r="4.2" fill="${B.warm}"/></g>`;
-  return `<svg class="mascot" viewBox="0 0 200 175" width="${s}" height="${s*0.875}"
-    xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-   ${tail}
-   ${feet}
-   <path d="M100 94 C134 94 154 116 154 140 C154 159 128 169 100 169 C72 169 46 159 46 140 C46 116 66 94 100 94 Z" fill="${dk}"/>
-   <path d="M100 116 C116 116 126 130 126 144 C126 157 114 163 100 163 C86 163 74 157 74 144 C74 130 84 116 100 116 Z" fill="${lt}" opacity=".5"/>
-   ${wing}
-   <g transform="${head}">
-    <ellipse cx="100" cy="74" rx="36" ry="33" fill="${dk}"/>
-    ${beakShape}
-    ${eyes}
-    ${hat}
-   </g>
-  </svg>`;
-}
-
-/* ---------- topic icons ----------
-   Thirteen drawn marks replacing thirteen emoji. One weight, one corner
-   treatment, one palette, so a row of them looks like a set rather than a
-   handful of things borrowed from a keyboard. */
-function ICON(name, hue, size){
-  const c=hue||"#2F7D62", w="#E8A33C", s=size||44;
-  const P={
-   /* maths */
-   numbers:`<rect x="8" y="12" width="48" height="40" rx="8" fill="none" stroke="${c}" stroke-width="4"/>
-     <text x="32" y="41" text-anchor="middle" font-size="22" font-weight="700" fill="${c}"
-      font-family="ui-sans-serif,system-ui">123</text>`,
-   operations:`<line x1="14" y1="20" x2="26" y2="20" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
-     <line x1="20" y1="14" x2="20" y2="26" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
-     <line x1="38" y1="14" x2="50" y2="26" stroke="${w}" stroke-width="4" stroke-linecap="round"/>
-     <line x1="50" y1="14" x2="38" y2="26" stroke="${w}" stroke-width="4" stroke-linecap="round"/>
-     <line x1="14" y1="44" x2="26" y2="44" stroke="${w}" stroke-width="4" stroke-linecap="round"/>
-     <circle cx="44" cy="38" r="3" fill="${c}"/><line x1="36" y1="44" x2="52" y2="44" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
-     <circle cx="44" cy="50" r="3" fill="${c}"/>`,
-   longmul:`<line x1="16" y1="16" x2="40" y2="40" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
-     <line x1="40" y1="16" x2="16" y2="40" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
-     <line x1="12" y1="52" x2="52" y2="52" stroke="${w}" stroke-width="4" stroke-linecap="round"/>`,
-   fractions:`<circle cx="32" cy="32" r="21" fill="none" stroke="${c}" stroke-width="4"/>
-     <path d="M32 32 L32 11 A21 21 0 0 1 50 43 Z" fill="${w}"/>
-     <line x1="32" y1="32" x2="32" y2="11" stroke="${c}" stroke-width="3"/>
-     <line x1="32" y1="32" x2="50" y2="43" stroke="${c}" stroke-width="3"/>`,
-   shapes:`<path d="M12 50 L32 14 L52 50 Z" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round"/>
-     <rect x="24" y="38" width="16" height="12" fill="${w}" opacity=".55"/>`,
-   /* english */
-   spelling:`<text x="32" y="42" text-anchor="middle" font-size="26" font-weight="700" fill="${c}"
-      font-family="ui-sans-serif,system-ui">abc</text>
-     <line x1="12" y1="50" x2="52" y2="50" stroke="${w}" stroke-width="4" stroke-linecap="round"/>`,
-   punctuation:`<text x="22" y="44" text-anchor="middle" font-size="34" font-weight="700" fill="${c}"
-      font-family="ui-sans-serif,system-ui">,</text>
-     <text x="44" y="42" text-anchor="middle" font-size="30" font-weight="700" fill="${w}"
-      font-family="ui-sans-serif,system-ui">;</text>`,
-   wordclass:`<path d="M10 26 L34 10 L54 26 L54 44 L10 44 Z" fill="none" stroke="${c}" stroke-width="4"
-      stroke-linejoin="round"/><circle cx="42" cy="24" r="4" fill="${w}"/>`,
-   tense:`<circle cx="32" cy="32" r="21" fill="none" stroke="${c}" stroke-width="4"/>
-     <line x1="32" y1="32" x2="32" y2="19" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
-     <line x1="32" y1="32" x2="42" y2="38" stroke="${w}" stroke-width="4" stroke-linecap="round"/>`,
-   clauses:`<rect x="8" y="24" width="24" height="16" rx="8" fill="none" stroke="${c}" stroke-width="4"/>
-     <rect x="32" y="24" width="24" height="16" rx="8" fill="none" stroke="${w}" stroke-width="4"/>`,
-   vocab:`<path d="M10 16 C20 12 28 12 32 16 L32 50 C28 46 20 46 10 50 Z" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round"/>
-     <path d="M54 16 C44 12 36 12 32 16 L32 50 C36 46 44 46 54 50 Z" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round"/>`,
-   standard:`<rect x="18" y="14" width="28" height="24" rx="4" fill="${c}"/>
-     <rect x="10" y="38" width="44" height="6" rx="3" fill="${c}"/>
-     <rect x="18" y="30" width="28" height="6" fill="${w}"/>`,
-   sentence:`<path d="M10 16 H54 V40 H34 L22 52 V40 H10 Z" fill="none" stroke="${c}" stroke-width="4" stroke-linejoin="round"/>
-     <circle cx="24" cy="28" r="3" fill="${w}"/><circle cx="32" cy="28" r="3" fill="${w}"/><circle cx="40" cy="28" r="3" fill="${w}"/>`,
-  };
-  return `<svg class="ticon" viewBox="0 0 64 64" width="${s}" height="${s}"
-   xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${P[name]||P.numbers}</svg>`;
-}
-
-
-
-/* ================= telling Notice Me what was done =================
-   The same arrangement the Fulfulde course uses: when this app is opened in a
-   frame it posts the whole list of finished subtopics to the parent, which
-   marks the ones it does not yet have. The whole list rather than the newest,
-   so a child who worked through three offline is not missing two when they
-   next connect. It posts only to its own origin and only when framed; opened
-   on its own this does nothing. */
-function tellHost(){
- try{
-  if(window.parent===window) return;
-  window.parent.postMessage({app:"one-hundred",course:COURSE,type:"progress",
-   done:Object.keys(S.d||{})}, location.origin);
- }catch(e){}
-}
-function hostSays(ev){
- if(!ev||!ev.data||ev.data.app!=="one-hundred") return;
- if(ev.origin!==location.origin) return;
- if(ev.data.type==="who" && ev.data.name){
-  S.name=String(ev.data.name).slice(0,18); S.noname=1; save(); render();
- }
-}
-if(typeof window!=="undefined") window.addEventListener("message",hostSays);
-function coverHTML(){
- /* v3: this opened with a hundred and twenty words, two paragraphs of which
-    were addressed to the adult — mark schemes, exam boards, syllabuses. A
-    nine-year-old had to scroll past all of it to reach the button. The child
-    gets one line and the door; the grown-up gets the rest, one tap away. */
- /* first visit and no name yet: ask for one before anything else */
-
- const got=Object.keys(S.b||{}).reduce((a,k)=>a+(S.b[k]||0),0);
- const seen=Object.keys(S.d||{}).length>0;
- return `<div class="wrap cover">
-  <div class="mwrap">${MASCOT("hello",COURSE,150)}</div>
-  ${S.name?"":`<p class="brand">${esc(t("covname"))}</p>`}
-  <h1 class="covh">${S.name?`${esc(t(seen?"wb":"hi"))}, ${esc(S.name)}.`:esc(t("cov1"))}</h1>
-  <p class="covsub">${esc(t("cov2"))}</p>
-  ${S.name?"":`<p class="covwhy">${esc(t("covwhy"))}</p>`}
-  ${got?`<p class="covgot"><b class="num">${got}</b> ${esc(t("sofar"))}</p>`:""}
-  <p class="covlead">${esc(t("covlead"))}</p>
-  <button class="go2" onclick="startDiag()">${esc(t("covgo"))}</button>
-  <button class="go2 quiet" onclick="goShelf()">${esc(t("covbrowse"))}</button>
-  <h2 class="insideh">${esc(t("inside"))}</h2>
-  <div class="inside">
-   <span class="ic"><b class="num">${ALL.length}</b>${esc(t("nsub"))}</span>
-   <span class="ic"><b class="num">${ALL.reduce((a,s)=>a+s.n,0)}</b>${esc(t("nq"))}</span>
-   <span class="ic"><b class="num">${Object.keys(TEACH).length}</b>${esc(t("nvid"))}</span>
-  </div>
-  <div class="peek">${CAMPS.map(c=>`<span class="pk" title="${esc(c[L]||c.en)}">${c.em}</span>`).join("")}</div>
-  ${V.more?`<div class="card covcard">
-    <p class="covwho">${esc(t("covwho"))}</p>
-    <p class="covp">${esc(t("covwhat"))}</p>
-    <p class="covp">${esc(t("covhow"))}</p>
-    <p class="covsm">${esc(t("covfr"))}</p></div>`
-   :`<button class="covmore" onclick="showMore()">${esc(t("covmore"))}</button>`}
-  </div>`;
-}
-function nameHTML(){
- return `<div class="wrap cover">
-  <div class="mwrap">${MASCOT("hello",COURSE,150)}</div>
-  <h1 class="covh">${esc(t("hello"))}</h1>
-  <p class="covlead">${esc(t("whoare"))}</p>
-  <input class="nameinput" id="nm" type="text" maxlength="18" autocomplete="given-name"
-   value="${esc(V.nm||"")}" oninput="V.nm=this.value" placeholder="\u2026">
-  <button class="go2" onclick="setName()">${esc(t("namego"))}</button>
-  <p class="covsm">${esc(t("namewhy"))}</p>
-  <button class="covmore" onclick="noName()">${esc(t("skipname"))}</button></div>`;
-}
-function setName(){
- const el=document.getElementById("nm");
- const v=((el&&el.value)||V.nm||"").trim().slice(0,18);
- if(!v){ noName(); return; }
- S.name=v; save(); V={s:"cover"}; render();
-}
-function noName(){ S.noname=1; save(); V={s:"cover"}; render(); }
-function showMore(){V.more=1;render()}
-function goCover(){V={s:"cover"};render()}
-function goShelf(){S.seen=1;save();V={s:"shelf",open:null};render()}
-function startDiag(){
- S.seen=1;save();
- const seed=Date.now()%99991;
- V={s:"diag",i:0,typed:"",res:[],qs:DIAG.map((d,k)=>GEN[d.g](R(seed+k*7919),1))};
- render();
-}
-function diagHTML(){
- if(V.i>=DIAG.length) return diagResult();
- const q=V.qs[V.i];
- /* v3: ten questions with no way back is an assessment, and a child who is
-    already nervous about being tested should not meet one on the second
-    screen. Nothing here is graded, so nothing needs defending: they can go
-    back and change an answer. */
- return `<div class="wrap">
-  <div class="mhead"><h1>${esc(t("dgtitle"))}</h1><p>${esc(t("dgsub"))}</p></div>
-  <div class="dgbar">
-   <button class="dgback" onclick="diagBack()" ${V.i===0?"disabled":""}>\u2039</button>
-   <div class="dgdots">${DIAG.map((_,k)=>`<i class="${V.res[k]===undefined?"":"on"}${k===V.i?" now":""}"></i>`).join("")}</div>
-   <span class="dgn num">${V.i+1}/${DIAG.length}</span></div>
-  <div class="card">
-   ${q.hint?`<p class="hint">${esc(q.hint)}</p>`:(q.ask==="round"?`<p class="hint">${L==="fr"?"au":"to the nearest"} ${esc(q.p)}</p>`:"")}
-   ${q.ask==="share"?`<p class="hint">${q.r1} : ${q.r2}</p>`:""}
-   <div class="${String(q.show).length>13?"qmid":"qbig"} num">${esc(q.show)}</div>
-   <div class="slot ${V.typed===""?"empty":""} num">${V.typed===""?"\u2013":esc(V.typed)}</div>
-   <div class="keys">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" onclick="tap('${n}')">${n}</button>`).join("")}
-    <button class="key" onclick="tap('.')">.</button><button class="key" onclick="tap('0')">0</button>
-    <button class="key" onclick="tap('/')">/</button>
-    <button class="key" onclick="tap('-')">\u2212</button>
-    <button class="key" onclick="del()">\u232b</button>
-    <button class="key go" onclick="diagCheck()">\u2713</button></div>
-  </div>
-  <button class="go2 quiet" onclick="diagSkip()">${esc(t("dgskip"))}</button></div>`;
-}
-function diagCheck(){
- if(V.typed==="") return;
- V.res[V.i]=norm(V.typed)===norm(V.qs[V.i].a); V.typed=""; V.i++; render();
-}
-function diagSkip(){ V.res[V.i]=false; V.typed=""; V.i++; render(); }
-function diagBack(){ if(V.i>0){ V.i--; V.typed=""; } render(); }
-function diagResult(){
- const weak=DIAG.map((d,k)=>({d:d,ok:V.res[k]===true})).filter(x=>!x.ok)
-   .sort((a,b)=>b.d.marks-a.d.marks);
- const strong=DIAG.filter((d,k)=>V.res[k]===true);
- S.weak=weak.map(x=>x.d.find); save();
- return `<div class="wrap">
-  <div class="mhead"><h1>${esc(t("dgdone"))}</h1><p>${esc(t("dgsub2"))}</p></div>
-  ${weak.map(x=>{
-    const st=ALL.filter(s=>s.g===x.d.find)[0];
-    return `<button class="wcard" onclick="openStop('${st?st.id:ALL[0].id}')">
-      <span class="wm num">${x.d.marks}</span>
-      <span class="wx"><b>${esc(x.d[L]||x.d.en)}</b>
-      <small>${esc(t("marks"))}${TEACH[x.d.find]?"  \u00b7  \u{1f4d6}":""}</small></span>
-      <span class="wa">\u203a</span></button>`}).join("")}
-  ${strong.length?`<p class="shelfh">${esc(t("strong"))}</p>
-    <p class="strong">${strong.map(d=>esc(d[L]||d.en)).join(" \u00b7 ")}</p>`:""}
-  <button class="go2 quiet" onclick="goShelf()">${esc(t("covbrowse"))}</button></div>`;
-}
-/* ================= home =================
-   The mountain is gone. It read bottom-up, it implied an order this subject
-   does not have, and it put the least important content first. Five square
-   tiles, two per row: the whole course visible at once, which is what a
-   revision app is actually for. */
-const TICON=["numbers", "operations", "longmul", "fractions", "shapes"];
-let lastTopic;
-function homeHTML(){
- const done=Object.keys(S.d).length;
- const got=Object.keys(S.b||{}).reduce((a,k)=>a+(S.b[k]||0),0);
- let h=`<div class="wrap"><div class="mhead">
-   ${S.name?`<p class="greet">${esc(t("hi"))}, ${esc(S.name)}</p>`:""}
-   <h1>${esc(t("topics"))}</h1>
-   ${got?`<p class="gotline num"><b>${got}</b> ${esc(t("got"))}</p>`:""}</div>`;
- if(S.at && !S.d[S.at.id]){
-  const st=byId(S.at.id);
-  if(st) h+=`<button class="wcard next" onclick="resume()"><span class="wm">\u21ba</span>
-    <span class="wx"><b>${esc(st[L]||st.en)}</b><small>${esc(t("carry"))}</small></span>
-    <span class="wa">\u203a</span></button>`;
- }
- const si=streakInfo();
- h+=`<button class="today${si.doneToday?" did":""}" onclick="startSession()">
-   ${MASCOT(si.doneToday?"cheer":"point",COURSE,86)}
-   <span class="tdx"><b>${esc(si.doneToday?t("sesagain"):t("todays"))}</b>
-    <small>${esc(t("tensoon"))}</small></span>
-   ${si.n?`<span class="streak"><span>\u{1f525}</span><b class="num">${si.n}</b></span>`:""}
-  </button>
-  <p class="orpick">${esc(t("browse"))}</p>
-  <div class="tiles">`;
- CAMPS.forEach((c,ci)=>{
-  const mine=ALL.filter(s=>s.camp===ci), dn=mine.filter(s=>S.d[s.id]).length;
-  h+=`<button class="tile" onclick="openTopic(${ci})">
-    <span class="tem">${ICON(TICON[ci],getComputedStyle?getComputedStyle(document.documentElement).getPropertyValue("--band").trim()||"#2F7D62":"#2F7D62",64)}</span>
-    <span class="tname">${esc(c[L]||c.en)}</span>
-    <span class="tsub">${mine.length} ${esc(t("subtopics"))}</span>
-    <span class="tbar"><i style="width:${Math.round(dn/mine.length*100)}%"></i></span>
-    <span class="tnum num">${dn}/${mine.length}</span></button>`;
- });
- h+=`</div>
-  <button class="paperbtn" onclick="openPaper()"><span style="font-size:26px">\u23f1\ufe0f</span>
-   <span><b>${esc(t("paper"))}</b><span>${esc(t("papersub"))}</span></span></button>
-  <button class="go2 quiet" onclick="goCover()">${esc(t("about"))}</button></div>`;
- return h;
-}
-
-/* ================= today =================
-   The courses were a library: forty-odd subtopics, hundreds of questions, no
-   unit of work and no stopping point, so a child never knew how much was
-   enough. Attainment at this age comes from short regular practice rather
-   than from access to material, so there is now a session: ten questions,
-   about five minutes, drawn from what they have not finished. Finish it and
-   the streak goes up. */
-const TODAY=()=>new Date().toISOString().slice(0,10);
-function streakInfo(){
- const last=S.lastDay, st=S.streak||0, today=TODAY();
- if(last===today) return {n:st, doneToday:true};
- const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
- return {n:(last===y?st:0), doneToday:false};
-}
-function startSession(){
- const seed=Date.now()%99991;
- const pool=ALL.filter(s=>!S.d[s.id]);
- const from=(pool.length?pool:ALL).slice(0,12);
- const qs=[];
- for(let i=0;i<10;i++){
-  const s=from[i%from.length];
-  qs.push({s:s, q:GEN[s.g](R(seed+i*7919), i<3?1:(s.lvl||1), s.arg)});
- }
- V={s:"session",i:0,qs:qs,right:0,typed:"",pick:null,miss:0,shown:false};
- render();
-}
-function sessionHTML(){
- if(V.i>=V.qs.length) return sessionDone();
- const cur=V.qs[V.i];
- V.q=cur.q;
- const dots=V.qs.map((_,k)=>`<i class="${k<V.i?"on":""}"></i>`).join("");
- return `<div class="wrap">
-  <p class="step">${esc(t("todays"))} \u00b7 ${V.i+1} ${esc(t("of"))} ${V.qs.length}</p>
-  <div class="sesbar"><i style="width:${V.i/V.qs.length*100}%"></i></div>
-  <p class="sestop">${esc(cur.s[L]||cur.s.en)}</p>
-  <div class="card">${V.shown
-   ? `<div class="reveal"><p class="rl">${esc(t("theans"))}</p>
-      <p class="ra">${esc(Array.isArray(cur.q.a)?cur.q.a.join(", "):cur.q.a)}</p></div>`
-   : SESBODY(cur.q)}
-   <div class="tally">${dots}</div></div>
-  ${V.shown?`<button class="go2" onclick="sesNext()">${esc(t("moveon"))}</button>`:""}
-  ${!V.shown&&V.miss>=2?`<button class="go2 quiet small" onclick="sesShow()">${esc(t("giveup"))}</button>`:""}
-  </div>`;
-}
-function sesShow(){V.shown=true;render()}
-function sesNext(){V.shown=false;V.i++;V.typed="";V.pick=null;V.miss=0;render()}
-function sessionDone(){
- const today=TODAY();
- if(S.lastDay!==today){
-  const y=new Date(Date.now()-864e5).toISOString().slice(0,10);
-  S.streak=(S.lastDay===y?(S.streak||0):0)+1;
-  S.lastDay=today; S.sessions=(S.sessions||0)+1; save();
- }
- const st=S.streak||1;
- return `<div class="wrap cover">
-  ${MASCOT("cheer",COURSE,150)}
-  <h1 class="covh">${esc(t("sesdone"))}</h1>
-  <p class="covsub num">${V.right} ${esc(t("of"))} ${V.qs.length}</p>
-  <div class="streakbig"><span class="sflame">\u{1f525}</span>
-   <b class="num">${st}</b><span>${esc(st===1?t("day1"):t("days"))}</span></div>
-  <button class="go2" onclick="goShelf()">${esc(t("back"))}</button></div>`;
-}
-
-/* Each course answers questions its own way — the maths app on a keypad, the
-   English app by tapping words or choosing. The session borrows whichever
-   surface the course already uses rather than inventing a third. */
-function SESBODY(q){
- const shown = q.ask==="pvDigit" ? pvMark(q) : esc(q.show);
- if(q.ask==="pickAll"){
-  const ch=V.pick||[];
-  return `<p class="hint">${esc(t("pickall"))} — ${esc(t(q.lab))} ${q.show?esc(q.show):""}</p>
-   <div class="opts" style="grid-template-columns:repeat(4,1fr)">${q.opts.map(o=>
-   `<button class="opt${ch.includes(o)?(q.ok(o)?" yes":" no"):""}" onclick="sesTapAll(${o})">${o}</button>`).join("")}</div>`;
- }
- const hint=q.hint?`<p class="hint">${esc(q.hint)}</p>`:(q.ask==="round"?`<p class="hint">to the nearest ${esc(q.p)}</p>`:"");
- return hint+`<div class="${String(q.show).length>13?"qmid":"qbig"} num">${shown}</div>`+
-  `<div class="slot ${V.typed===""?"empty":""} num">${V.typed===""?"–":esc(V.typed)}</div>
-   <div class="keys">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" onclick="tap('${n}')">${n}</button>`).join("")}
-    <button class="key" onclick="tap('.')">.</button><button class="key" onclick="tap('0')">0</button>
-    <button class="key" onclick="tap('/')">/</button><button class="key" onclick="tap('-')">−</button>
-    <button class="key" onclick="del()">⌫</button>
-    <button class="key go" onclick="sesCheck()">✓</button></div>`;
-}
-function sesCheck(){
- const q=V.qs[V.i].q;
- if(V.typed==="") return;
- if(norm(V.typed)===norm(q.a)){ V.right++; sesNext(); }
- else { V.miss=(V.miss||0)+1; V.typed=""; render(); }
-}
-function sesTapAll(o){
- const q=V.qs[V.i].q; if(!V.pick)V.pick=[];
- if(!V.pick.includes(o))V.pick.push(o);
- const need=q.opts.filter(q.ok);
- if(need.every(x=>V.pick.includes(x))){ V.right++; sesNext(); }
- else if(V.pick.some(x=>!q.ok(x))){ V.miss=(V.miss||0)+1; }
- render();
-}
-function openTopic(ci){ lastTopic=ci; V={s:"topic",ci:ci}; render(); }
-function topicHTML(){
- const c=CAMPS[V.ci], mine=ALL.filter(s=>s.camp===V.ci);
- let h=`<div class="wrap"><div class="mhead"><h1>${c.em} ${esc(c[L]||c.en)}</h1>
-   <p>${esc(c["sub_"+L]||c.sub_en)}</p></div><div class="sublist">`;
- mine.forEach(s=>{
-  h+=`<button class="subrow${S.d[s.id]?" done":""}" onclick="openStop('${s.id}')">
-    <span class="srm">${S.d[s.id]?"\u2713":"\u25b6"}</span>
-    <span class="srx"><b>${esc(s[L]||s.en)}</b><small>${esc(s["sub_"+L]||"")}</small></span>
-    ${S.d[s.id]?`<span class="srs num">${S.b[s.id]||0}/${s.n}</span>`:""}</button>`;
- });
- return h+`</div></div>`;
-}
-function shelfHTML(){
- const done=Object.keys(S.d).length;
- /* v5: finishing the eleventh stop felt exactly like finishing the first.
-    Right answers now add up across the whole course and the total sits where
-    a child looks when they open the app. */
- const got=Object.keys(S.b||{}).reduce((a,k)=>a+(S.b[k]||0),0);
- let h=`<div class="wrap"><div class="mhead"><h1>${esc(t("topics"))}</h1>
-   <p class="alt num">${done} ${esc(t("of"))} ${ALL.length} \u00b7 ${esc(t("done"))}</p>
-   ${got?`<p class="gotline num"><b>${got}</b> ${esc(t("got"))}</p>`:""}</div>
-   <button class="paperbtn" onclick="openPaper()"><span style="font-size:26px">\u23f1\ufe0f</span>
-    <span><b>${esc(t("paper"))}</b><span>${esc(t("papersub"))}</span></span></button>`;
- if(S.weak&&S.weak.length){
-  const st=ALL.filter(s=>s.g===S.weak[0])[0];
-  if(st) h+=`<button class="wcard next" onclick="openStop('${st.id}')">
-    <span class="wm">\u2192</span><span class="wx"><b>${esc(st[L]||st.en)}</b>
-    <small>${esc(t("dggo"))}</small></span><span class="wa">\u203a</span></button>`;
- }
- if(S.at && !S.d[S.at.id]){
-  const st=byId(S.at.id);
-  if(st) h=h.replace('<button class="paperbtn"',
-   `<button class="wcard next" onclick="resume()"><span class="wm">\u21ba</span>
-     <span class="wx"><b>${esc(st[L]||st.en)}</b><small>${esc(t("carry"))}</small></span>
-     <span class="wa">\u203a</span></button><button class="paperbtn"`);
- }
- CAMPS.forEach((c,ci)=>{
-  const mine=ALL.filter(s=>s.camp===ci), dn=mine.filter(s=>S.d[s.id]).length;
-  const open=V.open===ci;
-  /* v3: every row looked the same weight. Camp 4 is a quarter of the paper
-     and Camp 1 is a ninth, and a child choosing where to spend an evening was
-     choosing blind. The share comes from the same count of the 2025 and 2026
-     papers that built the course. */
-  h+=`<button class="sh${open?" open":""}" onclick="shelfTap(${ci})">
-    <span class="em">${c.em}</span>
-    <span class="shx"><b>${esc(c[L]||c.en)}</b>
-     <small><span class="shdots" aria-label="${SHARE[ci]>=19?3:SHARE[ci]>=13?2:1}">${
-       [0,1,2].map(n=>`<i class="${n<(SHARE[ci]>=19?3:SHARE[ci]>=13?2:1)?"on":""}"></i>`).join("")
-      }</span> ${esc(c["sub_"+L]||c.sub_en)}</small></span>
-    ${""/* v6: a number going up is not a collection. Each camp now fills as
-        its stops are finished, so progress has a shape you can see rather
-        than a figure you have to read. */}
-    <span class="shfill" aria-label="${dn} of ${mine.length}">
-      <span style="height:${Math.round(dn/mine.length*100)}%"></span>
-      <b class="num">${dn}/${mine.length}</b></span></button>`;
-  if(open) h+=`<div class="shbody">${mine.map(s=>
-    `<button class="row${S.d[s.id]?" done":""}" onclick="openStop('${s.id}')">
-      <span class="rm">${S.d[s.id]?"\u2713":(TEACH[s.g]?"\u{1f4d6}":"\u00b7")}</span>
-      <span class="rx"><b>${esc(s[L]||s.en)}</b><small>${esc(s["sub_"+L]||"")}</small></span>
-      ${S.d[s.id]?`<span class="rs num">${S.b[s.id]||0}/${s.n}</span>`:""}</button>`).join("")}</div>`;
- });
- h+=`<button class="go2 quiet" onclick="goCover()">${esc(t("about"))}</button>`;
- return h+`</div>`;
-}
-function shelfTap(ci){V.open=V.open===ci?null:ci;render()}
-
-const byId=id=>ALL.filter(s=>s.id===id)[0];
-function openStop(id){
- const s=byId(id), has=!!TEACH[s.g];
- V={s:"stop",id:id,ph:has?"story":"drill",i:0,step:0,g:0,typed:"",bad:0,miss:0,pick:null,q:null,
-    why:{},topicFrom:lastTopic};
- if(!has) newQ();
- S.at={id:id,ph:V.ph,i:0}; save();
- render();
-}
-function goMap(){V={s:"shelf",open:null};render()}
-function newQ(){
- /* v4: the first question of every stop is the easy version. A child who
-    arrived believing they are bad at maths met the same difficulty on question
-    one as on question twenty — so the first thing that ever happened to them
-    was another chance to be wrong. */
- const s=byId(V.id), lvl=(V.i===0?1:s.lvl);
- V.q=GEN[s.g](R(Date.now()%99991+V.i*7919),lvl);V.typed="";V.miss=0;V.pick=null;}
-function phaseBar(now){
- const ks=["ph1","ph2","ph3","ph4"];
- return `<div class="phases">${ks.map((k,i)=>
-  `<span class="pz${i===now?" on":""}${i<now?" past":""}">${esc(t(k))}</span>`).join("")}</div>`;
-}
-/* ---------- the four phases ---------- */
-function stopHTML(){
- const s=byId(V.id), T2=TEACH[s.g];
- if(V.ph==="story"||V.ph==="watch") return lessonHTML(s,T2);
- if(V.ph==="guided") return guidedHTML(s,T2);
- if(V.ph==="done")   return doneHTML(s);
- return drillHTML(s);
-}
-/* ================= the lesson, on one page =================
-   Was: story screens then worked-example screens, one press at a time. A child
-   revising who needed step four had to walk through one to three to reach it.
-   Now the subtopic is one page you scroll — the video, the situation, the
-   drawing and every step with its reason. Practice stays one question at a
-   time underneath, because a scrollable list of questions invites reading
-   ahead to the answers. */
-/* ================= the video carries the teaching =================
-   The explanation lives in the film now, not on the page. The one thing a
-   film is bad at is being re-entered part way through, so every step of the
-   method carries a timestamp and the list under the player is a set of jump
-   links: a child stuck on "bring the next digit down" taps that line and the
-   video starts at forty-seven seconds instead of them dragging a scrubber.
-
-   VIDEO[generator] is filled in as each film is rendered. Until it is, the
-   written method still shows — otherwise a subtopic with no video yet teaches
-   nothing at all, and the app is unusable until all ninety-four exist
-   (forty-seven subtopics in two languages). */
-const VIDEO={};   /* e.g. longDiv:{en:"vid/longDiv-en.mp4",fr:"vid/longDiv-fr.mp4"} */
-const mmss=n=>Math.floor(n/60)+":"+String(n%60).padStart(2,"0");
-function lessonHTML(s,T2){
- const story=T2.story.slice(0,2);
- const src=(VIDEO[s.g]||{})[L];
- const marks=T2.steps.map((st,i)=>st.at!==undefined?st.at:Math.round(8+i*11));
- return `<div class="wrap">
-  <p class="step">${esc(s[L]||s.en)}</p>
-  <h2 class="lh first">${esc(t("vidmain"))}</h2>
-  <div class="vidbox">${src
-   ? `<video class="vid" id="theVid" controls playsinline preload="metadata" src="${esc(src)}"></video>`
-   : `<div class="vidph"><span class="vidplay">\u25b6</span>
-      <span class="vidt"><b>${esc(t("vidwatch"))}</b>
-      <small>${esc(t("vidsoon"))} \u00b7 ${esc(s.g)}-${L}.mp4 \u00b7 ${esc(t("vidlen"))}</small></span></div>`}
-  </div>
-  <p class="jumph">${esc(t("vidjump"))}</p>
-  <div class="jumps">${T2.steps.map((st,i)=>`<button class="jump" onclick="seekTo(${marks[i]})">
-    <span class="jt num">${mmss(marks[i])}</span>
-    <span class="jx">${esc(st[L]||st.en)}</span></button>`).join("")}</div>
-  ${ART[s.g]?`<div class="card artcard">${ART[s.g](T2.steps.length-1)}</div>`:""}
-
-  ${""/* ---- the quick reminder ----
-     This and the video were the same explanation printed twice, and which one
-     a child saw depended on whether a film happened to exist yet. They have
-     different jobs now. The video is where you LEARN it: the situation, the
-     reasoning, the why. This is where you CHECK it — the bare steps, no story,
-     no explanation, the thing you glance at halfway through question nine.
-     You watch an explanation once and you check a reference twenty times, so
-     it shows whether or not there is a video. */}
-  <h2 class="lh">${esc(t("method"))}</h2>
-  <p class="lhsub">${esc(t("methodsub"))}</p>
-  <div class="card recall"><div class="qmid num">${esc(T2.show)}</div>
-   <ol class="rsteps">${T2.steps.map(st=>`<li class="num">${esc(st.line)}</li>`).join("")}</ol>
-  </div>
-
-  ${""/* Only when no film exists yet does the page have to teach as well. */}
-  ${src?"":`<h2 class="lh">${esc(t("why"))}?</h2>
-   <p class="fallback">${esc(t("nofilm"))}</p>
-   ${story.map(c=>`<div class="card story"><div class="storyem">${c.em}</div>
-     <p class="storyline">${esc(c[L]||c.en)}</p></div>`).join("")}
-   <div class="card lesson">
-    <div class="steps">${T2.steps.map((st,i)=>`<div class="stepline">
-      <b class="num">${esc(st.line)}</b><span>${esc(st[L]||st.en)}</span>
-      ${(V.why||{})[i]?`<i>${esc(w(st,"why"))}</i>`
-        :`<button class="whybtn" onclick="showWhy(${i})">${esc(t("why"))}?</button>`}
-     </div>`).join("")}</div></div>`}
-  <button class="go2" onclick="toGuided()">${esc(t("practise"))}</button>
-  <button class="go2 quiet" onclick="skipTeach()">${esc(t("iknow"))}</button></div>`;
-}
-function seekTo(sec){
- const v=document.getElementById("theVid");
- if(v){ try{ v.currentTime=sec; v.play(); }catch(e){} }
-}
-function storyHTML(s,T2){
- /* v5: the six stops written first had three story screens and four guided
-    steps; the twenty-nine written after had two and three. That difference
-    said nothing about the maths, only about the order they were authored in.
-    Two and three, everywhere. The worked example is left as long as the
-    method genuinely is — long division has seven steps because it has seven
-    steps. */
- const story=T2.story.slice(0,2);
- const c=story[Math.min(V.i,story.length-1)], last=V.i>=story.length-1;
- return `<div class="wrap"><p class="step">${esc(s[L]||s.en)}</p>${phaseBar(0)}
-  <div class="card"><div class="storyem">${c.em}</div>
-   <p class="storyline">${esc(c[L]||c.en)}</p></div>
-  <button class="go2" onclick="${last?"toWatch()":"storyNext()"}">${esc(t("next"))}</button>
-  ${""/* v5: eight screens stood between a child and their first question, even
-       on a stop as ordinary as column addition. Some of them can already do
-       it, and some were sent here by the check five minutes ago and want to
-       get on with it. The door is quiet, not hidden, and being wrong about it
-       costs two questions. */}
-  <button class="go2 quiet" onclick="skipTeach()">${esc(t("iknow"))}</button></div>`;
-}
-function storyNext(){V.i++;render()}
-function skipTeach(){ V.ph="drill"; V.i=0; V.bad=0; V.miss=0; newQ();
- S.at={id:V.id,ph:"drill",i:0}; save(); render(); }
-function toWatch(){V.ph="watch";V.step=0;S.at={id:V.id,ph:"watch",i:0};save();render()}
-function watchHTML(s,T2){
- const shown=T2.steps.slice(0,V.step+1), last=V.step>=T2.steps.length-1;
- return `<div class="wrap"><p class="step">${esc(s[L]||s.en)}</p>${phaseBar(1)}
-  <div class="card"><div class="qbig num">${esc(T2.show)}</div>
-   ${""/* ---- v3: the reason hides until it is wanted ----
-      By the seventh step this screen carried seven methods, seven explanations
-      and seven reasons — over two hundred words on a phone, on the most
-      valuable screen in the app. Worse, the reason was the longest text on
-      each line, so it won the eye from the step it was there to explain.
-      It is behind a tap now. A child who is following does not need it; a
-      child who is lost presses "why". */}
-   ${ART[s.g]?`<div class="artbox">${ART[s.g](V.step)}</div>`:""}
-   <div class="steps">${shown.map((st,i)=>`<div class="stepline${i===V.step?" fresh":""}">
-     <b class="num">${esc(st.line)}</b>
-     <span>${esc(st[L]||st.en)}</span>
-     ${(V.why||{})[i]
-       ? `<i>${esc(w(st,"why"))}</i>`
-       : `<button class="whybtn" onclick="showWhy(${i})">${esc(t("why"))}?</button>`}
-    </div>`).join("")}</div></div>
-  <button class="go2" onclick="${last?"toGuided()":"stepNext()"}">${esc(last?t("gotit"):t("showstep"))}</button></div>`;
-}
-function stepNext(){V.step++;render()}
-function showWhy(i){ if(!V.why) V.why={}; V.why[i]=1; render(); }
-function backToWatch(){ const keep=V.i; V.ph="watch"; V.step=0; V.why={}; V.resumeAt=keep;
- S.at={id:V.id,ph:"watch",i:0}; save(); render(); }
-function toGuided(){
- /* coming back from the drill returns you to the drill, not round the loop */
- if(V.resumeAt!==undefined){ const at=V.resumeAt; V.resumeAt=undefined;
-  V.ph="drill"; V.i=at; V.bad=0; V.miss=0; newQ();
-  S.at={id:V.id,ph:"drill",i:at}; save(); render(); return; }
- V.ph="guided";V.g=0;V.typed="";V.miss=0;S.at={id:V.id,ph:"guided",i:0};save();render()}
-function guidedHTML(s,T2){
- const g={show:T2.guided.show, steps:T2.guided.steps.slice(0,3)}, q=g.steps[Math.min(V.g,2)];
- return `<div class="wrap"><p class="step">${esc(s[L]||s.en)}</p>${phaseBar(2)}
-  <div class="card">${g.show?`<div class="qmid num">${esc(g.show)}</div>`:""}
-   <div class="steps">${g.steps.slice(0,V.g).map(x=>
-     `<div class="stepline done"><b class="num">${esc(x.a)}</b><span>${esc(w(x,"ask"))}</span></div>`).join("")}</div>
-   <p class="guideq">${esc(w(q,"ask"))}</p>
-   ${keypad()}
-   ${V.miss>=2?`<div class="note">${esc(t("look"))} \u2014 ${esc(w(T2.steps[Math.min(V.g,T2.steps.length-1)],"why"))}</div>`:""}
-  </div></div>`;
-}
-/* Marks the single digit the question is about. The number is printed with a
-   thin space every three, so splitting on spaces marked a whole group. */
 function pvMark(q){
  let k=-1;
  return String(q.show).split("").map(ch=>{
@@ -2921,187 +2055,876 @@ const QART={
   return `<svg class="qart" viewBox="0 0 ${16+bot*(w+3)} 74" xmlns="http://www.w3.org/2000/svg">${s}</svg>`;
  },
 };
-function drillHTML(s){
- /* v5: the character was introduced and then abandoned, including in the
-    practice for her own stop. Two words at the top keep her there. */
- const who=(TEACH[s.g]&&TEACH[s.g].story[0].em)||"";
- const q=V.q, dots=Array.from({length:s.n}).map((_,k)=>`<i class="${k<V.i?"on":""}"></i>`).join("");
- let body="";
- if(q.ask==="pickAll"){
-  const ch=V.pick||[];
-  body=`<p class="hint">${esc(t("pickall"))} \u2014 ${esc(t(q.lab))} ${q.show?esc(q.show):""}</p>
-   <div class="opts" style="grid-template-columns:repeat(4,1fr)">${q.opts.map(o=>
-   `<button class="opt${ch.includes(o)?(q.ok(o)?" yes":" no"):""}" onclick="tapAll(${o})">${o}</button>`).join("")}</div>`;
- } else if(q.ask==="share"){
-  body=`<p class="hint">${q.r1} : ${q.r2}</p><div class="qbig num">${esc(q.show)}</div>${keypad()}`;
- } else {
-  const hint=q.hint?`<p class="qq">${esc(L==="fr"&&q.hintFr?q.hintFr:q.hint)}</p>`
-   :(q.ask==="round"?`<p class="qq">${L==="fr"?"au":"to the nearest"} ${esc(q.p)}</p>`:"");
-  const shown = q.ask==="pvDigit" ? pvMark(q) : esc(q.show);
-  /* v11: the drawing was made for the worked example and shown once. Here it
-     is again, drawn from THIS question — the child's own number in the columns,
-     their own rectangle, their own jump across zero. */
-  const pic = QART[q.ask]||QART[s.g];
-  const drawn = pic ? `<div class="qartbox">${pic(q)}</div>` : "";
-  body=hint+drawn+`<div class="${String(q.show).length>13?"qmid":"qbig"} num">${shown}</div>`+keypad();
- }
- const T2=TEACH[s.g];
- return `<div class="wrap"><p class="step">${who} ${esc(s[L]||s.en)} \u00b7 ${V.i+1} ${esc(t("of"))} ${s.n}</p>
-  ${T2?phaseBar(3):""}
-  ${!V.shown&&V.i===0&&TRAP[s.g]?`<div class="trap">\u26a0\ufe0f ${esc(TRAP[s.g][L]||TRAP[s.g].en)}</div>`:""}
-  ${V.said?`<div class="nice${V.saidFix?" fix":""}">${esc(V.said)}</div>`:""}
-  <div class="card">${V.shown?`<div class="reveal"><p class="rl">${esc(t("theans"))}</p>
-    <p class="ra num">${esc(q.a)}</p></div>`:body}
-  ${V.miss>=2?`<div class="note">${esc(t("look"))} \u2014 ${esc(w(T2.steps[0],"why"))}</div>`:""}
-  ${""/* v5: the teaching was a gate at the front of the stop and nothing more.
-       A child getting them wrong could only be shown the same one-line reason
-       again. Three wrong and the worked example is offered back — the whole
-       of it, not a hint. */}
-  ${""/* v7: a learner missing these repeatedly is sent back to the explainer
-       for this subtopic. This is why the videos are indexed by subtopic rather
-       than sitting in a playlist. */}
-  ${!V.shown&&V.bad>=3?`<button class="go2 warm small" onclick="backToWatch()">\u25b6 ${esc(t("vidagain"))}</button>`:""}
-  <div class="tally">${dots}</div></div>
-  ${V.shown?`<button class="go2" onclick="moveOn()">${esc(t("moveon"))}</button>`:""}
-  ${!V.shown&&V.miss>=2?`<button class="go2 quiet small" onclick="giveUp()">${esc(t("giveup"))}</button>`:""}
-  </div>`;
-}
-function doneHTML(s){
- return `<div class="wrap"><div class="card res"><div class="em">\u26fa</div>
-  <h2>${esc(t("camp"))}</h2><p class="num">${S.b[s.id]||0} ${esc(t("of"))} ${s.n}</p></div>
-  <button class="go2" onclick="goMap()">${esc(t("back"))}</button>
-  <button class="go2 quiet" onclick="openStop('${V.id}')">${esc(t("again"))}</button></div>`;
-}
-function keypad(){
- return `<div class="slot ${V.typed===""?"empty":""} num">${V.typed===""?"\u2013":esc(V.typed)}</div>
-  <div class="keys">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" onclick="tap('${n}')">${n}</button>`).join("")}
-   <button class="key" onclick="tap('.')">.</button><button class="key" onclick="tap('0')">0</button>
-   <button class="key" onclick="tap('/')">/</button>
-   <button class="key" onclick="tap('-')">\u2212</button>
-   <button class="key" onclick="del()">\u232b</button>
-   <button class="key go" onclick="check()">\u2713</button></div>`;
-}
-function tap(c){if(V.typed.length<12)V.typed+=c;render()}
-function del(){V.typed=V.typed.slice(0,-1);render()}
-function tapAll(o){
- const q=V.q; if(!V.pick)V.pick=[];
- if(!V.pick.includes(o))V.pick.push(o);
- const need=q.opts.filter(q.ok);
- if(need.every(x=>V.pick.includes(x))){ if(V.pick.some(x=>!q.ok(x)))V.bad++; advance(); }
- else if(V.pick.some(x=>!q.ok(x))){V.miss++;V.bad++;}
- render();
-}
-/* v8: the same dead end the English app had. A wrong answer kept a child on
-   the same question for ever — no skip, no reveal, and the only way out was to
-   close the app. Two wrong and the answer is offered; taking it costs the mark
-   and moves on, which is what a teacher would do. */
-function giveUp(){ V.shown=true; render(); }
-function moveOn(){ V.shown=false; V.bad=(V.bad||0)+1; V.said=null; advance(); render(); }
-function check(){
- if(V.typed==="")return;
- V.said=null;
- if(V.ph==="guided"){
-  const g=TEACH[byId(V.id).g].guided, steps=g.steps.slice(0,3);
-  if(norm(V.typed)===norm(steps[V.g].a)){
-   V.g++; V.typed=""; V.miss=0;
-   if(V.g>=steps.length){ V.ph="drill"; V.i=0; V.bad=0; newQ();
-     S.at={id:V.id,ph:"drill",i:0}; save(); }
-  } else { V.miss++; V.typed=""; }
-  render(); return;
- }
- if(norm(V.typed)===norm(V.q.a)) advance();
- else { V.miss++; V.bad++; V.typed="";
-   if(!V.wrongOnce) V.wrongOnce={}; V.wrongOnce[V.i]=1;
-   render(); }
-}
-/* v4: the place is kept. A child doing twenty minutes after school was
-   starting the same stop from question one every time. */
-function resume(){
- const a=S.at; if(!a) return; const s=byId(a.id); if(!s) return;
- openStop(a.id);
- if(a.ph==="drill"){ V.ph="drill"; V.i=Math.min(a.i,s.n-1); V.bad=0; newQ(); }
- else if(a.ph==="guided") toGuided();
- else if(a.ph==="watch") toWatch();
- render();
-}
-function advance(){
- const s=byId(V.id);
- /* v6: something happens when a child is right. Before this the counter went
-    up and the next question appeared, 486 times. */
- const fixed = V.wrongOnce && V.wrongOnce[V.i];
- V.said = fixed ? (FIXED[L]||FIXED.en) : (NICE[L]||NICE.en)[(V.i+s.id.length)%10];
- V.saidFix = !!fixed;
- V.i++; V.shown=false;
- S.at={id:V.id,ph:"drill",i:V.i}; save();
- if(V.i>=s.n){ S.d[s.id]=1; S.b[s.id]=Math.max(S.b[s.id]||0,Math.max(0,s.n-V.bad)); save(); tellHost(); V.ph="done"; }
- else newQ();
- render();
-}
-
-/* ================= the arithmetic paper =================
-   36 questions, 30 minutes, no options, in the proportions Paper 1 actually
-   uses: mostly one-mark calculations, with long multiplication and long
-   division worth two each and placed late, as they are in the real thing. */
 const PAPERMIX=[["colAdd",1],["colSub",1],["tables",1],["mentalPV",1],["shortMul",1],["shortDiv",1],
  ["pow10",1],["frAddSame",1],["frAddDiff",1],["frMul",1],["frDivWhole",1],["frOfAmount",1],
  ["decAdd",1],["decMul",1],["pcOf",1],["sqcube",1],["ooo",1],["divRem",1]];
-function openPaper(){
- const qs=[]; const seed=Date.now()%99991;
- for(let i=0;i<32;i++){ const g=PAPERMIX[i%PAPERMIX.length][0];
-   qs.push(Object.assign(GEN[g](R(seed+i*7919),1+(i%2)),{m:1})); }
- qs.splice(13,0,Object.assign(GEN.longMul(R(seed+911),1),{m:2}));
- qs.splice(24,0,Object.assign(GEN.longDiv(R(seed+922),1),{m:2}));
- qs.push(Object.assign(GEN.longMul(R(seed+933),2),{m:2}));
- qs.push(Object.assign(GEN.longDiv(R(seed+944),2),{m:2}));
- V={s:"paper",qs:qs,i:0,ans:qs.map(()=>""),t0:Date.now(),over:false,mark:null};
- tick(); render();
+const VMARK={"angles":[19,32,43],"areaRect":[16,28,37],"areaTri":[15,25,32],"colAdd":[18,31,43],"colSub":[17,29,46],"decAdd":[16,28,40],"decMul":[17,27,39],"divRem":[15,26,35],"factors":[16,27,40],"fdp":[19,31,43],"formula":[21,31,40],"frAddDiff":[27,40,54],"frAddSame":[18,27,40],"frDivWhole":[17,27,40],"frMul":[19,29,40],"frOfAmount":[16,27,41],"longDiv":[24,38,50,62,75,88,99],"longMul":[23,35,51,61],"mean":[17,24,33],"mentalPV":[17,28,39],"metric":[16,27,42],"ooo":[20,31,40],"pcOf":[18,30,42],"primes":[18,29,37],"pvDigit":[22,34,46],"pvNeg":[20,32,44],"pvRound":[21,35,50],"ratioShare":[19,32,45],"shortDiv":[16,30,45],"shortMul":[17,27,38],"sqcube":[18,31,44],"tables":[22,31],"twoUnknowns":[18,28,39],"volume":[17,27,36]};
+/* ================= v2: the new fractions, decimals and percentages subtopics =================
+   Every generator returns {ask, show, a} like the originals, plus:
+     why   - the working, shown when the answer is right or revealed
+     slips - [[answer, title, what to say]]: the mistakes children really make,
+             named, so a wrong answer gets "Good start…" instead of "wrong"
+     exact - the answer must be written exactly this way (simplest form)
+   Choice questions are ask:"ch" with opts (strings) and a (the index). */
+const lcm=(a,b)=>a/gcd(a,b)*b;
+const fs=(n,d)=>{const g=gcd(Math.abs(n),d)||1;n/=g;d/=g;return d===1?String(n):n+"/"+d;};
+const fmix=(n,d)=>{const g=gcd(n,d)||1;n/=g;d/=g;if(d===1)return String(n);if(n<d)return n+"/"+d;const w=Math.floor(n/d);return w+" "+(n-w*d)+"/"+d;};
+const dstr=x=>String(Math.round(x*100000)/100000);
+const coprime=(r,dens)=>{for(;;){const d=pick(r,dens),n=between(r,1,d-1);if(gcd(n,d)===1)return[n,d];}};
+const shuffle=(r,a)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+/* a choice question: opts in a fixed shuffled order, a = index of the right one */
+const choice=(r,right,wrongs,o)=>{const opts=shuffle(r,[right].concat(wrongs));
+  const q=Object.assign({ask:"ch",opts:opts,a:opts.indexOf(right)},o||{});
+  q.slips=(q.slips||[]).map(s=>[opts.indexOf(s[0]),s[1],s[2]]).filter(s=>s[0]>=0);return q;};
+const NAMES=["Amina","Kofi","Usumaani","Ama","Leo","Sara","Alfaa","Ben","Mariama","Tom","Hawaa","Sam"];
+
+Object.assign(GEN,{
+  /* ---- equivalent fractions and simplifying ---- */
+  frSimplify(r,lvl){
+    const [p,q]=coprime(r,[3,4,5,7,8,9]), k=pick(r,lvl>=2?[6,8,9,10,12]:[4,6,8,10]);
+    const a=p*k,b=q*k, small=[2,3,5].find(f=>k%f===0&&f!==k);
+    return {ask:"frac",show:a+"/"+b,hint:"Write it in its simplest form.",a:p+"/"+q,exact:true,
+      why:a+" and "+b+" can both be divided by "+k+". "+a+" ÷ "+k+" = "+p+" and "+b+" ÷ "+k+" = "+q+".",
+      slips:small?[[(a/small)+"/"+(b/small),"Good start.","You divided by "+small+", but it can go further. Divide by the biggest number that goes into both: "+k+"."]]:[]};
+  },
+  frEquiv(r,lvl){
+    const [p,q]=coprime(r,[2,3,4,5,6,8]), k=between(r,2,lvl>=2?9:5);
+    return {ask:"calc",show:p+"/"+q+" = ☐/"+(q*k),hint:"What number goes in the box?",a:String(p*k),
+      why:q+" × "+k+" = "+(q*k)+", so multiply the top by "+k+" too: "+p+" × "+k+" = "+(p*k)+".",
+      slips:[[String(p+q*k-q),"Nearly.","You added "+(q*k-q)+" to the top. Equivalent fractions multiply the top and bottom by the same number: × "+k+"."]]};
+  },
+  /* ---- comparing and ordering fractions ---- */
+  frCompare(r,lvl){
+    if(lvl>=2){
+      for(;;){const dens=shuffle(r,[3,4,5,6,8,10,12]).slice(0,3);
+        const f=dens.map(d=>{let n;do{n=between(r,1,d-1)}while(gcd(n,d)!==1);return[n,d]});
+        const v=f.map(x=>x[0]/x[1]);if(new Set(v).size<3)continue;
+        const asc=f.slice().sort((x,y)=>x[0]/x[1]-y[0]/y[1]), byden=f.slice().sort((x,y)=>x[1]-y[1]);
+        const S=a=>a.map(x=>x[0]+"/"+x[1]).join(", ");
+        if(S(byden)===S(asc)||S(byden)===S(asc.slice().reverse()))continue;
+        const L=dens.reduce(lcm);
+        return choice(r,S(asc),[S(byden),S(asc.slice().reverse())],{show:S(f),hint:"Order these from smallest to largest.",
+          why:"Change them all into "+L+"ths: "+f.map(x=>x[0]+"/"+x[1]+" = "+(x[0]*L/x[1])+"/"+L).join(", ")+".",
+          slips:[[S(byden),"Nearly.","You ordered them by their bottom numbers. Make the bottoms the same, then compare the tops."],
+                 [S(asc.slice().reverse()),"Nearly.","That’s largest to smallest. Read the question again: smallest first."]]});}
+    }
+    for(;;){const [p,q]=coprime(r,[3,4,5,6]), m=pick(r,[2,3]), d=q*m, n=between(r,1,d-1);
+      if(gcd(n,d)!==1||n/d===p/q)continue;
+      const x=p+"/"+q,y=n+"/"+d, big=p/q>n/d?x:y, sm=big===x?y:x;
+      return choice(r,big,[sm],{show:x+"   or   "+y,hint:"Which is greater?",
+        why:"Make the bottoms the same: "+x+" = "+(p*m)+"/"+d+". Compare "+(p*m)+"/"+d+" with "+y+".",
+        slips:[[sm,"Nearly.","A bigger bottom number doesn’t mean a bigger fraction. Change "+x+" into "+d+"ths first."]]});}
+  },
+  /* ---- subtracting fractions, and mixed numbers ---- */
+  frSub(r,lvl){
+    if(lvl>=2){
+      for(;;){const d=pick(r,[4,5,6,8]), a=between(r,1,d-2), c=between(r,a+1,d-1);
+        if(gcd(a,d)!==1||gcd(c,d)!==1)continue;
+        const w1=between(r,3,6), w2=between(r,1,w1-1), s=(w1*d+a)-(w2*d+c);
+        return {ask:"frac",show:w1+" "+a+"/"+d+" − "+w2+" "+c+"/"+d,a:fs(s,d),
+          why:c+"/"+d+" is more than "+a+"/"+d+", so exchange one whole: "+w1+" "+a+"/"+d+" = "+(w1-1)+" "+(a+d)+"/"+d+". Then take away: "+fmix(s,d)+".",
+          slips:[[fs((w1-w2)*d+(c-a),d),"Good start with the wholes.","You took "+a+"/"+d+" from "+c+"/"+d+", the wrong way round. Exchange one whole first."]]};}
+    }
+    for(;;){const b=pick(r,[2,3,4,5]), m=pick(r,[2,3,4]), d=b*m, a=between(r,1,b-1), c=between(r,1,d-1);
+      if(gcd(a,b)!==1||gcd(c,d)!==1||a/b<=c/d)continue;
+      const top=a*m-c;
+      return {ask:"frac",show:a+"/"+b+" − "+c+"/"+d,a:fs(top,d),
+        why:"Change "+a+"/"+b+" into "+d+"ths: "+(a*m)+"/"+d+". Then "+(a*m)+"/"+d+" − "+c+"/"+d+" = "+top+"/"+d+".",
+        slips:(a-c>0&&b-d>0)?[[(a-c)+"/"+(b-d),"Nearly.","You took away the tops and the bottoms. Make the bottoms the same first, then take away only the tops."]]:[]};}
+  },
+  /* ---- fractions of shapes ---- */
+  frShape(r,lvl){
+    for(;;){const parts=pick(r,[6,8,9,10,12,15,16]), k=between(r,2,parts-1), g=gcd(k,parts);
+      if(g===1)continue;
+      return {ask:"frac",show:"",shape:{parts:parts,k:k},hint:"What fraction is shaded? Give it in its simplest form.",
+        a:fs(k,parts),exact:true,why:k+" of the "+parts+" parts are shaded: "+k+"/"+parts+". Divide the top and bottom by "+g+": "+fs(k,parts)+".",
+        slips:[[k+"/"+parts,"Right fraction.","Now put it in its simplest form: divide the top and bottom by "+g+"."],
+               [(parts-k)+"/"+parts,"Nearly.","That’s the part that isn’t shaded. Count the coloured parts."]]};}
+  },
+  frWord(r){
+    for(;;){const [n,d]=coprime(r,[3,4,5,6,8]), m=between(r,4,15), amt=d*m; if(n===1)continue;
+      const what=pick(r,[["children in a class","children"],["sweets in a bag","sweets"],["pages in a book","pages"],["marbles in a jar","marbles"]]);
+      return {ask:"calc",show:"",qtext:"There are "+amt+" "+what[0]+". "+n+"/"+d+" of them are red. How many "+what[1]+" are red?",a:String(n*m),
+        why:amt+" ÷ "+d+" = "+m+", and "+m+" × "+n+" = "+(n*m)+".",
+        slips:[[String(m),"Good start.",m+" is one "+(d===2?"half":d+"th")+". Red is "+n+"/"+d+", so take "+n+" of them."],
+               [String(amt-n*m),"Nearly.","That’s how many are not red. Read the question again."]]};}
+  },
+  /* ---- multiplying a fraction by a whole number ---- */
+  frMulWhole(r){
+    const [a,b]=coprime(r,[3,4,5,6,7,8,9]), n=between(r,2,12);
+    return {ask:"frac",show:a+"/"+b+" × "+n,a:fs(a*n,b),
+      why:a+" × "+n+" = "+(a*n)+", so "+(a*n)+"/"+b+(gcd(a*n,b)>1||a*n>=b?" = "+fmix(a*n,b):"")+". The bottom stays "+b+".",
+      slips:[[a+"/"+(b*n),"Nearly.","Multiplying by "+n+" makes it bigger, so multiply the top: "+a+" × "+n+". The bottom stays "+b+"."]]};
+  },
+  /* ---- fraction and decimal equivalents ---- */
+  frToDec(r){
+    const [n,d]=coprime(r,[2,4,5,10,20,25,8]);
+    return {ask:"calc",show:n+"/"+d,hint:"Write it as a decimal.",a:dstr(n/d),
+      why:n+"/"+d+" means "+n+" ÷ "+d+" = "+dstr(n/d)+"."+(100%d===0?" Or make it out of 100: "+(n*100/d)+"/100.":""),
+      slips:[[n+"."+d,"Nearly.",n+"/"+d+" isn’t “"+n+" point "+d+"”. It means "+n+" ÷ "+d+"."]]};
+  },
+  decToFr(r){
+    const v=pick(r,["0.5","0.25","0.75","0.2","0.4","0.6","0.8","0.125","0.375","0.05","0.35","0.45","0.65","0.15","0.04","0.24"]);
+    const dp=v.split(".")[1].length, top=+v.split(".")[1], bot=Math.pow(10,dp);
+    return {ask:"frac",show:v,hint:"Write it as a fraction in its simplest form.",a:fs(top,bot),exact:true,
+      why:v+" = "+top+"/"+bot+". Simplify it: "+fs(top,bot)+".",
+      slips:[[top+"/"+bot,"Right value.","Now put it in its simplest form: divide the top and bottom by "+gcd(top,bot)+"."]]};
+  },
+  /* ---- rounding decimals ---- */
+  decRound(r,lvl){
+    /* whole numbers of thousandths (or ten-thousandths), so 1.255 rounds to
+       1.26 and not to the 1.25 that floating point gives */
+    const k=lvl>=2?pick(r,[0,1,2]):pick(r,[0,1]);
+    const D=(n,p)=>{const s=String(n).padStart(p+1,"0");return s.slice(0,-p)+"."+s.slice(-p);};
+    for(;;){
+      if(k===1){const n=between(r,1000,99999), h=Math.floor(n/10)%10; if(h<5||n%10===0)continue;
+        const up=Math.floor(n/100)+1, dn=Math.floor(n/100);
+        return {ask:"calc",show:dstr(n/1000),hint:"Round to one decimal place.",a:D(up,1),why:"Look at the hundredths digit: "+h+". It’s 5 or more, so round the tenths up: "+D(up,1)+".",
+          slips:[[D(dn,1),"Nearly.","You cut the number off. Look at the next digit: 5 or more rounds up."]]};}
+      if(k===0){const n=between(r,100,9999), t=Math.floor(n/10)%10; if(t<5||n%10===0)continue;
+        const up=Math.floor(n/100)+1;
+        return {ask:"calc",show:dstr(n/100),hint:"Round to the nearest whole number.",a:String(up),why:"The tenths digit is "+t+", so round up to "+up+".",
+          slips:[[String(up-1),"Nearly.","The tenths digit is "+t+", which is 5 or more, so round up."]]};}
+      const n=between(r,10000,99999), th=Math.floor(n/10)%10; if(th<5||n%10===0||Math.floor(n/10)%100===99)continue;
+      const up=Math.floor(n/100)+1;
+      return {ask:"calc",show:dstr(n/10000),hint:"Round to two decimal places.",a:D(up,2),exact:true,why:"The thousandths digit is "+th+", so round the hundredths up: "+D(up,2)+".",
+        slips:[[D(up-1,2),"Nearly.","Look at the third decimal place. 5 or more rounds up."]]};
+    }
+  },
+  /* ---- comparing and ordering decimals ---- */
+  decCompare(r,lvl){
+    if(lvl>=2){
+      for(;;){const w=between(r,0,5);
+        const vals=[...new Set([w+"."+between(r,1,9), w+"."+between(r,10,99), w+"."+between(r,100,999), w+".0"+between(r,1,9)])].filter(v=>!/0$/.test(v));
+        if(vals.length<4)continue;
+        const sm=vals.slice().sort((x,y)=>x-y)[0], byLen=vals.slice().sort((x,y)=>x.length-y.length||x-y)[0];
+        if(sm===byLen)continue;
+        const others=vals.filter(v=>v!==sm);
+        return choice(r,sm,others,{show:shuffle(r,vals).join(",  "),hint:"Which is the smallest?",
+          why:"Line up the decimal points and compare the tenths first, then the hundredths. The smallest is "+sm+".",
+          slips:[[byLen,"Nearly.","Fewer digits doesn’t mean smaller. Compare the tenths first."]]});}
+    }
+    for(;;){const w=between(r,0,9), a=between(r,2,9), b2=between(r,10,99); if(Math.floor(b2/10)>=a||b2%10===0)continue;
+      const x=w+"."+a, y=w+"."+b2;
+      return choice(r,x,[y],{show:x+"   or   "+y,hint:"Which is greater?",
+        why:"Write them with the same number of places: "+x+"0 and "+y+". "+a+" tenths is more than "+Math.floor(b2/10)+" tenths.",
+        slips:[[y,"Nearly.","More digits doesn’t mean bigger. Compare the tenths first."]]});}
+  },
+  /* ---- dividing decimals ---- */
+  decDiv(r,lvl){
+    if(lvl>=2||r()<.5){const x=between(r,11,999)/pick(r,[10,100]), p=pick(r,[10,100,1000]), z=String(p).length-1;
+      return {ask:"calc",show:dstr(x)+" ÷ "+p,a:dstr(x/p),
+        why:"Dividing by "+p+" moves every digit "+z+" place"+(z>1?"s":"")+" to the right: "+dstr(x/p)+".",
+        slips:[[dstr(x/p*10),"Nearly.","You moved the digits one place too few. "+p+" has "+z+" zero"+(z>1?"s":"")+"."],[dstr(x*p),"Nearly.","Dividing makes the number smaller. Move the digits to the right."]]};}
+    const n=between(r,2,9), a=between(r,11,99)/10;
+    return {ask:"calc",show:dstr(a*n)+" ÷ "+n,a:dstr(a),
+      why:"Use short division and keep the decimal point in line: "+dstr(a*n)+" ÷ "+n+" = "+dstr(a)+".",
+      slips:[[dstr(a*10),"Good start.","Check the decimal point. It stays in the same place as in the question."]]};
+  },
+  decSub(r){
+    const a=between(r,500,9999)/100, b=between(r,100,Math.floor(a*100)-50)/100;
+    const one=(String(a).split(".")[1]||"").length<2&&r()<.5;
+    const A=one?Math.round(a*10)/10:a;
+    return {ask:"calc",show:dstr(A)+" − "+dstr(b),a:dstr(Math.round((A-b)*100)/100),
+      why:"Line up the decimal points"+(String(A).split(".")[1]&&String(A).split(".")[1].length<2?" and write "+dstr(A)+" as "+A.toFixed(2):"")+", then take away column by column: "+dstr(Math.round((A-b)*100)/100)+"."};
+  },
+  /* ---- fraction and decimal problems ---- */
+  fdProb(r){
+    const k=between(r,0,3), nm=pick(r,NAMES);
+    if(k===0){const [n,d]=coprime(r,[3,4,5,8]), m=between(r,2,9), amt=d*m, left=amt-n*m;
+      return {ask:"calc",show:"",qtext:nm+" has £"+amt+" and spends "+n+"/"+d+" of it. How much is left, in pounds?",a:String(left),unit:"£",
+        why:n+"/"+d+" of £"+amt+" is £"+(n*m)+". £"+amt+" − £"+(n*m)+" = £"+left+".",
+        slips:[[String(n*m),"Good start.","That’s how much was spent. Now take it away from £"+amt+"."]]};}
+    if(k===1){const n=between(r,3,8), each=between(r,5,25)/10, tot=Math.round(each*n*10)/10;
+      return {ask:"calc",show:"",qtext:"A ribbon is "+dstr(tot)+" m long. It is cut into "+n+" equal pieces. How long is each piece, in metres?",a:dstr(each),unit:"m",
+        why:dstr(tot)+" ÷ "+n+" = "+dstr(each)+" m.",slips:[[dstr(each*10),"Nearly.","Check the decimal point. Each piece is shorter than the whole ribbon."]]};}
+    if(k===2){const each=pick(r,[1.25,2.45,3.6,0.85,1.7,4.35,2.95]), n=between(r,3,6), tot=Math.round(each*n*100)/100;
+      return {ask:"calc",show:"",qtext:"A pen costs £"+each.toFixed(2)+". How much do "+n+" pens cost, in pounds?",a:dstr(tot),unit:"£",
+        why:"£"+each.toFixed(2)+" × "+n+" = £"+tot.toFixed(2)+".",slips:[[String(Math.round(each*100)*n),"Good start.","That’s the cost in pence. Change it to pounds: divide by 100."]]};}
+    const a=between(r,120,480)/100, b=between(r,110,390)/100, tot=Math.round((a+b)*100)/100;
+    return {ask:"calc",show:"",qtext:nm+" buys a sandwich for £"+a.toFixed(2)+" and a drink for £"+b.toFixed(2)+". How much is that altogether, in pounds?",a:dstr(tot),unit:"£",
+      why:"Line up the decimal points: £"+a.toFixed(2)+" + £"+b.toFixed(2)+" = £"+tot.toFixed(2)+"."};
+  },
+  /* ---- percentages ---- */
+  pcToFr(r){
+    const p=pick(r,[5,10,15,20,25,30,35,40,45,55,60,65,70,75,80,85,90,95,12,24,48]);
+    return {ask:"frac",show:p+"%",hint:"Write it as a fraction in its simplest form.",a:fs(p,100),exact:true,
+      why:p+"% means "+p+"/100. Divide the top and bottom by "+gcd(p,100)+": "+fs(p,100)+".",
+      slips:[[p+"/100","Good start.",p+"% is "+p+"/100. Now simplify it: divide the top and bottom by "+gcd(p,100)+"."]]};
+  },
+  frToPc(r){
+    const [n,d]=coprime(r,[2,4,5,10,20,25]), pc=n*100/d;
+    return {ask:"calc",show:n+"/"+d,hint:"Write it as a percentage.",a:String(pc),unit:"%",
+      why:"Make the bottom 100: "+n+"/"+d+" = "+pc+"/100 = "+pc+"%.",
+      slips:pc!==n?[[String(n),"Nearly.",n+"/"+d+" isn’t "+n+"%. Percent means out of 100, so make the bottom 100 first."]]:[]};
+  },
+  fdpLargest(r){
+    for(;;){const a=between(r,21,79)/100, bn=pick(r,[1,2,3]), bd=pick(r,[4,5]), c=between(r,20,80);
+      const v=[a,bn/bd,c/100]; if(new Set(v).size<3||Math.abs(a-c/100)<.02)continue;
+      const lab=[dstr(a),bn+"/"+bd,c+"%"], big=lab[v.indexOf(Math.max(...v))];
+      return choice(r,big,lab.filter(x=>x!==big),{show:shuffle(r,lab).join(",   "),hint:"Which is the largest?",
+        why:"Change them all to decimals: "+dstr(a)+", "+bn+"/"+bd+" = "+dstr(bn/bd)+", "+c+"% = "+dstr(c/100)+". The largest is "+big+"."});}
+  },
+  pcProb(r,lvl){
+    if(lvl>=2&&r()<.5){for(;;){const whole=pick(r,[20,40,50,80,200,25]), p=pick(r,[10,20,25,40,50,75]); if(whole*p%100)continue;
+      const part=whole*p/100;
+      return {ask:"calc",show:"",qtext:"What percentage of "+whole+" is "+part+"?",a:String(p),unit:"%",
+        why:part+" out of "+whole+" is "+fs(part,whole)+", which is "+p+"%.",
+        slips:[[String(part),"Nearly.","Write it as a fraction first: "+part+" out of "+whole+". Then change it to a percentage."]]};}}
+    for(;;){const p=pick(r,[10,20,25,30,40]), price=pick(r,[24,36,40,48,60,80,96,120,150,180]), cut=price*p/100; if(cut%1)continue;
+      const item=pick(r,["coat","bike","game","pair of trainers","football"]);
+      return {ask:"calc",show:"",qtext:"A "+item+" costs £"+price+". In a sale the price is cut by "+p+"%. What is the sale price, in pounds?",a:String(price-cut),unit:"£",
+        why:p+"% of £"+price+" is £"+cut+". £"+price+" − £"+cut+" = £"+(price-cut)+".",
+        slips:[[String(cut),"Good start.","That’s the amount taken off. Now take it away from £"+price+"."]]};}
+  },
+});
+/* the slips the original generators never had, added from the same mark-scheme
+   mistakes, so a wrong answer anywhere says what went wrong */
+const SLIP={
+  frAddSame(q){const m=q.show.match(/(\d+)\/(\d+) \+ (\d+)\/(\d+)/);if(!m)return[];return[[(+m[1]+ +m[3])+"/"+(+m[2]+ +m[4]),"Nearly.","The bottom number stays "+m[2]+". Add only the tops."]];},
+  frAddDiff(q){const m=q.show.match(/(\d+)\/(\d+) \+ (\d+)\/(\d+)/);if(!m)return[];return[[(+m[1]+ +m[3])+"/"+(+m[2]+ +m[4]),"Nearly.","You added the tops and the bottoms. Make the bottoms the same first, then add only the tops."]];},
+  frMul(q){const m=q.show.match(/(\d+)\/(\d+) × (\d+)\/(\d+)/);if(!m)return[];const w=(+m[1]* +m[4])+"/"+(+m[2]* +m[3]);return eqv(w,q.a)?[]:[[w,"Nearly.","You multiplied across in a cross. Multiply top × top and bottom × bottom."]];},
+  frDivWhole(q){const m=q.show.match(/(\d+)\/(\d+) ÷ (\d+)/);if(!m)return[];return[[fs(+m[1]* +m[3],+m[2]),"Nearly.","You multiplied. Dividing makes each part smaller: multiply the bottom by "+m[3]+"."]];},
+  frOfAmount(q){const m=q.show.match(/(\d+)\/(\d+) of (\d+)/);if(!m||m[1]==="1")return[];const one=+m[3]/ +m[2];return[[String(one),"Good start.","You found one part: "+m[3]+" ÷ "+m[2]+" = "+one+". Now take "+m[1]+" of them."]];},
+  pcOf(q){const m=q.show.match(/(\d+)% of (\d+)/);if(!m||m[1]==="10")return[];const t=+m[2]/10;return[[dstr(t),"Good start.",dstr(t)+" is 10%. Now build "+m[1]+"% from 10% and 5% parts."]];},
+  sqcube(q){const m=q.show.match(/(\d+)([²³])/);if(!m)return[];const n=+m[1],p=m[2]==="²"?2:3;return[[String(n*p),"Nearly.",m[1]+m[2]+" means "+Array(p).fill(m[1]).join(" × ")+", not "+m[1]+" × "+p+"."]];},
+  ooo(q){const m=q.show.match(/(\d+) \+ (\d+) × (\d+)/);if(!m)return[];return[[String((+m[1]+ +m[2])* +m[3]),"Nearly.","Multiply before you add: "+m[2]+" × "+m[3]+" first."]];},
+  areaTri(q){const m=q.show.match(/base (\d+)cm, height (\d+)cm/);if(!m)return[];return[[String(+m[1]* +m[2]),"Good start.","That’s the rectangle around it. A triangle is half of that."]];},
+  decMul(q){const m=q.show.match(/([\d.]+) × (\d+)/);if(!m)return[];const w=Math.round(+m[1]*10)* +m[2];return[[String(w),"Good start with the multiplying.","Now put the decimal point back: one decimal place in the question, one in the answer."]];},
+};
+
+/* ================= v2: six topics, the SATs coverage map =================
+   The course used to be five "camps" in the order they were written. It is now
+   the six topics of the KS2 test framework, every sub-strand in the order a
+   child should meet it (equivalent fractions before adding them, not after
+   percentages). Each part names:
+     old  - the original subtopics it is built from (their generators, levels,
+            codes and one-line introductions are reused, not rewritten)
+     q    - any new generators, as [name, level]
+     t    - the introduction, when there is no old one to borrow
+   A part with nothing in old or q is listed so the map is complete, and says
+   honestly that its practice is still being written. */
+const TOPICS=[
+ {id:"np",n:"Number & place value",icon:"np",subs:[
+  {n:"Counting in steps and multiples",code:"4N1 / 6N1",t:"Counting on and back in steps of any size, including through zero."},
+  {n:"Numbers to 10 million",old:["c1.0","c1.1"]},
+  {n:"Place value and Roman numerals",code:"4N3b / 5N3b",t:"What each digit is worth, and the Roman numerals for numbers and years."},
+  {n:"Rounding and estimating",old:["c1.2","c1.3"]},
+  {n:"Negative numbers",old:["c1.4","c1.5"]},
+  {n:"Multiples, factors, primes, squares and cubes",old:["c2.10","c3.5","c3.4"]},
+  {n:"Number problems",code:"5N6 / 6N6",t:"Place value, rounding and negative numbers in real situations."}]},
+ {id:"calc",n:"Calculation",icon:"calc",subs:[
+  {n:"Mental addition and subtraction",code:"4C1 / 5C1",t:"Adding and taking away in your head, using what you already know."},
+  {n:"Column addition and subtraction",old:["c2.3","c2.4","c2.5","c3.7"]},
+  {n:"Estimating and checking",code:"4C3 / 6C8",t:"Rounding to check an answer, and using the inverse to prove it."},
+  {n:"Addition and subtraction problems",code:"5C4 / 6C4",t:"Choosing what to add and what to take away in a word problem."},
+  {n:"Mental multiplication and division",old:["c2.0","c2.1","c2.2","c2.9"]},
+  {n:"Short and long multiplication",old:["c2.6","c3.0","c3.1"]},
+  {n:"Short and long division",old:["c2.7","c2.8","c3.2","c3.3"]},
+  {n:"Order of operations",old:["c3.6"]},
+  {n:"Four-operation problems",code:"6C8",t:"Problems with more than one step, and what to do with a remainder."}]},
+ {id:"fdp",n:"Fractions, decimals & %",icon:"fdp",subs:[
+  {n:"Equivalent fractions and simplifying",code:"5F2b / 6F2",q:[["frEquiv",1],["frSimplify",1],["frEquiv",2],["frSimplify",2]],
+   t:"Multiply or divide the top and the bottom by the same number and the fraction keeps its size."},
+  {n:"Comparing and ordering fractions",code:"5F3 / 6F3",q:[["frCompare",1],["frCompare",2]],
+   t:"Make the bottom numbers the same, then compare the tops."},
+  {n:"Adding and subtracting fractions",old:["c4.0","c4.1","c4.2"],q:[["frSub",1],["frSub",2]]},
+  {n:"Fractions of shapes and amounts",old:["c4.5"],q:[["frShape",1],["frWord",1]]},
+  {n:"Multiplying and dividing fractions",old:["c4.3","c4.4"],q:[["frMulWhole",1]]},
+  {n:"Fraction and decimal equivalents",code:"4F6 / 6F11",q:[["frToDec",1],["decToFr",1]],
+   t:"A fraction is a division: 3/4 is 3 ÷ 4, which is 0.75."},
+  {n:"Rounding decimals",code:"5F7 / 6F7",q:[["decRound",1],["decRound",2]],
+   t:"The same rule as whole numbers: look at the next digit along. 5 or more rounds up."},
+  {n:"Comparing and ordering decimals",code:"5F8 / 6F8",q:[["decCompare",1],["decCompare",2]],
+   t:"Line up the decimal points and compare the tenths first."},
+  {n:"Multiplying and dividing decimals",old:["c4.7","c4.11"],q:[["decDiv",1],["decDiv",2]]},
+  {n:"Fraction and decimal problems",old:["c4.6"],q:[["decSub",1],["fdProb",1],["fdProb",2]],
+   t:"Adding, taking away and sharing with fractions and decimals, in money and measures."},
+  {n:"Fractions, decimals and percentages together",old:["c4.8"],q:[["pcToFr",1],["frToPc",1],["fdpLargest",1]]},
+  {n:"Percentages of amounts",old:["c4.9","c4.10"],q:[["pcProb",1],["pcProb",2]]}]},
+ {id:"meas",n:"Measurement",icon:"meas",subs:[
+  {n:"Comparing and ordering measures",code:"4M1 / 5M1",t:"Change them into the same unit, then compare."},
+  {n:"Reading scales",code:"3M2 / 4M2",t:"Work out what each small mark is worth before you read the scale."},
+  {n:"Money",code:"4M9 / 5M9",t:"Totals and change in pounds and pence."},
+  {n:"Time and timetables",code:"4M4 / 5M4",t:"Durations, the 24-hour clock and reading a timetable."},
+  {n:"Converting metric units",old:["c5.2"]},
+  {n:"Metric and imperial units",code:"5M6 / 6M6",t:"Miles, feet, inches, pounds and pints, roughly in metric."},
+  {n:"Perimeter and area",old:["c5.3","c5.4"]},
+  {n:"Volume",old:["c5.5"]},
+  {n:"Measurement problems",code:"5M9 / 6M9",t:"Problems that mix units, money and time."}]},
+ {id:"geo",n:"Geometry",icon:"geo",subs:[
+  {n:"Naming 2D and 3D shapes",code:"4G2 / 5G2",t:"The names of shapes, and how many faces, edges and corners they have."},
+  {n:"Describing and classifying shapes",code:"5G2b / 6G2a",t:"Sides, angles, parallel lines and symmetry."},
+  {n:"Drawing shapes and nets",code:"6G2b / 6G3",t:"Which nets fold into which 3D shapes."},
+  {n:"Angles, including missing angles",old:["c5.6"]},
+  {n:"Circles",code:"6G5",t:"The radius, the diameter and how they are related."},
+  {n:"Patterns",code:"4G3 / 6P3",t:"Lines of symmetry and completing a pattern."},
+  {n:"Translation and reflection",code:"5P2 / 6P2",t:"Moving a shape across a grid, and reflecting it in a line."},
+  {n:"Coordinates in four quadrants",code:"4P3 / 6P3",t:"Reading and plotting points, including negative coordinates."}]},
+ {id:"ras",n:"Ratio, algebra & statistics",icon:"ras",subs:[
+  {n:"Ratio and relative sizes",code:"6R1",t:"Scaling a recipe up or down: if 2 makes 6, then 6 makes 18."},
+  {n:"Percentages for comparison",code:"6R2",t:"Changing scores into percentages so you can compare them."},
+  {n:"Scale factors",code:"6R3",t:"Making a shape bigger or smaller by the same amount every way."},
+  {n:"Unequal sharing and grouping",old:["c5.0","c5.1"]},
+  {n:"Missing numbers as algebra",code:"6A1 / 6A3",t:"A letter stands for a number. Find it."},
+  {n:"Formulae in words",old:["c5.8"]},
+  {n:"Linear sequences",code:"6A2",t:"Find the rule, then use it to find any term."},
+  {n:"Two unknowns",old:["c5.9"]},
+  {n:"Combinations",code:"6A5",t:"Listing every possible way, so none are missed."},
+  {n:"Tables, charts and line graphs",code:"4S1 / 6S1",t:"Reading values from tables, bar charts, line graphs and pie charts."},
+  {n:"Problems with data",code:"5S1 / 6S1",t:"Using what a chart or table shows to answer a question."},
+  {n:"The mean",old:["c5.7"]}]}];
+
+/* ================= v2: the app, in the Woven design =================
+   Everything a child sees and follows is the prototype's: Home with six tiles
+   and ten blocks each, the ready line on block 8, topic pages with "You are
+   here", a subtopic page that starts with the video, the daily ten, the
+   forgiving streak, the readiness and parent views, and Nuuru. Underneath it
+   runs the original engine: the generated questions, the keypad, the jump
+   index, the drawings and the 36-question arithmetic paper. English only for
+   now; the French text stays in the data for later. */
+const L="en";
+const t=k=>(T[k]||{}).en||k;
+const w=(o,k)=>o[k+"_en"];
+const esc=s=>(s===undefined||s===null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const norm=x=>String(x).replace(/−/g,"-").replace(/[\s ,£%]/g,"").toLowerCase();
+const $=s=>document.querySelector(s);
+function toast(m){const e=$("#toast");if(!e)return;e.textContent=m;e.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>e.classList.remove("on"),2600);}
+const arrow=()=>`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+/* English thousands: the original printed a thin space for French. */
+const enNum=s=>String(s).replace(/(\d)[  ](?=\d{3}(?!\d))/g,"$1,");
+/* 3/4 drawn as a fraction, 2 1/4 as a mixed number. Only on what is shown. */
+const frac=(n,d)=>`<span class="fr" aria-label="${n} over ${d}"><span>${n}</span><span>${d}</span></span>`;
+const fmt=s=>esc(enNum(s)).replace(/(\d+)\/(\d+)/g,(m,a,b)=>frac(a,b));
+
+/* ---------- Nuuru, in the maths hat ----------
+   Notice Me's companion replaces the crow: the same round body and face as on
+   the child's home, flat and outlined to sit in the Woven style, wearing the
+   course's set-square hat. Poses: stand, cheer, think, encourage. */
+function nuuru(o={}){
+ const s=o.size||64,pose=o.pose||"stand",ink="var(--ink)";
+ const arms={stand:`<path d="M15 41 q-5 4 -3 9" /><path d="M49 41 q5 4 3 9"/>`,
+  cheer:`<path d="M16 37 l-8 -11"/><path d="M48 37 l8 -11"/>`,
+  think:`<path d="M15 41 q-5 4 -3 9"/><path d="M47 44 q-4 -6 -12 -5"/>`,
+  encourage:`<path d="M15 41 q-5 4 -3 9"/><path d="M49 40 l9 -3"/>`}[pose];
+ const eyes=pose==="cheer"
+  ? `<path d="M23 36 q3 -4 6 0" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M35 36 q3 -4 6 0" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`
+  : `<circle cx="26.5" cy="${pose==="think"?34:35.5}" r="2.6" fill="${ink}"/><circle cx="37.5" cy="${pose==="think"?34:35.5}" r="2.6" fill="${ink}"/>`;
+ const mouth=pose==="cheer"?`<path d="M26 43 q6 7 12 0 z" fill="${ink}"/>`:pose==="think"?`<path d="M28 44 h7" stroke="${ink}" stroke-width="2.4" stroke-linecap="round"/>`:`<path d="M26.5 42.5 q5.5 5 11 0" stroke="${ink}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
+ return `<svg class="nu" width="${s}" height="${s}" viewBox="0 0 64 64" aria-hidden="true">
+  <g stroke="${ink}" stroke-width="2.2" fill="none" stroke-linecap="round">${arms}</g>
+  <ellipse cx="25" cy="58" rx="5" ry="2.6" fill="var(--nu2)" stroke="${ink}" stroke-width="1.6"/><ellipse cx="39" cy="58" rx="5" ry="2.6" fill="var(--nu2)" stroke="${ink}" stroke-width="1.6"/>
+  <circle cx="32" cy="39" r="18" fill="var(--nu)" stroke="${ink}" stroke-width="2.2"/>
+  <ellipse cx="32" cy="47" rx="9.5" ry="5" fill="#fff" opacity=".5"/>
+  <circle cx="21.5" cy="42" r="2.6" fill="#ff8f8f" opacity=".7"/><circle cx="42.5" cy="42" r="2.6" fill="#ff8f8f" opacity=".7"/>
+  ${eyes}${mouth}
+  <g transform="rotate(-8 32 18)"><polygon points="19,22.5 45,22.5 19,5" fill="var(--brand)" stroke="${ink}" stroke-width="1.8" stroke-linejoin="round"/>
+  <path d="M23 22.5v-3M27 22.5v-3M31 22.5v-3M35 22.5v-3M39 22.5v-3" stroke="${ink}" stroke-width="1.3"/></g></svg>`;
 }
-let TID=null;
-function tick(){ clearInterval(TID); TID=setInterval(()=>{
-  if(V.s!=="paper"||V.mark){clearInterval(TID);return}
-  const left=1800-Math.floor((Date.now()-V.t0)/1000);
-  if(left<=0){ clearInterval(TID); markPaper(); return }
-  const e=document.getElementById("clk");
-  if(e){ e.textContent=fmt(left); e.className="timer"+(left<300?" low":""); }
- },500); }
-const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
-function paperHTML(){
- if(V.mark) {
-  const tot=V.qs.reduce((a,q)=>a+q.m,0);
-  return `<div class="wrap"><div class="card res"><div class="em">\u{1f4c4}</div>
-   <h2 class="num">${V.mark} / ${tot}</h2><p>${esc(t("score"))}</p>
-   <div class="bar2"><i style="width:${Math.round(V.mark/tot*100)}%"></i></div></div>
-   <button class="go2" onclick="goMap()">${esc(t("back"))}</button>
-   <button class="go2 quiet" onclick="openPaper()">${esc(t("again"))}</button></div>`;
+const ICONS={np:'<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',calc:'<path d="M12 3v8M8 7h8M7 16h10M7 20h10"/>',fdp:'<path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+ meas:'<path d="M3 16 16 3l5 5L8 21Z"/><path d="M7 12l2 2M10 9l2 2M13 6l2 2"/>',geo:'<path d="M12 3 2 21h20Z"/><circle cx="12" cy="15" r="3"/>',ras:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'};
+
+/* ---------- the parts, built from the topic map ---------- */
+const OLD={}; CAMPS.forEach(c=>c.stops.forEach((s,si)=>{OLD[c.id+"."+si]=s;}));
+const SUBS=[], GSUB={};
+TOPICS.forEach(tp=>tp.subs.forEach((s,i)=>{
+ const olds=(s.old||[]).map(k=>OLD[k]);
+ s.id=tp.id+"."+i; s.tp=tp.id; s.i=i;
+ s.gens=olds.map(o=>[o.g,o.lvl]).concat(s.q||[]);
+ s.code=s.code||olds.map(o=>o.code).join(" / ");
+ s.t=s.t||(olds[0]&&olds[0].t_en)||"";
+ s.k=s.k||10;
+ s.teach=s.teach||(s.gens.map(g=>g[0]).find(g=>TEACH[g])||null);
+ s.built=s.gens.length>0;
+ s.gens.forEach(g=>{if(!GSUB[g[0]])GSUB[g[0]]=s.id;});
+ SUBS.push(s);
+}));
+const SUB=id=>SUBS.find(s=>s.id===id);
+const TOP=id=>TOPICS.find(t=>t.id===id);
+
+/* ---------- state ---------- */
+const KEY="oh-maths.v2";
+const fresh=()=>({h:{},d:{},days:{},at:null,sess:null,papers:[],name:"",seen:0});
+let S=(()=>{try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY))||{})}catch(e){return fresh()}})();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const dayStr=d=>{const x=d||new Date();return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");};
+const TODAY=()=>dayStr();
+
+/* ---------- blocks and the ready line ----------
+   A part counts its last ten answers that were right first time, from its own
+   practice and from the daily sessions. A topic's blocks are the average of its
+   parts out of ten, so 8 of 10 means about eight in ten right first time across
+   every part of the topic, recently. Parts not tried yet count as nothing:
+   blocks never fill from time spent, only from answers. */
+function mastery(id){const h=S.h[id]||[];return h.reduce((a,b)=>a+b,0)/10;}
+function blocksOf(tp){const t=TOP(tp);return Math.round(10*t.subs.reduce((a,s)=>a+mastery(s.id),0)/t.subs.length);}
+function record(id,ok){const h=S.h[id]=(S.h[id]||[]);h.push(ok?1:0);if(h.length>10)h.shift();save();}
+const readyCount=()=>TOPICS.filter(t=>blocksOf(t.id)>=8).length;
+const status=n=>n>=8?["ready","Ready"]:n>=6?["nearly","Nearly"]:["","Building"];
+function blocks(n,o={}){let h="";for(let i=0;i<10;i++)h+=`<i class="${i<n?"f":""}${i===7?" rl":""}${o.newAt===i?" new":""}"></i>`;
+ return `<div class="blocks ${o.lg?"lg":""}" role="img" aria-label="${n} of 10 blocks${o.lg?". Block 8 is the ready line":""}">${h}</div>`;}
+function subState(s){if(S.d[s.id])return "done";const tp=TOP(s.tp);const here=tp.subs.find(x=>x.built&&!S.d[x.id]);return here===s?"here":(s.built?"todo":"soon");}
+
+/* ---------- the streak, forgiving ----------
+   Worked out from the days practised, so it can't drift: two rest days a week
+   are covered automatically, every seven days practised earns a freeze (two at
+   most) that covers a missed day after that, and only then does the streak go
+   back to the start. Blocks never go back. */
+function weekKey(d){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return dayStr(x);}
+function streak(){
+ const ds=Object.keys(S.days).sort(); const out={n:0,freezes:0,cover:{},today:!!S.days[TODAY()],practised:0,earned:false};
+ if(!ds.length) return out;
+ const rest={}; let d=new Date(ds[0]+"T12:00:00"); const end=TODAY();
+ for(;;){const k=dayStr(d); if(k>end) break;
+  if(S.days[k]){out.n++;out.practised++;out.earned=false;if(out.practised%7===0){out.freezes=Math.min(2,out.freezes+1);out.earned=(k===end);}}
+  else if(k!==end){const wk=weekKey(d);
+   if((rest[wk]||0)<2){rest[wk]=(rest[wk]||0)+1;out.cover[k]="r";out.n++;}
+   else if(out.freezes>0){out.freezes--;out.cover[k]="f";out.n++;}
+   else {out.n=0;}}
+  d.setDate(d.getDate()+1);}
+ out.restLeft=2-(rest[weekKey(new Date())]||0);
+ return out;
+}
+function weekRow(){const st=streak(),mon=new Date(weekKey(new Date())+"T12:00:00"),today=TODAY();let h="";
+ for(let i=0;i<7;i++){const d=new Date(mon);d.setDate(mon.getDate()+i);const k=dayStr(d);
+  const cls=(S.days[k]?"p":st.cover[k]?"r":"")+(k===today?" t":"");
+  h+=`<span class="dy ${cls}"><i>${S.days[k]?"✓":""}</i>${"MTWTFSS"[i]}</span>`;}
+ return `<div class="week">${h}</div>`;}
+
+/* ---------- questions ---------- */
+let V={s:"home"}, STACK=[];
+function seed(){return Date.now()%99991;}
+function makeQ(g,lvl,sd,sub){
+ const q=GEN[g](R(sd),lvl); q.g=g; q.sub=sub||GSUB[g];
+ if(!q.slips&&SLIP[g]) q.slips=SLIP[g](q);
+ q.slips=(q.slips||[]).filter(x=>q.ask==="ch"?x[0]!==q.a:!eqv(x[0],q.a,q.exact));
+ return q;
+}
+function qForSub(s,i,sd){const [g,lvl]=s.gens[i%s.gens.length];return makeQ(g,i===0?1:lvl,sd+i*7919,s.id);}
+/* fractions are marked by value unless the question asks for the simplest form,
+   as the mark schemes do: 6/8 is accepted for 3/4 + 0 in arithmetic */
+/* a typed answer, tidied: one space kept between a whole number and its fraction */
+const clean=x=>String(x).replace(/\u2212/g,"-").replace(/[,\u2009\u00a3%]/g,"").replace(/\s+/g," ").trim().toLowerCase();
+function val(x){x=clean(x);let m=x.match(/^(\d+) (\d+)\/(\d+)$/);if(m)return +m[1]+ +m[2]/+m[3];x=x.replace(/ /g,"");
+ m=x.match(/^(-?\d+)\/(\d+)$/);if(m)return +m[1]/+m[2];m=x.match(/^(-?\d*\.?\d+)$/);return m?+m[1]:NaN;}
+function eqv(a,b,exact){const A=clean(a),B=clean(b);if(A===B)return true;
+ if(!/\//.test(A+B)&&A.replace(/ /g,"")===B.replace(/ /g,""))return true;
+ if(exact)return false;const x=val(a),y=val(b);return !isNaN(x)&&!isNaN(y)&&Math.abs(x-y)<1e-9;}
+function isRight(q,typed){return q.ask==="ch"?typed===q.a:eqv(typed,q.a,q.exact);}
+function answerText(q){return q.ask==="ch"?q.opts[q.a]:q.ask==="pickAll"?q.opts.filter(q.ok).join(", "):String(q.a);}
+
+function qArt(q){
+ if(q.shape) return shapeArt(q.shape);
+ const pic=QART[q.ask]||QART[q.g];
+ if(!pic) return "";
+ try{const h=pic(Object.assign({},q,{show:String(q.show).replace(/,/g," ")}));return h?`<div class="artbox">${h}</div>`:"";}catch(e){return "";}
+}
+/* a shape cut into equal parts, some shaded: a bar for most, a grid for some */
+function shapeArt(sh){
+ const n=sh.parts, cols=n<=10?n:(n%4===0?4:n%5===0?5:3), rows=Math.ceil(n/cols), W=260, cw=Math.min(52,(W-10)/cols), ch=n<=10?60:40;
+ let s="";for(let i=0;i<n;i++){const c=i%cols,r=Math.floor(i/cols);
+  s+=`<rect x="${5+c*cw}" y="${5+r*ch}" width="${cw}" height="${ch}" fill="${i<sh.k?"var(--acc)":"var(--tile)"}" stroke="var(--ink)" stroke-width="2"/>`;}
+ return `<div class="artbox"><svg class="qart" viewBox="0 0 ${10+cols*cw} ${10+rows*ch}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${sh.k} of ${n} equal parts shaded">${s}</svg></div>`;
+}
+function qBody(q,ctx){
+ const A=V.ans;
+ const hint=q.qtext?`<p class="qtext">${fmt(q.qtext)}</p>`:q.hint?`<p class="qtext">${fmt(q.hint)}</p>`:(q.ask==="round"?`<p class="qtext">Round to the nearest ${fmt(q.p)}.</p>`:"")
+  +(q.ask==="share"?`<p class="qtext">Share it in the ratio ${q.r1} : ${q.r2}. How big is the first share?</p>`:"")
+  +(q.ask==="pickAll"?`<p class="qtext">Tap all the ${q.lab==="primes"?"prime numbers":"factors of "+esc(q.show)}.</p>`:"");
+ const shown=q.ask==="pvDigit"?pvMark(Object.assign({},q,{show:enNum(q.show)})):fmt(q.show);
+ const big=q.show&&q.ask!=="pickAll"?`<div class="qshow${String(q.show).length>13?" mid":""}">${shown}</div>`:"";
+ let input="";
+ if(q.ask==="ch"){
+  input=`<div class="opts" role="radiogroup">${q.opts.map((o,i)=>`<button class="op${A.locked&&i===q.a?" right":""}${(A.missed||[]).includes(i)&&!(A.locked&&i===q.a)?" miss":""}" role="radio" aria-checked="${A.pick===i&&!A.locked}" ${A.locked?"disabled":""} onclick="pickOpt(${i})">${fmt(o)}</button>`).join("")}</div>
+   ${A.locked?"":`<button class="btn" onclick="checkAns()">${ctx==="exam"?"Save":"Check"} ${arrow()}</button>`}`;
+ } else if(q.ask==="pickAll"){
+  const ch=A.picks||[];
+  input=`<div class="opts grid4">${q.opts.map(o=>`<button class="op${ch.includes(o)||A.locked&&q.ok(o)?(q.ok(o)?" right":" miss"):""}" ${A.locked?"disabled":""} onclick="tapAll(${o})">${o}</button>`).join("")}</div>`;
+ } else {
+  input=`<div class="slot ${A.typed===""?"empty":""}${A.locked&&A.ok?" ok":""}">${q.unit==="£"?'<span class="u">£</span>':""}<span>${A.typed===""?"–":esc(A.typed)}</span>${q.unit&&q.unit!=="£"?`<span class="u">${esc(q.unit)}</span>`:""}</div>
+   ${A.locked?"":keypad(q.ask==="rem")}`;
  }
- const q=V.qs[V.i];
- return `<div class="wrap">
-  <div class="step" style="display:flex;justify-content:space-between;align-items:center">
-   <span>${V.i+1} ${esc(t("of"))} ${V.qs.length}${q.m>1?"  \u00b7 2 "+esc(t("score")):""}</span>
-   <span class="timer" id="clk">30:00</span></div>
-  <div class="card">
-   <div class="${String(q.show).length>13?"qmid":"qbig"} num">${esc(q.show)}</div>
-   <div class="slot ${V.ans[V.i]===""?"empty":""} num">${V.ans[V.i]===""?"\u2013":esc(V.ans[V.i])}</div>
-   <div class="keys">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" onclick="ptap('${n}')">${n}</button>`).join("")}
-    <button class="key" onclick="ptap('.')">.</button><button class="key" onclick="ptap('0')">0</button>
-    <button class="key" onclick="ptap('/')">/</button>
-    <button class="key" onclick="ptap('-')">\u2212</button>
-    <button class="key" onclick="pdel()">\u232b</button>
-    <button class="key go" onclick="pnext()">\u203a</button></div>
-   <div class="pgrid">${V.qs.map((_,k)=>`<button class="pg${V.ans[k]!==""?" ans":""}${k===V.i?" now":""}"
-     onclick="pgo(${k})">${k+1}</button>`).join("")}</div>
-  </div>
-  <button class="go2 quiet" onclick="markPaper()">${esc(t("finish"))}</button></div>`;
+ return hint+qArt(q)+big+input;
 }
-function ptap(c){ if(V.ans[V.i].length<12) V.ans[V.i]+=c; render(); }
-function pdel(){ V.ans[V.i]=V.ans[V.i].slice(0,-1); render(); }
-function pgo(k){ V.i=k; render(); }
-function pnext(){ V.i=(V.i+1)%V.qs.length; render(); }
-function markPaper(){
- let m=0; V.qs.forEach((q,k)=>{ if(V.ans[k]!==""&&norm(V.ans[k])===norm(q.a)) m+=q.m; });
- V.mark=m; S.p=(S.p||[]).concat([m]); save(); render();
+function keypad(rem){
+ const k=(c,l,cls)=>`<button class="key${cls?" "+cls:""}" onclick="tap('${c}')" aria-label="${l||c}">${l||c}</button>`;
+ return `<div class="keys">${k(1)}${k(2)}${k(3)}<button class="key sm" onclick="del()" aria-label="Delete">⌫</button>
+  ${k(4)}${k(5)}${k(6)}${k(".")}${k(7)}${k(8)}${k(9)}${k("/")}${k("-","−")}${k(0)}${rem?k("r","r","sm"):k(" ","space","sm")}
+  <button class="key go" onclick="checkAns()" aria-label="Check">✓</button></div>`;
+}
+function newAns(){V.ans={typed:"",pick:null,picks:[],tries:0,locked:false,ok:false,fb:null,missed:[]};}
+function tap(c){const A=V.ans;if(!A||A.locked)return;if(c===" "&&(A.typed===""||A.typed.endsWith(" ")))return;if(A.typed.length<14)A.typed+=c;render();}
+function del(){const A=V.ans;if(!A||A.locked)return;A.typed=A.typed.slice(0,-1);render();}
+function pickOpt(i){if(V.ans.locked)return;V.ans.pick=i;render();}
+function curQ(){return V.s==="sub"?V.q:V.s==="session"?V.q:V.s==="diag"?V.qs[V.i]:null;}
+function tapAll(o){
+ const q=curQ(),A=V.ans; if(A.locked)return;
+ if(!A.picks.includes(o))A.picks.push(o);
+ if(!q.ok(o)){A.tries++;A.fb=A.tries>=2?null:{kind:"no",title:"Nearly.",msg:o+(q.lab==="primes"?" isn’t prime. "+(o===1?"1 is never prime.":"It can be divided by more than 1 and itself."):" doesn’t go into "+q.show+" exactly.")};
+  if(A.tries>=2){finishQ(false,null);return;}}
+ else if(q.opts.filter(q.ok).every(x=>A.picks.includes(x))){finishQ(true);return;}
+ render();
+}
+function checkAns(){
+ const q=curQ(),A=V.ans; if(!q||A.locked)return;
+ let val;
+ if(q.ask==="ch"){if(A.pick==null){A.fb={kind:"no",title:"Pick one first.",msg:"",soft:true};render();return;}val=A.pick;}
+ else {val=A.typed.trim();if(val===""){return;}}
+ if(V.ctx==="exam"||V.ctx==="diag"){A.locked=true;A.ok=isRight(q,val);examDone(A.ok);return;}
+ if(isRight(q,val)){finishQ(true);return;}
+ A.tries++;
+ if(q.exact&&q.ask!=="ch"&&eqv(val,q.a)&&A.tries<2){A.fb={kind:"no",title:"Right value.",msg:/\//.test(q.a)?"Now write it in its simplest form.":"Now write it exactly as the question asks, with every decimal place.",retry:true};A.typed="";render();return;}
+ const slip=(q.slips||[]).find(x=>q.ask==="ch"?x[0]===val:eqv(x[0],val));
+ if(q.ask==="ch"){if(!A.missed.includes(val))A.missed.push(val);A.pick=null;}
+ if(A.tries>=2){finishQ(false,slip);return;}
+ A.fb={kind:"no",title:slip?slip[1]:"Nearly. Have another look.",msg:slip?slip[2]:"Check each step and try again.",retry:true};
+ if(q.ask!=="ch")A.typed="";
+ render();
+}
+function finishQ(ok,slip){
+ const q=curQ(),A=V.ans; A.locked=true; A.ok=ok;
+ const first=ok&&A.tries===0;
+ if(ok) A.fb={kind:"ok",title:(A.tries?NICE.en[1]:NICE.en[(V.i||0)%10])+(q.ask==="ch"||q.ask==="pickAll"?"":" "+enNum(q.a)+(q.unit&&q.unit!=="£"?" "+q.unit:"")+"."),msg:q.why||""};
+ else A.fb={kind:"no",title:slip?slip[1]:"Not this time.",msg:(slip?slip[2]+" ":"")+`The answer is <b>${fmt(answerText(q))}</b>. `+(q.why?esc(q.why):""),final:true,html:true};
+ if(q.sub) record(q.sub,first);
+ if(V.s==="sub"){V.first=(V.first||0)+(first?1:0);}
+ if(V.s==="session"){S.sess.res.push(first?1:0);save();}
+ render();
+}
+function fbHTML(){
+ const A=V.ans,f=A&&A.fb; if(!f) return "";
+ const pose=f.kind==="ok"?"cheer":"encourage";
+ const msg=f.html?f.msg:fmt(f.msg);
+ return `<div class="fbp ${f.kind}" role="status">${nuuru({size:52,pose})}<div><b class="t">${f.kind==="ok"?"✓ ":""}${esc(f.title)}</b><span>${msg}</span></div>
+  ${f.retry?`<div class="acts"><button class="btn sec" onclick="retry()">Try again ${arrow()}</button>
+   ${(V.s==="session"||V.s==="sub")&&V.q&&V.q.sub&&SUB(V.q.sub).teach?`<button class="btn sec" onclick="watchAgain()">▶ Watch the video again · 2 min</button>`:""}</div>`:""}</div>`;
+}
+function retry(){V.ans.fb=null;render();}
+
+/* ---------- the video ----------
+   VIDEO[part id] is filled in as each Synthesia film is rendered. Until then the
+   panel steps through the film's own lines as captions, so a child can follow
+   the method now and the page looks the same when the film arrives. Every step
+   has a timestamp, so the list under the player jumps straight to it. */
+const VIDEO={};   /* e.g. "calc.6":{en:"vid/longDiv-en.mp4"} */
+function capsFor(s){const T2=TEACH[s.teach];return T2?T2.steps.map(x=>enNum(x.line)+": "+x.en):[s.t,"Watch the example, then try it yourself.","Pause any time. The captions stay on."];}
+function marksFor(s){const T2=TEACH[s.teach];if(!T2)return[];const m=VMARK[s.teach]||[];return T2.steps.map((x,i)=>m[i]!=null?m[i]:Math.round(8+i*11));}
+const mmss=n=>Math.floor(n/60)+":"+String(n%60).padStart(2,"0");
+function videoHTML(s){
+ const src=(VIDEO[s.id]||{}).en;
+ if(src) return `<div class="vid"><video id="theVid" controls playsinline preload="metadata" src="${esc(src)}"></video></div>`;
+ return `<div class="vid" id="vp"><div class="scr"><span class="tag">Video coming soon · its steps as captions</span>${nuuru({size:72,pose:"think"})}<p class="cap2" id="vcap"></p></div>
+  <div class="ctl"><button class="pp" id="vpp" aria-label="Play" onclick="vPlay()">▶</button><div class="bar"><i id="vbar"></i></div><span class="tm" id="vtm">0:00</span><span class="cc">CC on</span></div></div>`;
+}
+let VT=null,VP={t:0,T:120,caps:[]};
+function vInit(s){clearInterval(VT);VT=null;VP={t:0,T:120,caps:capsFor(s)};vDraw();}
+function vDraw(){const c=$("#vcap");if(!c)return;const P=VP;c.textContent=P.caps[Math.min(P.caps.length-1,Math.floor(P.t/P.T*P.caps.length))]||"";$("#vbar").style.width=(P.t/P.T*100)+"%";$("#vtm").textContent=mmss(Math.floor(P.t))+" / "+mmss(P.T);}
+function vPlay(){const b=$("#vpp");if(VT){clearInterval(VT);VT=null;b.textContent="▶";b.setAttribute("aria-label","Play");return;}
+ if(VP.t>=VP.T)VP.t=0;b.textContent="❚❚";b.setAttribute("aria-label","Pause");
+ VT=setInterval(()=>{if(!$("#vp")){clearInterval(VT);VT=null;return;}VP.t+=1;if(VP.t>=VP.T){VP.t=VP.T;clearInterval(VT);VT=null;b.textContent="↻";}vDraw();},250);}
+function seekTo(sec){const v=$("#theVid");if(v){try{v.currentTime=sec;v.play();}catch(e){}return;}VP.t=Math.min(VP.T,sec);vDraw();if(!VT)vPlay();}
+
+/* ---------- navigation ---------- */
+function go(s,p,push){if(push!==false)STACK.push(V);V=Object.assign({s:s},p||{});render();try{window.scrollTo(0,0)}catch(e){}}
+function back(){clearInterval(PT);V=STACK.pop()||{s:"home"};render();}
+function home(){clearInterval(PT);STACK=[];V={s:"home"};render();try{window.scrollTo(0,0)}catch(e){}}
+const TITLES={topic:"",sub:"",start:"Today’s session",session:"Today’s session",end:"Today’s session",plan:"Tomorrow’s plan",
+ streak:"Your streak",ready:"Ready for SATs",parent:"For parents",mocks:"Mock papers",paper:"Paper 1: Arithmetic",diag:"Find where to start",diagres:"Find where to start",about:"About One Hundred"};
+function header(){
+ const isHome=V.s==="home";
+ const title=V.s==="topic"?TOP(V.tp).n:V.s==="sub"?SUB(V.id).n:"One Hundred";
+ const sub=V.s==="topic"||V.s==="sub"?"Year 6 SATs maths":isHome?"Year 6 SATs maths":TITLES[V.s];
+ $("#hdr").innerHTML=`${isHome?"":`<button class="backb" onclick="${["session","end","paper","diag","diagres"].includes(V.s)?"home()":"back()"}" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>`}
+  <div class="ttl"><b>${esc(title)}</b><span>${esc(sub)}</span></div>`;
+}
+function render(){
+ try{speechSynthesis.cancel()}catch(e){}
+ const html=VIEWS[V.s]();
+ $("#view").innerHTML=html; header();
+ if(V.s==="sub"&&V.ph==="learn") vInit(SUB(V.id));
+ if(V.s==="paper"&&!V.mark) tick();
 }
 
-if(S.seen) V={s:"shelf",open:null};
+/* ---------- the views ---------- */
+const VIEWS={
+home(){
+ const st=streak(), name=S.name?", "+esc(S.name):"", done=st.today;
+ const at=S.at&&SUB(S.at.id)&&!S.d[S.at.id]?SUB(S.at.id):null;
+ const fresh=!Object.keys(S.h).length;
+ return `<div class="greet">${nuuru({size:64,pose:done?"cheer":"stand"})}<p>${done?`Nice work today${name}. Tomorrow’s ten are saved.`:`${fresh?"Hello":"Welcome back"}${name}. Today’s ten are ready.`}</p></div>
+  ${done?`<button class="btn sec" onclick="go('plan')">See tomorrow’s plan ${arrow()}</button>`:`<button class="btn" onclick="go('start')">${S.sess&&S.sess.day===TODAY()?"Carry on with today’s session":"Begin today’s ten · 8 min"} ${arrow()}</button>`}
+  <button class="strip" onclick="go('streak')" aria-label="Your streak"><b>${st.n} day${st.n===1?"":"s"}</b>${weekRow()}<small>${done?"Today counts":st.n?"Streak safe":"Start today"}</small></button>
+  ${at?`<button class="strip carry" onclick="openSub('${at.id}')"><b>↺</b><span><b>${esc(at.n)}</b><br><small>Carry on where you stopped</small></span><span class="ar">›</span></button>`:""}
+  ${fresh?`<button class="strip carry" onclick="startDiag()"><b>?</b><span><b>Not sure where to start?</b><br><small>Ten quick questions point you to the right parts</small></span><span class="ar">›</span></button>`:""}
+  <div class="tiles">${TOPICS.map((tp,i)=>`<button class="tile" onclick="go('topic',{tp:'${tp.id}'})"><div class="band" style="background-position:${i*9}px 0"></div><div class="in"><svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">${ICONS[tp.icon]}</svg><div style="display:grid;gap:8px"><div class="nm">${esc(tp.n)}</div>${blocks(blocksOf(tp.id))}</div></div></button>`).join("")}</div>
+  <div class="links"><button onclick="go('mocks')">Mocks<small>${S.papers.length?"Paper 1: "+S.papers[S.papers.length-1]+" of 40":"Paper 1 ready"}</small></button><button onclick="go('ready')">Ready for SATs<small>${readyCount()} of 6 topics</small></button><button onclick="go('parent')">For parents<small>Progress</small></button></div>
+  <button class="btn quiet" onclick="go('about')">About One Hundred</button>`;
+},
+topic(){
+ const tp=TOP(V.tp),n=blocksOf(tp.id),need=Math.max(0,8-n);
+ const words=["","One","Two","Three","Four","Five","Six","Seven","Eight"];
+ return `<div style="display:grid;gap:8px">${blocks(n,{lg:true})}<p style="font-weight:800">${n} of 10 blocks. ${need?`${words[need]} more and you’re ready.`:"You’re ready for this one. Keep it topped up."}</p>
+  <p class="small-note">Block 8 is the “ready” line · ${tp.subs.length} parts · each one is a short video, then practice</p></div>
+  <div class="sublist">${tp.subs.map((s,i)=>{const st=subState(s);return `<button class="sub ${st}" onclick="openSub('${s.id}')"><span class="n">${st==="done"?"✓":i+1}</span><span class="t">${esc(s.n)}</span><span class="s">${st==="done"?"Done":st==="here"?"You are here":st==="soon"?"Coming soon":"2 min video"}</span></button>`}).join("")}</div>`;
+},
+sub(){
+ const s=SUB(V.id),tp=TOP(s.tp),T2=s.teach&&TEACH[s.teach];
+ const eb=`<p class="eb">${esc(tp.n)} · part ${s.i+1} of ${tp.subs.length}</p>`;
+ if(V.ph==="guided") return eb+guidedHTML(s,T2);
+ if(V.ph==="drill") return eb+drillHTML(s);
+ if(V.ph==="done") return doneHTML(s);
+ const marks=marksFor(s), noFilm=!(VIDEO[s.id]||{}).en;
+ const nextS=tp.subs[s.i+1];
+ return `${eb}<h2 style="font-size:26px">${esc(s.n)}</h2>${s.t?`<p style="font-weight:700">${fmt(s.t)}</p>`:""}
+  ${videoHTML(s)}<p class="hint">Watch first. About 2 minutes, with captions, and it works with the sound off.</p>
+  ${T2?`<p class="eb">Jump to a step</p><div class="jumps">${T2.steps.map((st,i)=>`<button class="jump" onclick="seekTo(${marks[i]})"><span class="jt">${mmss(marks[i])}</span><span>${esc(enNum(st.en))}</span></button>`).join("")}</div>`:""}
+  ${T2&&ART[s.teach]?`<div class="artbox">${ART[s.teach](T2.steps.length-1)}</div>`:""}
+  ${T2?`<div class="card recall"><span class="eb">Quick reminder</span><div class="show">${fmt(T2.show)}</div><ol class="rsteps">${T2.steps.map(x=>`<li>${fmt(x.line)}</li>`).join("")}</ol></div>`:""}
+  ${T2&&noFilm?`<div class="card"><span class="eb">How it works</span>${T2.story.slice(0,2).map(c=>`<div class="story"><span class="em">${c.em}</span><span>${esc(enNum(c.en))}</span></div>`).join("")}
+    ${T2.steps.map((st,i)=>`<div class="stepline"><b>${fmt(st.line)}</b><span>${esc(enNum(st.en))}</span>${(V.why||{})[i]?`<i>${esc(enNum(w(st,"why")))}</i>`:`<button class="whybtn" onclick="showWhy(${i})">Why?</button>`}</div>`).join("")}</div>`:""}
+  ${!T2&&s.built?exampleHTML(s):""}
+  ${s.built?`${T2&&T2.guided?`<button class="btn" onclick="toGuided()">Try one with help ${arrow()}</button>`:""}
+    <button class="btn${T2&&T2.guided?" sec":""}" onclick="toDrill()">${T2&&T2.guided?"Go straight to the questions":"Start practice · "+s.k+" questions"} ${arrow()}</button>`
+   :`<div class="card"><b>The practice for this part is being written.</b><span class="small-note">It will be here soon, with its video. The SATs questions on it come from code ${esc(s.code)}.</span></div>
+    ${nextS?`<button class="btn sec" onclick="openSub('${nextS.id}',true)">Next part: ${esc(nextS.n)} ${arrow()}</button>`:""}`}`;
+},
+start(){
+ const sess=ensureSession(), mix=sessMix(sess);
+ return `<div class="greet">${nuuru({size:72,pose:"think"})}<h2 style="font-size:28px">${sess.pos?`${sess.items.length-sess.pos} questions left.`:"Ten questions. About 8 minutes."}</h2></div>
+  <div class="mix">${mix.map(m=>`<div><span class="big">${m[0]}</span><span><b>${esc(m[1])}</b><small>${esc(m[2])}</small></span></div>`).join("")}</div>
+  <button class="btn" onclick="sessQ()">${sess.pos?"Carry on":"Begin"} ${arrow()}</button>
+  <p class="small-note">No timer. Stop any time and it saves where you are. No calculator, just like the SATs.</p>`;
+},
+session(){
+ const sess=S.sess,it=sess.items[sess.pos],total=sess.items.length,q=V.q,s=SUB(it.sub);
+ return `<div class="qh"><div class="qbar" aria-hidden="true">${sess.items.map((_,i)=>`<i class="${i<sess.res.length?(sess.res[i]?"c":"d"):""}"></i>`).join("")}</div><b style="font-variant-numeric:tabular-nums">${sess.pos+1} of ${total}</b></div>
+  <p class="eb">${esc(it.tag)} · ${esc(s.n)}</p>
+  <div class="card">${qBody(q,"session")}</div>${fbHTML()}
+  ${V.ans.locked?`<button class="btn" onclick="sessNext()">${sess.pos<total-1?"Next question":"See how you did"} ${arrow()}</button>`:""}
+  ${!V.ans.locked?`<button class="btn quiet" onclick="home()">Stop here. Your spot is saved.</button>`:""}`;
+},
+end(){
+ const r=V.res,st=streak(),f=TOP(r.focus);
+ const line=r.score>=8?"Sharp work.":r.score>=6?"Solid session.":"Good effort. Tomorrow’s plan has your retries.";
+ return `<div class="end"><div class="tp"><span>Session done</span><span>Day ${st.n}</span></div><div class="row" style="justify-content:space-between;align-items:flex-end;flex-wrap:nowrap"><div class="score">${r.score}<small> of ${r.total}.</small></div>${nuuru({size:96,pose:"cheer"})}</div><h2>${line}</h2></div>
+  <div class="card"><b>${r.after>r.before?`${esc(f.n)} gained a block`:`${esc(f.n)} is building`}</b>${blocks(r.after,{lg:true,newAt:r.after>r.before?r.after-1:null})}<span class="small-note">${r.after} of 10 blocks${r.after>r.before?"":". Blocks fill as more answers are right first time."}</span></div>
+  ${st.earned?`<div class="mile"><b>${st.practised} days!</b><span>Another full week. You’ve earned a streak freeze.</span></div>`:""}
+  <button class="btn" onclick="go('plan',{},false)">See tomorrow’s plan ${arrow()}</button><button class="btn sec mid" onclick="home();toast('See you tomorrow'+(S.name?', '+S.name:'')+'.')">I’m done for today</button>`;
+},
+plan(){
+ const p=buildSession(seed(),true), mix=sessMix(p);
+ return `<div class="greet">${nuuru({size:64})}<p>Nuuru has saved tomorrow’s ten for you.</p></div>
+  <div class="mix">${mix.map(m=>`<div><span class="big">${m[0]}</span><span><b>${esc(m[1])}</b><small>${esc(m[2])}</small></span></div>`).join("")}</div>
+  <button class="btn sec mid" onclick="home()">Back to home</button>`;
+},
+streak(){
+ const st=streak();
+ return `<div class="bigstreak"><b>${st.n}</b><span style="font-weight:800">day${st.n===1?"":"s"} in a row,<br>counting rest days</span></div>
+  <div class="card"><span class="eb">This week</span>${weekRow()}<div class="legend"><span><i class="p"></i>Practised</span><span><i class="r"></i>Rest day or freeze</span></div></div>
+  <div class="two"><div class="card"><b>2 rest days a week</b><span class="small-note">${Math.max(0,st.restLeft)} left this week. Missed days use them first.</span></div><div class="card"><b>${st.freezes} freeze${st.freezes===1?"":"s"} saved</b><span class="small-note">${st.freezes?"Covers a missed day after your rest days.":"Earn one for every 7 days you practise."}</span></div></div>
+  <div class="card"><b>Missed a day?</b><span>A rest day or a freeze covers it. If none are left, your streak goes back to the start, but your blocks never do.</span></div>
+  <div class="card"><b>Next milestone</b><span>${st.n<7?"7 days. Every 7 days you practise earns a freeze.":st.n<30?"30 days. The outlined squares are rest days. They count.":"You’re past 30 days. Keep it going."}</span>
+   <div class="thirty" aria-label="${Math.min(st.n,30)} of 30 days">${[...Array(30)].map((_,i)=>`<i class="${i<st.n?"":"e"}"></i>`).join("")}</div></div>`;
+},
+ready(){
+ const low=TOPICS.reduce((a,tp)=>blocksOf(tp.id)<blocksOf(a.id)?tp:a,TOPICS[0]);
+ return `<div class="greet">${nuuru({size:64,pose:"think"})}<div><h2 style="font-size:24px">${readyCount()} of 6 topics ready.</h2><p style="font-weight:700">${esc(low.n)} is the one to work on next.</p></div></div>
+  <p class="small-note">Fill up to the outlined block to be ready.</p>
+  <div class="rlist">${TOPICS.map(tp=>{const n=blocksOf(tp.id),st=status(n);return `<button class="rrow" onclick="go('topic',{tp:'${tp.id}'})"><div class="tp"><span>${esc(tp.n)}</span><span class="st ${st[0]}">${st[1]}</span></div>${blocks(n)}</button>`}).join("")}</div>
+  <div class="card"><b>What “ready” means</b><span>8 of 10 blocks means about eight in ten answers right first time, recently, across every part of the topic. Ready on all six, plus about 62 of 110 on the mock papers, puts a child above the expected standard (56 marks in 2026).</span></div>
+  <button class="btn" onclick="go('topic',{tp:'${low.id}'})">Practise ${esc(low.n)} next ${arrow()}</button>`;
+},
+parent(){
+ const month=TODAY().slice(0,7), days=Object.keys(S.days).filter(d=>d.startsWith(month)).length;
+ const nm=S.name||"Your child";
+ return `<h2 style="font-size:24px">${esc(nm)}’s progress</h2>
+  <div class="kpis"><div><b>${days}</b><span>days practised this month</span></div><div><b>${readyCount()} of 6</b><span>topics ready</span></div><div><b>${S.papers.length?S.papers[S.papers.length-1]+"/40":"–"}</b><span>last arithmetic paper</span></div></div>
+  <div class="ptab"><div class="h">Maths</div>${TOPICS.map(tp=>`<div class="r"><span>${esc(tp.n)}</span><b>${blocksOf(tp.id)} of 10 blocks</b></div>`).join("")}</div>
+  <p class="small-note">8 of 10 blocks means ready for that topic. Blocks are not a SATs score.</p>
+  <div class="card"><b>What One Hundred covers</b><span>Every content area in the official KS2 maths test framework, built from the 2025 and 2026 papers: number, calculation, fractions, measurement, geometry, ratio, algebra and statistics. The parts that carry the most marks get the most practice.</span></div>
+  <div class="card"><b>How to help</b><span>Ask ${S.name?esc(S.name):"your child"} to show you one question they got right today. Praise the effort, not the score.</span></div>`;
+},
+mocks(){
+ const last=S.papers.slice(-3);
+ return `<div class="greet">${nuuru({size:64,pose:"think"})}<p>Mocks are the real thing, practised. Same papers, same times, marked like May.</p></div>
+  <span class="eb">The maths papers</span><div class="papers"><div><b>Paper 1: Arithmetic</b><small>30 min · 40 marks</small></div><div><b>Paper 2: Reasoning</b><small>40 min · 35 marks</small></div><div><b>Paper 3: Reasoning</b><small>40 min · 35 marks</small></div></div>
+  <div class="mset"><b>Paper 1: Arithmetic</b><span class="st ready">Ready</span><small>36 questions, 30 minutes, long multiplication and long division worth 2 marks each, placed late, as in the real paper. New questions every time.${last.length?" Your last tries: "+last.join(", ")+" out of 40.":""}</small></div>
+  <button class="btn" onclick="openPaper()">Start Paper 1 · 30 min ${arrow()}</button>
+  <div class="mset"><b>Papers 2 and 3: Reasoning</b><span class="st">Being written</span><small>They draw on every topic, so they open once all six topics have their practice.</small></div>`;
+},
+paper(){return paperHTML();},
+diag(){return diagHTML();},
+diagres(){return diagResult();},
+about(){
+ return `<div class="greet">${nuuru({size:72})}<h2 style="font-size:24px">One Hundred: Year 6 SATs maths</h2></div>
+  <div class="card"><span>Built from the 2025 and 2026 KS2 maths papers: every question tagged by the Standards and Testing Agency with what it tests. The parts that carry the most marks get the most time. Nearly a third of the paper is Year 3 and 4 content, so that is in here too.</span></div>
+  <div class="card"><b>How each part works</b><span>A short video explains it, with a list to jump to any step. A quick reminder holds the bare steps. Then practice, one question at a time, typed on a keypad, because Paper 1 is 36 written answers, not multiple choice. A wrong answer says what went wrong.</span></div>
+  <div class="card"><b>What’s inside</b><span>${TOPICS.length} topics · ${SUBS.length} parts · ${SUBS.filter(s=>s.built).length} with practice so far · new questions every time.</span></div>`;
+},
+};
+
+/* ---------- a part: learn, try one with help, practise, done ---------- */
+function openSub(id,replace){const s=SUB(id);
+ const p={id:id,ph:"learn",why:{}};
+ if(replace){V=Object.assign({s:"sub"},p);render();try{window.scrollTo(0,0)}catch(e){};return;}
+ go("sub",p);
+ if(S.at&&S.at.id===id&&S.at.ph==="drill"&&s.built&&!S.d[id]){V.ph="drill";V.i=Math.min(S.at.i||0,s.k-1);V.first=S.at.first||0;V.sd=S.at.sd||seed();newDrillQ();render();}
+}
+function showWhy(i){V.why=V.why||{};V.why[i]=1;render();}
+function exampleHTML(s){
+ const q=qForSub(s,0,4242);
+ return `<div class="card"><span class="eb">An example</span>${q.qtext?`<p class="qtext">${fmt(q.qtext)}</p>`:q.hint?`<p style="font-weight:800">${fmt(q.hint)}</p>`:""}${qArt(q)}${q.show?`<div class="qshow mid">${fmt(q.show)}</div>`:""}
+  <p style="font-weight:800">Answer: ${fmt(answerText(q))}</p>${q.why?`<span class="small-note" style="font-size:15.5px">${fmt(q.why)}</span>`:""}</div>`;
+}
+function toGuided(){V.ph="guided";V.g=0;V.gtyped="";V.gmiss=0;render();try{window.scrollTo(0,0)}catch(e){}}
+function guidedHTML(s,T2){
+ const steps=T2.guided.steps.slice(0,3),q=steps[Math.min(V.g,steps.length-1)];
+ const k=(c,l)=>`<button class="key" onclick="gtap('${c}')">${l||c}</button>`;
+ return `<h2 style="font-size:22px">Try one with help</h2><div class="card">${T2.guided.show?`<div class="qshow mid">${fmt(T2.guided.show)}</div>`:""}
+  ${steps.slice(0,V.g).map(x=>`<div class="stepline"><b>${fmt(x.a)}</b><span>${esc(enNum(w(x,"ask")))}</span></div>`).join("")}
+  <p class="qtext">${esc(enNum(w(q,"ask")))}</p>
+  <div class="slot ${V.gtyped===""?"empty":""}">${V.gtyped===""?"–":esc(V.gtyped)}</div>
+  <div class="keys">${k(1)}${k(2)}${k(3)}<button class="key sm" onclick="gdel()">⌫</button>${k(4)}${k(5)}${k(6)}${k(".")}${k(7)}${k(8)}${k(9)}${k("/")}${k("-","−")}${k(0)}${k("r")}<button class="key go" onclick="gcheck()">✓</button></div>
+  ${V.gmiss>=1?`<div class="fbp no">${nuuru({size:48,pose:"encourage"})}<div><b class="t">Nearly.</b><span>${esc(enNum(w(T2.steps[Math.min(V.g,T2.steps.length-1)],"why")))}</span>${V.gmiss>=2?`<span class="why">It’s <b>${fmt(q.a)}</b>. Type it to carry on.</span>`:""}</div></div>`:""}</div>
+  <button class="btn quiet" onclick="toDrill()">Skip to the questions</button>`;
+}
+function gtap(c){if(V.gtyped.length<12)V.gtyped+=c;render();}
+function gdel(){V.gtyped=V.gtyped.slice(0,-1);render();}
+function gcheck(){const s=SUB(V.id),steps=TEACH[s.teach].guided.steps.slice(0,3);if(V.gtyped==="")return;
+ if(norm(V.gtyped)===norm(steps[V.g].a)){V.g++;V.gtyped="";V.gmiss=0;if(V.g>=steps.length){toast("That’s the method. Now on your own.");toDrill();return;}}
+ else{V.gmiss++;V.gtyped="";}render();}
+function toDrill(){V.ph="drill";V.i=0;V.first=0;V.sd=seed();newDrillQ();save();render();try{window.scrollTo(0,0)}catch(e){}}
+function newDrillQ(){const s=SUB(V.id);V.q=qForSub(s,V.i,V.sd);V.ctx="drill";newAns();S.at={id:s.id,ph:"drill",i:V.i,first:V.first,sd:V.sd};save();}
+function drillHTML(s){
+ const q=V.q,trap=V.i===0&&!V.ans.tries&&TRAP[q.g];
+ return `<div class="qh"><div class="qbar" aria-hidden="true">${Array.from({length:s.k}).map((_,k)=>`<i class="${k<V.i?"d":""}"></i>`).join("")}</div><b style="font-variant-numeric:tabular-nums">${V.i+1} of ${s.k}</b></div>
+  ${trap?`<div class="trap">${esc(TRAP[q.g].en)}</div>`:""}
+  <div class="card">${qBody(q,"drill")}</div>${fbHTML()}
+  ${V.ans.locked?`<button class="btn" onclick="drillNext()">${V.i<s.k-1?"Next question":"Finish this part"} ${arrow()}</button>`:""}
+  ${!V.ans.locked?`<button class="btn quiet" onclick="back()">Stop here. Your spot is saved.</button>`:""}`;
+}
+function drillNext(){const s=SUB(V.id);V.i++;if(V.i>=s.k){S.d[s.id]=1;S.at=null;save();tellHost();V.ph="done";render();try{window.scrollTo(0,0)}catch(e){};return;}newDrillQ();render();try{window.scrollTo(0,0)}catch(e){}}
+function watchAgain(){
+ const s=SUB(V.q.sub),T2=TEACH[s.teach];if(!T2)return;
+ const ov=document.createElement("div");ov.className="overlay";ov.setAttribute("role","dialog");ov.setAttribute("aria-label","Watch the video again");
+ ov.innerHTML=`<div class="sheet"><div class="row" style="justify-content:space-between"><b>${esc(s.n)}</b><button class="btn sec" style="width:auto;min-height:44px" onclick="this.closest('.overlay').remove();clearInterval(VT);VT=null">Back to the question</button></div>${videoHTML(s)}
+  <div class="card recall"><span class="eb">Quick reminder</span><div class="show">${fmt(T2.show)}</div><ol class="rsteps">${T2.steps.map(x=>`<li>${fmt(x.line)}</li>`).join("")}</ol></div></div>`;
+ document.body.append(ov);vInit(s);
+}
+function doneHTML(s){
+ const tp=TOP(s.tp),n=blocksOf(tp.id),next=tp.subs.slice(s.i+1).find(x=>x.built&&!S.d[x.id])||tp.subs.find(x=>x.built&&!S.d[x.id]);
+ return `<div class="end"><div class="tp"><span>Part done</span><span>${esc(tp.n)}</span></div><div class="row" style="justify-content:space-between;align-items:flex-end;flex-wrap:nowrap"><div class="score">${V.first}<small> of ${s.k}.</small></div>${nuuru({size:96,pose:"cheer"})}</div><h2>${V.first>=8?"Sharp work.":V.first>=5?"Good going.":"Done, and that’s what counts."}</h2><p style="font-weight:700">${V.first} right first time. ${esc(s.n)} is ticked off.</p></div>
+  <div class="card"><b>${esc(tp.n)}</b>${blocks(n,{lg:true})}<span class="small-note">${n} of 10 blocks. Every answer right first time here and in your daily sessions fills them.</span></div>
+  ${next?`<button class="btn" onclick="openSub('${next.id}',true)">Next part: ${esc(next.n)} ${arrow()}</button>`:""}
+  <button class="btn sec mid" onclick="back()">Back to ${esc(tp.n)}</button>
+  <button class="btn quiet" onclick="openSub('${s.id}',true)">Do this part again</button>`;
+}
+
+/* ---------- the daily ten ----------
+   Five arithmetic (Paper 1 style), three on the topic being built, and two to
+   try again from recent misses. Saved as it goes, so stopping loses nothing. */
+const ARITH=PAPERMIX.map(x=>x[0]).filter(g=>GSUB[g]);
+function focusTopic(){
+ if(S.at&&SUB(S.at.id))return SUB(S.at.id).tp;
+ const tried=TOPICS.filter(tp=>tp.subs.some(s=>(S.h[s.id]||[]).length));
+ if(!tried.length)return "fdp";
+ return tried.reduce((a,tp)=>blocksOf(tp.id)<blocksOf(a.id)?tp:a,tried[0]).id;
+}
+function buildSession(sd,ahead){
+ const r=R(sd+(ahead?1:0)), items=[], f=focusTopic(), tp=TOP(f);
+ const ar=shuffle(r,ARITH); for(let i=0;i<5;i++){const g=ar[i%ar.length];items.push({g,lvl:1+(i%2),sub:GSUB[g],tag:"Arithmetic",sd:sd+i*7919});}
+ const pool=tp.subs.filter(s=>s.built);
+ const tried=pool.filter(s=>(S.h[s.id]||[]).length).sort((a,b)=>mastery(a.id)-mastery(b.id));
+ const here=pool.find(s=>!S.d[s.id]); const fs3=(tried.length?tried.slice(0,2):[]).concat(here?[here]:[]); if(!fs3.length)fs3.push(pool[0]);
+ for(let i=0;i<3;i++){const s=fs3[i%fs3.length],g=s.gens[(i+sd)%s.gens.length];items.push({g:g[0],lvl:g[1],sub:s.id,tag:"Building",sd:sd+(5+i)*7919});}
+ const miss=SUBS.filter(s=>s.built&&(S.h[s.id]||[]).slice(-3).includes(0)&&s.tp!=="__").slice(0,4);
+ for(let i=0;i<2;i++){const s=miss[i]||fs3[(i+1)%fs3.length],g=s.gens[(i+3)%s.gens.length];items.push({g:g[0],lvl:g[1],sub:s.id,tag:miss[i]?"Try again":"Building",sd:sd+(8+i)*7919});}
+ return {day:TODAY(),items,pos:0,res:[],focus:f,before:blocksOf(f)};
+}
+function sessMix(sess){const c={};sess.items.forEach(it=>{const k=it.tag==="Building"?"on "+TOP(SUB(it.sub).tp).n:it.tag==="Arithmetic"?"arithmetic":"to try again";c[k]=(c[k]||0)+1;});
+ const why={arithmetic:"Paper 1 practice · no calculator","to try again":"Ones that tripped you up"};
+ return Object.keys(c).map(k=>[c[k],k,why[k]||"The topic you’re building"]);}
+function ensureSession(){if(!S.sess||S.sess.day!==TODAY()||S.sess.pos>=S.sess.items.length){S.sess=buildSession(seed());save();}return S.sess;}
+function sessQ(){const sess=ensureSession(),it=sess.items[sess.pos];V={s:"session",q:makeQ(it.g,it.lvl,it.sd,it.sub),ctx:"session",i:sess.pos};newAns();render();try{window.scrollTo(0,0)}catch(e){}}
+function sessNext(){const sess=S.sess;sess.pos++;save();if(sess.pos>=sess.items.length){finishSession();return;}sessQ();}
+function finishSession(){const sess=S.sess,score=sess.res.reduce((a,b)=>a+b,0);
+ S.days[TODAY()]=1;save();tellHost();
+ STACK=[];V={s:"end",res:{score,total:sess.items.length,focus:sess.focus,before:sess.before,after:blocksOf(sess.focus)}};render();try{window.scrollTo(0,0)}catch(e){}}
+
+/* ---------- the arithmetic paper, restyled ---------- */
+function openPaper(){
+ const qs=[]; const sd=seed();
+ for(let i=0;i<32;i++){const g=PAPERMIX[i%PAPERMIX.length][0];qs.push(Object.assign(makeQ(g,1+(i%2),sd+i*7919),{m:1}));}
+ qs.splice(13,0,Object.assign(makeQ("longMul",1,sd+911),{m:2}));
+ qs.splice(24,0,Object.assign(makeQ("longDiv",1,sd+922),{m:2}));
+ qs.push(Object.assign(makeQ("longMul",2,sd+933),{m:2}));
+ qs.push(Object.assign(makeQ("longDiv",2,sd+944),{m:2}));
+ go("paper",{qs,i:0,ans:qs.map(()=>""),t0:Date.now(),mark:null},false);
+}
+let PT=null;
+function tick(){clearInterval(PT);PT=setInterval(()=>{
+ if(V.s!=="paper"||V.mark){clearInterval(PT);return;}
+ const left=1800-Math.floor((Date.now()-V.t0)/1000);
+ if(left<=0){clearInterval(PT);markPaper();return;}
+ const e=$("#clk");if(e){e.textContent=mmss(left);e.className="timer"+(left<300?" low":"");}},500);}
+function paperHTML(){
+ if(V.mark!=null){const tot=V.qs.reduce((a,q)=>a+q.m,0);
+  return `<div class="end"><div class="tp"><span>Paper 1 done</span><span>Arithmetic</span></div><div class="score">${V.mark}<small> of ${tot}.</small></div><h2>${V.mark>=34?"Exam-ready pace.":V.mark>=24?"Good base. Look at the misses.":"Worth a review."}</h2></div>
+   <span class="eb">Review</span><div class="review">${V.qs.map((q,k)=>{const ok=V.ans[k]!==""&&eqv(V.ans[k],q.a,q.exact);return `<div><span class="m ${ok?"ok":""}">${ok?"✓":V.ans[k]===""?"–":"✗"}</span><span>${fmt(q.show)}</span><b>${ok?"":fmt(q.a)}</b></div>`}).join("")}</div>
+   <button class="btn" onclick="openPaper()">Try another Paper 1 ${arrow()}</button><button class="btn sec mid" onclick="home()">Back to home</button>`;}
+ const q=V.qs[V.i],k=(c,l)=>`<button class="key" onclick="ptap('${c}')">${l||c}</button>`;
+ return `<div class="qh"><span class="eb">Question ${V.i+1} of ${V.qs.length}${q.m>1?" · 2 marks":""}</span><span class="timer" id="clk">30:00</span></div>
+  <div class="card"><div class="qshow${String(q.show).length>13?" mid":""}">${fmt(q.show)}</div>
+   <div class="slot ${V.ans[V.i]===""?"empty":""}">${V.ans[V.i]===""?"–":esc(V.ans[V.i])}</div>
+   <div class="keys">${k(1)}${k(2)}${k(3)}<button class="key sm" onclick="pdel()">⌫</button>${k(4)}${k(5)}${k(6)}${k(".")}${k(7)}${k(8)}${k(9)}${k("/")}${k("-","−")}${k(0)}${k("r")}<button class="key go" onclick="pnext()" aria-label="Next">›</button></div>
+   <div class="pgrid">${V.qs.map((_,j)=>`<button class="pg${V.ans[j]!==""?" ans":""}${j===V.i?" now":""}" onclick="pgo(${j})">${j+1}</button>`).join("")}</div></div>
+  <button class="btn sec mid" onclick="markPaper()">I’ve finished · mark my paper</button>`;
+}
+function ptap(c){if(V.ans[V.i].length<14)V.ans[V.i]+=c;render();}
+function pdel(){V.ans[V.i]=V.ans[V.i].slice(0,-1);render();}
+function pgo(k){V.i=k;render();}
+function pnext(){V.i=(V.i+1)%V.qs.length;render();}
+function markPaper(){clearInterval(PT);let m=0;V.qs.forEach((q,k)=>{if(V.ans[k]!==""&&eqv(V.ans[k],q.a,q.exact))m+=q.m;});
+ V.mark=m;S.papers=(S.papers||[]).concat([m]).slice(-20);save();render();try{window.scrollTo(0,0)}catch(e){}}
+
+/* ---------- find where to start ---------- */
+function startDiag(){const sd=seed();STACK.push(V);V={s:"diag",i:0,qs:DIAG.map((d,k)=>makeQ(d.g,1,sd+k*7919)),res:[],ctx:"diag"};newAns();render();try{window.scrollTo(0,0)}catch(e){}}
+function diagHTML(){
+ if(V.i>=DIAG.length){V.s="diagres";return diagResult();}
+ const q=V.qs[V.i];
+ return `<div class="greet">${nuuru({size:56,pose:"think"})}<p>Ten quick questions. Nothing is marked. They show where to start.</p></div>
+  <div class="qh"><div class="qbar">${DIAG.map((_,k)=>`<i class="${k<V.i?"d":""}"></i>`).join("")}</div><b>${V.i+1} of ${DIAG.length}</b></div>
+  <div class="card">${qBody(q,"diag")}</div>
+  <div class="two"><button class="btn sec mid" onclick="diagBack()" ${V.i===0?"disabled":""}>Back</button><button class="btn sec mid" onclick="diagSkip()">I don’t know this yet</button></div>`;
+}
+function examDone(ok){if(V.s==="diag"){V.res[V.i]=ok;V.i++;newAns();render();}}
+function diagSkip(){V.res[V.i]=false;V.i++;newAns();render();}
+function diagBack(){if(V.i>0)V.i--;newAns();render();}
+function diagResult(){
+ const weak=DIAG.map((d,k)=>({d,ok:V.res[k]===true})).filter(x=>!x.ok).sort((a,b)=>b.d.marks-a.d.marks);
+ const strong=DIAG.filter((d,k)=>V.res[k]===true);
+ return `<div class="greet">${nuuru({size:64,pose:"cheer"})}<p>Done. Here’s where to start, biggest marks first.</p></div>
+  ${weak.length?`<div class="sublist">${weak.map(x=>{const s=SUB(GSUB[x.d.find]);return `<button class="sub" onclick="openSub('${s.id}')"><span class="n">${x.d.marks}</span><span class="t">${esc(s.n)}<small>${esc(TOP(s.tp).n)} · about ${x.d.marks} marks a year</small></span><span class="s">›</span></button>`}).join("")}</div>`:`<div class="card"><b>All ten right.</b><span>Start with today’s session and the Mock papers.</span></div>`}
+  ${strong.length?`<p class="eb">Already strong</p><p style="font-weight:700">${strong.map(d=>esc(SUB(GSUB[d.find]).n)).join(" · ")}</p>`:""}
+  <button class="btn" onclick="home()">Go to home ${arrow()}</button>`;
+}
+
+/* ---------- telling Notice Me what was done ----------
+   As before: framed inside Notice Me, the course posts the whole list of
+   finished parts to its own origin. v2 also sends each topic's blocks. */
+const COURSE="maths";
+function tellHost(){
+ try{if(window.parent===window)return;
+  const b={};TOPICS.forEach(tp=>b[tp.id]=blocksOf(tp.id));
+  window.parent.postMessage({app:"one-hundred",course:COURSE,type:"progress",v:2,done:Object.keys(S.d||{}),blocks:b,days:Object.keys(S.days).length},location.origin);
+ }catch(e){}
+}
+function hostSays(ev){
+ if(!ev||!ev.data||ev.data.app!=="one-hundred")return;
+ if(ev.origin!==location.origin)return;
+ if(ev.data.type==="who"&&ev.data.name){S.name=String(ev.data.name).slice(0,18);save();render();}
+}
+window.addEventListener("message",hostSays);
 render();
+
 </script></body></html>
