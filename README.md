@@ -25,7 +25,10 @@ remainder key, so "143 r 3" can be typed), the drawings and the arithmetic paper
 - **A wrong answer says what went wrong.** Questions carry the mistakes the mark
   schemes name ("You added the tops and the bottoms…"); fractions are marked by
   value unless the question asks for the simplest form.
-- 29 of 57 parts have practice. The rest are listed, marked "Coming soon".
+- **Every one of the 57 parts has practice** (stage 2 added 31 generators for
+  number, calculation, measurement, geometry, ratio, algebra and statistics,
+  with drawings of scales, timetables, shapes, grids, charts and tables).
+- Still to come: the videos, and the Reasoning mock papers (Papers 2 and 3).
 
 ## What it is built from
 

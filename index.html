@@ -134,7 +134,7 @@ p{margin:0}
 .whybtn{justify-self:start;border:2px solid var(--ink);background:var(--tile);font-weight:800;font-size:14px;padding:2px 10px;cursor:pointer}
 .story{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center}
 .story .em{font-size:30px}
-svg.art,svg.qart{width:100%;height:auto;max-height:190px;display:block}
+svg.art,svg.qart{width:100%;height:auto;max-height:260px;display:block}
 .artbox{border:2px solid var(--ink);background:var(--tile);padding:10px}
 
 /* a question */
@@ -2293,6 +2293,315 @@ const SLIP={
   decMul(q){const m=q.show.match(/([\d.]+) × (\d+)/);if(!m)return[];const w=Math.round(+m[1]*10)* +m[2];return[[String(w),"Good start with the multiplying.","Now put the decimal point back: one decimal place in the question, one in the answer."]];},
 };
 
+/* ================= v2 stage 2: practice for every other part =================
+   Same shape as the fractions generators: why, slips, and choice questions with
+   ask:"ch". A question that needs a picture carries it as svg (drawn here, in
+   the course colours), so the drawing is always of the question being asked. */
+const SV=(w,h,inner,label)=>`<svg class="qart" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${label||""}">${inner}</svg>`;
+const TX=(x,y,s,o)=>`<text x="${x}" y="${y}" font-size="${(o&&o.fs)||11}" text-anchor="${(o&&o.a)||"middle"}" font-weight="${(o&&o.b)?800:600}" fill="${(o&&o.c)||"var(--ink)"}">${s}</text>`;
+const money=p=>"£"+(p/100).toFixed(2);
+const hhmm=m=>{m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");};
+const ampm=m=>{const h=Math.floor(m/60),mm=String(m%60).padStart(2,"0");return (h%12||12)+":"+mm+(h<12?" am":" pm");};
+const coord=(x,y)=>"("+x+", "+y+")".replace(/-/g,"−");
+const cs=(x,y)=>("("+x+", "+y+")").replace(/-/g,"−");
+const ROMAN=n=>{const v=[[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],[50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]];let s="";for(const [a,b] of v)while(n>=a){s+=b;n-=a;}return s;};
+
+Object.assign(GEN,{
+ /* ---------------- number and place value ---------------- */
+ steps(r,lvl){
+  for(;;){const st=pick(r,lvl>=2?[6,7,9,25,250,1000,-6,-7,-25]:[3,4,6,8,25,50,100,-3,-4]);
+   const start=lvl>=2&&r()<.5&&Math.abs(st)<=25?between(r,-30,-5):between(r,Math.abs(st)<=25?-12:1,60), gap=between(r,2,4);
+   const seq=[0,1,2,3,4].map(i=>start+i*st); if(Math.max(...seq.map(Math.abs))>99999)continue;
+   const a=seq[gap], shown=seq.map((x,i)=>i===gap?"☐":String(x).replace("-","−")).join(",  ");
+   return {ask:"calc",show:shown,hint:"What number goes in the box?",a:String(a),
+    why:"The numbers go "+(st>0?"up":"down")+" by "+Math.abs(st)+" each time. "+String(seq[gap-1]).replace("-","−")+(st>0?" + ":" − ")+Math.abs(st)+" = "+String(a).replace("-","−")+".",
+    slips:[[String(-a),"Nearly.","Check the sign. Count on through zero carefully."],[String(seq[gap-1]+(st>0?1:-1)*Math.abs(st)*2),"Nearly.","That’s one step too far. Find the step, then add it once."]]};}
+ },
+ roman(r,lvl){
+  const k=between(r,0,2);
+  if(k===0){const n=lvl>=2?between(r,1900,2035):between(r,11,99);
+   return {ask:"calc",show:ROMAN(n),hint:"Write this Roman numeral as a number.",a:String(n),
+    why:ROMAN(n).match(/CM|CD|XC|XL|IX|IV|[MDCLXVI]/g).join(" + ").replace(/CM/g,"CM (900)").replace(/CD/g,"CD (400)").replace(/XC/g,"XC (90)").replace(/XL/g,"XL (40)").replace(/IX/g,"IX (9)").replace(/IV/g,"IV (4)")+" = "+n+".",
+    slips:/IX|IV|XL|XC|CM|CD/.test(ROMAN(n))?[[String(n+2*(/IV/.test(ROMAN(n))?1:/IX/.test(ROMAN(n))?1:/XL|XC/.test(ROMAN(n))?10:100)),"Nearly.","A smaller letter before a bigger one is taken away: IV is 4, IX is 9, XL is 40, XC is 90."]]:[]};}
+  if(k===1){const n=between(r,14,99),w=[ROMAN(n+10),ROMAN(n-1),ROMAN(n).split("").reverse().join("")].filter(x=>x!==ROMAN(n));
+   return choice(r,ROMAN(n),[...new Set(w)].slice(0,2),{show:String(n),hint:"Which is "+n+" in Roman numerals?",why:n+" = "+ROMAN(n)+"."});}
+  const parts=[between(r,1,9)*100000,between(r,0,9)*10000,between(r,0,9)*100,between(r,1,9)].filter(x=>x);
+  const n=parts.reduce((a,b)=>a+b,0);
+  return {ask:"calc",show:parts.map(sp).join(" + "),hint:"Write it as one number.",a:sp(n),
+   why:"Put each part in its column: "+sp(n)+".",slips:[[String(parts.map(String).join("").replace(/0+/g,"")),"Nearly.","Some columns are empty. Put a zero in each empty column."]]};
+ },
+ npProb(r){
+  const k=between(r,0,2),nm=pick(r,NAMES);
+  if(k===0){const lo=-between(r,3,15),hi=between(r,2,14);
+   return {ask:"calc",show:"",qtext:"At night it was "+String(lo).replace("-","−")+"°C. By midday it was "+hi+"°C. How many degrees did it rise?",a:String(hi-lo),unit:"°C",
+    why:"From "+String(lo).replace("-","−")+" up to 0 is "+(-lo)+", then on to "+hi+" is "+hi+" more: "+(hi-lo)+"°C.",slips:[[String(hi+lo),"Nearly.","Count up to zero first, then on: "+(-lo)+" + "+hi+"."]]};}
+  if(k===1){const n=between(r,12000,98000)+between(r,0,999),p=pick(r,[1000,10000]),a=Math.round(n/p)*p;
+   return {ask:"calc",show:"",qtext:sp(n)+" people went to a match. A newspaper rounds this to the nearest "+sp(p)+". What number does it print?",a:sp(a),
+    why:"Look at the digit after the "+sp(p)+"s. "+(a>Math.floor(n/p)*p?"5 or more, so round up":"Less than 5, so round down")+": "+sp(a)+".",slips:[[sp(Math.floor(n/p)*p===a?a+p:Math.floor(n/p)*p),"Nearly.","Look only at the next digit along. 5 or more rounds up."]]};}
+  const n=between(r,1000000,9999999),pos=pick(r,[[100000,"hundred thousands"],[10000,"ten thousands"],[1000,"thousands"]]);
+  return {ask:"calc",show:"",qtext:"A football club has "+sp(n)+" followers online. Next month it has "+sp(pos[0])+" more. How many followers does it have then?",a:sp(n+pos[0]),
+   why:"Add 1 to the "+pos[1]+" digit: "+sp(n+pos[0])+".",slips:[[sp(n+1),"Nearly.","You added 1. Adding "+sp(pos[0])+" changes the "+pos[1]+" digit."]]};
+ },
+ /* ---------------- calculation ---------------- */
+ mentalAS(r,lvl){
+  const k=between(r,0,2);
+  if(k===0){const a=between(r,12,89)*100,b=between(r,11,79)*100;return {ask:"calc",show:sp(a)+" + "+sp(b),a:sp(a+b),why:"Add the hundreds: "+a/100+" + "+b/100+" = "+(a+b)/100+" hundreds, which is "+sp(a+b)+"."};}
+  if(k===1){const a=between(r,10,99)*1000,b=between(r,1,9)*1000+pick(r,[500,250,0]);if(b>=a)return GEN.mentalAS(r,lvl);
+   return {ask:"calc",show:sp(a)+" − "+sp(b),a:sp(a-b),why:"Count up from "+sp(b)+" to "+sp(a)+", or take away the thousands first.",slips:[[sp(a+b),"Nearly.","That’s a take away. The answer must be smaller than "+sp(a)+"."]]};}
+  const a=between(r,1201,8999),near=pick(r,[999,1999,2999,99,199]),plus=r()<.5;
+  return {ask:"calc",show:plus?sp(a)+" + "+sp(near):sp(a+near+50)+" − "+sp(near),a:sp(plus?a+near:a+50),
+   why:sp(near)+" is "+sp(near+1)+" take away 1. So "+(plus?"add "+sp(near+1)+" then take away 1":"take away "+sp(near+1)+" then add 1 back")+".",
+   slips:[[sp(plus?a+near+1:a+50-1),"Good start.","Rounding "+sp(near)+" to "+sp(near+1)+" is the right idea. Now adjust by the 1."]]};
+ },
+ estimate(r){
+  const k=between(r,0,1);
+  if(k===0){const a=between(r,21,89)*100+between(r,1,49)-0,b=between(r,11,69)*100+between(r,1,49),est=Math.round(a/100)*100+Math.round(b/100)*100;
+   return choice(r,sp(est),[sp(est+1000),sp(est-1000),sp(Math.round(a/1000)*1000*10)].filter((x,i,ar)=>x!==sp(est)&&ar.indexOf(x)===i).slice(0,2),
+    {show:sp(a)+" + "+sp(b),hint:"Round each number to the nearest hundred. Which is the best estimate?",why:sp(a)+" is about "+sp(Math.round(a/100)*100)+" and "+sp(b)+" is about "+sp(Math.round(b/100)*100)+", so about "+sp(est)+"."});}
+  const a=between(r,3000,9800),b=between(r,1100,a-500),d=a-b;
+  return choice(r,sp(d)+" + "+sp(b)+" = "+sp(a),[sp(a)+" + "+sp(d)+" = "+sp(a+d),sp(d)+" − "+sp(b)+" = "+sp(d-b).replace("-","−")],
+   {show:sp(a)+" − "+sp(b)+" = "+sp(d),hint:"Which calculation checks this answer?",why:"Adding the answer back on undoes the take away: "+sp(d)+" + "+sp(b)+" = "+sp(a)+"."});
+ },
+ asProb(r){
+  const k=between(r,0,2),nm=pick(r,NAMES);
+  if(k===0){const a=between(r,1200,4800),b=between(r,900,3900);return {ask:"calc",show:"",qtext:"A school raised £"+sp(a)+" in the autumn and £"+sp(b)+" in the spring. How much is that altogether, in pounds?",a:sp(a+b),unit:"£",why:"£"+sp(a)+" + £"+sp(b)+" = £"+sp(a+b)+"."};}
+  if(k===1){const tot=between(r,25000,60000),a=between(r,8000,tot-9000);return {ask:"calc",show:"",qtext:"A stadium holds "+sp(tot)+" people. "+sp(a)+" seats are sold. How many seats are left?",a:sp(tot-a),why:sp(tot)+" − "+sp(a)+" = "+sp(tot-a)+".",slips:[[sp(tot+a),"Nearly.","Seats left means take away the ones sold."]]};}
+  const a=between(r,120,480),b=between(r,60,200),c=between(r,30,a-10);
+  return {ask:"calc",show:"",qtext:nm+" had "+a+" stickers, was given "+b+" more, then gave away "+c+". How many stickers does "+nm+" have now?",a:String(a+b-c),why:a+" + "+b+" = "+(a+b)+", then "+(a+b)+" − "+c+" = "+(a+b-c)+".",slips:[[String(a+b+c),"Good start.","Giving stickers away makes fewer. Take away the "+c+"."],[String(a-b-c),"Nearly.","Being given stickers means more. Add the "+b+"."]]};
+ },
+ opProb(r){
+  const k=between(r,0,3),nm=pick(r,NAMES);
+  if(k===0){const per=pick(r,[28,32,45,52,36]),kids=per*between(r,3,8)+between(r,1,per-1),buses=Math.ceil(kids/per);
+   return {ask:"calc",show:"",qtext:kids+" children are going on a trip. Each coach holds "+per+". How many coaches are needed?",a:String(buses),why:kids+" ÷ "+per+" = "+Math.floor(kids/per)+" r "+(kids%per)+". The children left over still need a seat, so "+buses+" coaches.",slips:[[String(buses-1),"Nearly.",(kids%per)+" children would be left behind. Round up: they need another coach."]]};}
+  if(k===1){const per=pick(r,[6,8,12,24]),eggs=per*between(r,8,40)+between(r,1,per-1),full=Math.floor(eggs/per);
+   return {ask:"calc",show:"",qtext:"A farmer packs "+eggs+" eggs into boxes of "+per+". How many boxes can be filled?",a:String(full),why:eggs+" ÷ "+per+" = "+full+" r "+(eggs%per)+". Only full boxes count, so "+full+".",slips:[[String(full+1),"Nearly.","The last box isn’t full. Only count the full ones."]]};}
+  if(k===2){const p=pick(r,[35,45,65,85,120,150]),n=between(r,3,9),pay=Math.ceil(p*n/500)*500;
+   return {ask:"calc",show:"",qtext:nm+" buys "+n+" pencils at "+p+"p each and pays with £"+pay/100+". How much change, in pence?",a:String(pay-p*n),unit:"p",why:n+" × "+p+"p = "+p*n+"p. "+pay+"p − "+p*n+"p = "+(pay-p*n)+"p.",slips:[[String(p*n),"Good start.","That’s the cost. Change is what’s left from £"+pay/100+"."]]};}
+  const a=between(r,12,40),b=between(r,3,9),c=between(r,50,300);
+  return {ask:"calc",show:"",qtext:"Tickets cost £"+a+" for adults and £"+b+" for children. A family buys 2 adult and 3 child tickets. How much do they pay, in pounds?",a:String(2*a+3*b),unit:"£",why:"2 × £"+a+" = £"+2*a+", 3 × £"+b+" = £"+3*b+". £"+2*a+" + £"+3*b+" = £"+(2*a+3*b)+".",slips:[[String(a+b),"Good start.","That’s one of each. There are 2 adults and 3 children."]]};
+ },
+ /* ---------------- measurement ---------------- */
+ measCompare(r){
+  const k=between(r,0,2);
+  const sets=[[["km",1000],["m",1]],[["kg",1000],["g",1]],[["l",1000],["ml",1]]][k];
+  for(;;){const base=between(r,800,2400),vals=[base,base+between(r,30,300)*(r()<.5?1:-1),base+between(r,30,300)];if(new Set(vals).size<3)continue;
+   const lab=vals.map((v,i)=>i===0?dstr(v/1000)+" "+sets[0][0]:i===1?sp(v)+" "+sets[1][0]:dstr(v/1000)+" "+sets[0][0]);
+   const big=lab[vals.indexOf(Math.max(...vals))];
+   return choice(r,big,lab.filter(x=>x!==big),{show:shuffle(r,lab).join(",   "),hint:"Which is the largest?",
+    why:"Change them all to "+sets[1][0]+": "+vals.map(v=>sp(v)+" "+sets[1][0]).join(", ")+".",
+    slips:[[lab[1],"Nearly.","Change them into the same unit first. 1 "+sets[0][0]+" = 1,000 "+sets[1][0]+"."]]});}
+ },
+ scale(r,lvl){
+  const step=pick(r,lvl>=2?[2,4,5,20,25,50]:[2,5,10,100]), marks=10, max=step*marks, unit=pick(r,["g","ml","cm"]), lab=step*pick(r,[2,5]);
+  let v; do{v=step*between(r,1,marks-1)}while(v%lab===0);
+  const W=300,X=x=>15+x/max*(W-30);
+  let s=`<line x1="15" y1="40" x2="${W-15}" y2="40" stroke="var(--ink)" stroke-width="2"/>`;
+  for(let i=0;i<=marks;i++){const x=X(i*step),big=(i*step)%lab===0;s+=`<line x1="${x}" y1="${big?28:33}" x2="${x}" y2="40" stroke="var(--ink)" stroke-width="${big?2:1.2}"/>`;if(big)s+=TX(x,58,sp(i*step));}
+  s+=`<path d="M${X(v)} 24 l-6 -12 h12 z" fill="var(--acc)"/>`;
+  return {ask:"calc",show:"",svg:SV(W,66,s,"A scale from 0 to "+max+" with an arrow"),hint:"What does the arrow point to?",a:String(v),unit:unit,
+   why:"There are "+lab/step+" small steps between "+0+" and "+lab+", so each step is "+step+". The arrow is on "+v+".",
+   slips:[[String(v/step),"Good start.","You counted the marks. Each mark is worth "+step+", so multiply."]]};
+ },
+ money(r){
+  const k=between(r,0,2),nm=pick(r,NAMES);
+  if(k===0){const a=between(r,120,980),b=between(r,85,690),pay=pick(r,[1000,2000]);if(a+b>=pay)return GEN.money(r);
+   return {ask:"calc",show:"",qtext:nm+" buys a book for "+money(a)+" and a pen for "+money(b)+", and pays with a £"+pay/100+" note. How much change, in pounds?",a:dstr((pay-a-b)/100),unit:"£",
+    why:money(a)+" + "+money(b)+" = "+money(a+b)+". £"+(pay/100).toFixed(2)+" − "+money(a+b)+" = "+money(pay-a-b)+".",slips:[[dstr((a+b)/100),"Good start.","That’s the total cost. Now find the change from £"+pay/100+"."]]};}
+  if(k===1){const p=between(r,35,240),n=between(r,3,9);return {ask:"calc",show:"",qtext:"Apples cost "+p+"p each. How much do "+n+" apples cost, in pounds?",a:dstr(p*n/100),unit:"£",why:n+" × "+p+"p = "+p*n+"p = "+money(p*n)+".",slips:[[String(p*n),"Good start.","That’s pence. Divide by 100 for pounds."]]};}
+  const a=between(r,250,1500),b=between(r,250,1500);return {ask:"calc",show:money(a)+" + "+money(b),a:dstr((a+b)/100),unit:"£",why:"Line up the decimal points: "+money(a+b)+"."};
+ },
+ time(r,lvl){
+  const k=between(r,0,2);
+  if(k===0){const s=between(r,7,20)*60+pick(r,[0,5,10,15,20,25,30,35,40,45,50,55]),d=between(r,25,170);
+   return {ask:"calc",show:hhmm(s)+"  →  "+hhmm(s+d),hint:"How many minutes is that?",a:String(d),unit:"minutes",
+    why:"Count on to the next hour, then on to "+hhmm(s+d)+": "+d+" minutes.",slips:[[String(Math.floor((s+d)/60)*100+(s+d)%60-(Math.floor(s/60)*100+s%60)),"Nearly.","An hour has 60 minutes, not 100. Count on to the hour first."]]};}
+  if(k===1){const m=between(r,13,23)*60+pick(r,[0,5,15,20,30,35,45,50]);
+   return choice(r,hhmm(m),[hhmm(m-720).replace(/^0/,"0"),hhmm(m+60),(Math.floor(m/60)-10)+":"+String(m%60).padStart(2,"0")].filter((x,i,a)=>x!==hhmm(m)&&a.indexOf(x)===i).slice(0,2),
+    {show:ampm(m),hint:"Which is this time on a 24-hour clock?",why:"Afternoon and evening times add 12 to the hour: "+(Math.floor(m/60)-12)+" + 12 = "+Math.floor(m/60)+".",slips:[[hhmm(m-720),"Nearly.","It’s pm, so add 12 to the hour."]]});}
+  const stops=["Dugun","Hill Road","Market","Park","Station"].slice(0,4),t0=between(r,8,16)*60+pick(r,[0,10,20,30,40,50]);
+  const gaps=[between(r,8,19),between(r,6,22),between(r,9,25)],times=[t0];gaps.forEach(g=>times.push(times[times.length-1]+g));
+  const i=between(r,0,1),j=between(r,i+2,3),d=times[j]-times[i];
+  const s=stops.map((st,n)=>TX(10,26+n*24,st,{a:"start",b:1})+TX(220,26+n*24,hhmm(times[n]),{a:"end"})+(n?`<line x1="6" y1="${10+n*24}" x2="226" y2="${10+n*24}" stroke="var(--outline)"/>`:"")).join("");
+  return {ask:"calc",show:"",svg:SV(232,112,`<rect x="2" y="2" width="228" height="108" fill="none" stroke="var(--ink)" stroke-width="2"/>`+s,"A bus timetable"),
+   qtext:"How many minutes does the bus take from "+stops[i]+" to "+stops[j]+"?",a:String(d),unit:"minutes",
+   why:"It leaves "+stops[i]+" at "+hhmm(times[i])+" and reaches "+stops[j]+" at "+hhmm(times[j])+": "+d+" minutes."};
+ },
+ imperial(r){
+  const k=between(r,0,2);
+  if(k===0){const m=5*between(r,1,12);return {ask:"calc",show:m+" miles",hint:"About how many kilometres? (5 miles is about 8 km)",a:String(m/5*8),unit:"km",why:m+" miles is "+m/5+" lots of 5 miles, so "+m/5+" × 8 = "+m/5*8+" km.",slips:[[String(m/8*5),"Nearly.","Kilometres are shorter than miles, so there are more of them. Multiply by 8 and divide by 5."]]};}
+  if(k===1){const n=between(r,2,12);return {ask:"calc",show:n+" inches",hint:"About how many centimetres? (1 inch is about 2.5 cm)",a:dstr(n*2.5),unit:"cm",why:n+" × 2.5 = "+dstr(n*2.5)+" cm."};}
+  const n=between(r,2,10);return {ask:"calc",show:n+" kg",hint:"About how many pounds? (1 kg is about 2.2 pounds)",a:dstr(n*2.2),unit:"lb",why:n+" × 2.2 = "+dstr(n*2.2)+" pounds."};
+ },
+ perim(r,lvl){
+  if(lvl>=2&&r()<.6){const W=between(r,8,16),H=between(r,6,12),cw=between(r,2,W-3),ch=between(r,2,H-3);
+   const k=Math.min(12,200/W,100/H),p=[[0,0],[W,0],[W,H-ch],[W-cw,H-ch],[W-cw,H],[0,H]].map(([x,y])=>(10+x*k)+","+(10+y*k)).join(" ");
+   const s=`<polygon points="${p}" fill="var(--tint)" stroke="var(--ink)" stroke-width="2"/>`+TX(10+W*k/2,8,W+" cm",{fs:10})+TX(6,10+H*k/2,H+" cm",{a:"end",fs:10})+TX(14+W*k,10+(H-ch)*k/2,(H-ch)+" cm",{a:"start",fs:10})+TX(10+(W-cw/2)*k,22+(H-ch)*k,cw+" cm",{fs:10});
+   return {ask:"calc",show:"",svg:SV(W*k+100,H*k+30,`<g transform="translate(34 4)">${s}</g>`,"An L-shape"),hint:"What is the perimeter of this shape?",a:String(2*(W+H)),unit:"cm",
+    why:"The missing sides fill in the gaps, so the perimeter is the same as the rectangle around it: 2 × ("+W+" + "+H+") = "+2*(W+H)+" cm.",slips:[[String(W+H+(H-ch)+cw),"Good start.","You’ve added the sides with numbers. Two sides have no number: work them out and add them too."]]};}
+  const a=between(r,3,15),b=between(r,2,12);
+  return {ask:"calc",show:a+"cm × "+b+"cm",hint:"What is the perimeter of this rectangle?",a:String(2*(a+b)),unit:"cm",
+   why:"Perimeter is the distance all the way round: "+a+" + "+b+" + "+a+" + "+b+" = "+2*(a+b)+" cm.",slips:[[String(a*b),"Nearly.","That’s the area. Perimeter is the distance round the edge: add all four sides."],[String(a+b),"Good start.","That’s two sides. A rectangle has four."]]};
+ },
+ measProb(r){
+  const k=between(r,0,2),nm=pick(r,NAMES);
+  if(k===0){const l=pick(r,[1,1.5,2,2.5]),g=pick(r,[150,200,250,300]),n=between(r,2,Math.floor(l*1000/g)-1);
+   return {ask:"calc",show:"",qtext:"A jug holds "+dstr(l)+" litres of juice. "+nm+" pours "+n+" glasses of "+g+" ml. How many millilitres are left?",a:sp(l*1000-n*g),unit:"ml",
+    why:dstr(l)+" litres = "+sp(l*1000)+" ml. "+n+" × "+g+" = "+sp(n*g)+" ml. "+sp(l*1000)+" − "+sp(n*g)+" = "+sp(l*1000-n*g)+" ml.",slips:[[sp(n*g),"Good start.","That’s how much was poured. Take it away from "+sp(l*1000)+" ml."]]};}
+  if(k===1){const m=between(r,3,9),c=pick(r,[25,40,50,75]),n=between(r,3,8);if(n*c>=m*100)return GEN.measProb(r);
+   return {ask:"calc",show:"",qtext:"A ribbon is "+m+" m long. "+n+" pieces of "+c+" cm are cut off. How many centimetres are left?",a:String(m*100-n*c),unit:"cm",
+    why:m+" m = "+m*100+" cm. "+n+" × "+c+" = "+n*c+" cm. "+m*100+" − "+n*c+" = "+(m*100-n*c)+" cm.",slips:[[String(m-n*c),"Nearly.","Change metres to centimetres first: "+m+" m = "+m*100+" cm."]]};}
+  const kg=between(r,3,9),g=pick(r,[250,400,500,750]),n=Math.floor(kg*1000/g);
+  return {ask:"calc",show:"",qtext:"A sack holds "+kg+" kg of rice. How many "+g+" g bags can be filled from it?",a:String(n),
+   why:kg+" kg = "+sp(kg*1000)+" g. "+sp(kg*1000)+" ÷ "+g+" = "+dstr(kg*1000/g)+", so "+n+" full bags."};
+ },
+ /* ---------------- geometry ---------------- */
+ shape3d(r){
+  const S=[["cube",6,12,8],["cuboid",6,12,8],["square-based pyramid",5,8,5],["triangular prism",5,9,6],["tetrahedron (triangular-based pyramid)",4,6,4],["pentagonal prism",7,15,10]];
+  const s=pick(r,S),w=between(r,0,2),word=["faces","edges","vertices (corners)"][w];
+  return {ask:"calc",show:"",qtext:"How many "+word+" does a "+s[0]+" have?",a:String(s[1+w]),
+   why:"A "+s[0]+" has "+s[1]+" faces, "+s[2]+" edges and "+s[3]+" vertices.",slips:w===1?[[String(s[3]),"Nearly.","That’s the corners. Edges are the lines where two faces meet."]]:w===2?[[String(s[2]),"Nearly.","That’s the edges. Vertices are the corners."]]:[]};
+ },
+ shape2d(r){
+  const S=[[5,"pentagon"],[6,"hexagon"],[7,"heptagon"],[8,"octagon"],[3,"triangle"],[4,"quadrilateral"]];
+  const [n,nm]=pick(r,S),pts=[...Array(n)].map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/n,rr=36+(r()<.3?8:0);return (50+rr*Math.cos(a)).toFixed(1)+","+(48+rr*Math.sin(a)).toFixed(1);}).join(" ");
+  const others=S.filter(x=>x[0]!==n).map(x=>x[1]);
+  return choice(r,nm,shuffle(r,others).slice(0,2),{show:"",svg:SV(100,96,`<polygon points="${pts}" fill="var(--tint)" stroke="var(--ink)" stroke-width="2.5"/>`,"A shape"),hint:"What is the name of this shape?",
+   why:"Count the sides: "+n+". A shape with "+n+" straight sides is a "+nm+"."});
+ },
+ shapeProps(r){
+  const Q=[["Which shape has exactly one pair of parallel sides?","trapezium",["square","rectangle","parallelogram","rhombus"]],
+   ["Which shape has four equal sides but no right angles?","rhombus",["square","rectangle","trapezium","kite"]],
+   ["Which triangle has three equal sides and three equal angles?","equilateral",["isosceles","scalene","right-angled"]],
+   ["Which triangle has exactly two equal sides?","isosceles",["equilateral","scalene"]],
+   ["Which shape has two pairs of equal sides next to each other, and no parallel sides?","kite",["rectangle","parallelogram","trapezium"]],
+   ["How many right angles does a rectangle have?","4",["2","1","0"]],
+   ["How many lines of symmetry does a rectangle (that is not a square) have?","2",["4","1","0"]],
+   ["What is an angle bigger than 90° but smaller than 180° called?","obtuse",["acute","reflex","right"]],
+   ["What is an angle bigger than 180° called?","reflex",["obtuse","acute","straight"]]];
+  const [q,a,w]=pick(r,Q);
+  return choice(r,a,shuffle(r,w).slice(0,3),{show:"",qtext:q,why:"The answer is "+a+"."});
+ },
+ nets(r){
+  const Q=[["A net is made of 6 squares.","cube",["cuboid","square-based pyramid","triangular prism"]],
+   ["A net is made of 2 triangles and 3 rectangles.","triangular prism",["tetrahedron","square-based pyramid","cuboid"]],
+   ["A net is made of 1 square and 4 triangles.","square-based pyramid",["triangular prism","tetrahedron","cube"]],
+   ["A net is made of 4 triangles.","tetrahedron",["square-based pyramid","triangular prism","cube"]],
+   ["A net is made of 6 rectangles, in 3 matching pairs.","cuboid",["cube","triangular prism","pentagonal prism"]],
+   ["A net is made of 2 circles and 1 rectangle.","cylinder",["cone","sphere","triangular prism"]]];
+  const [q,a,w]=pick(r,Q);
+  return choice(r,a,w,{show:"",qtext:q+" What 3D shape does it fold into?",why:"Count the faces and their shapes: they make a "+a+"."});
+ },
+ angPoint(r){
+  const k=between(r,0,2);
+  if(k===0){const a=between(r,60,150),b=between(r,40,330-a-30);return {ask:"calc",show:a+"°,  "+b+"°,  ?",hint:"Angles around a point. Find the missing angle.",a:String(360-a-b),unit:"°",why:"Angles around a point add up to 360°: 360 − "+a+" − "+b+" = "+(360-a-b)+"°.",slips:[[String(180-a-b),"Nearly.","Around a point is a full turn: 360°, not 180°."]]};}
+  if(k===1){const a=between(r,25,155);return {ask:"calc",show:"two straight lines cross; one angle is "+a+"°",hint:"What is the angle directly opposite it?",a:String(a),unit:"°",why:"Vertically opposite angles are equal: "+a+"°.",slips:[[String(180-a),"Nearly.","That’s the angle next to it. The one opposite is equal."]]};}
+  const a=between(r,30,80);return {ask:"calc",show:"isosceles triangle, top angle "+(180-2*a)+"°",hint:"What is each of the two equal angles?",a:String(a),unit:"°",why:"180 − "+(180-2*a)+" = "+2*a+", shared between two equal angles: "+a+"°.",slips:[[String(2*a),"Good start.","That’s both angles together. Halve it."]]};
+ },
+ circles(r){
+  const k=between(r,0,1),n=between(r,3,40);
+  return k===0?{ask:"calc",show:"radius "+n+" cm",hint:"What is the diameter?",a:String(2*n),unit:"cm",why:"The diameter goes right across, through the centre: twice the radius, "+2*n+" cm.",slips:[[String(n/2),"Nearly.","The diameter is the longer one: double the radius."]]}
+   :{ask:"calc",show:"diameter "+2*n+" cm",hint:"What is the radius?",a:String(n),unit:"cm",why:"The radius is from the centre to the edge: half the diameter, "+n+" cm.",slips:[[String(4*n),"Nearly.","The radius is the shorter one: halve the diameter."]]};
+ },
+ symmetry(r){
+  const S=[["a regular hexagon",6],["a square",4],["an equilateral triangle",3],["a regular pentagon",5],["a regular octagon",8],["a rectangle that is not a square",2],["a circle drawn with one diameter",2],["an isosceles triangle",1],["a parallelogram that is not a rectangle",0]];
+  const [nm,n]=pick(r,S);
+  return {ask:"calc",show:"",qtext:"How many lines of symmetry does "+nm+" have?",a:String(n),why:nm.replace(/^an? /,"A ")+" has "+n+" line"+(n===1?"":"s")+" of symmetry."+(/regular/.test(nm)||/square|equilateral/.test(nm)?" A regular shape has as many lines of symmetry as sides.":"")};
+ },
+ transform(r){
+  const x=pick(r,[-5,-4,-3,-2,-1,1,2,3,4,5]),y=pick(r,[-5,-4,-3,-2,-1,1,2,3,4,5]);
+  if(r()<.6){const dx=between(r,-6,6)||3,dy=between(r,-6,6)||-2,ax=r()<.5;
+   const words=(dx<0?Math.abs(dx)+" left":dx+" right")+" and "+(dy<0?Math.abs(dy)+" down":dy+" up");
+   return {ask:"calc",show:"",qtext:"The point "+cs(x,y)+" is translated "+words+". What is its new "+(ax?"x":"y")+"-coordinate?",a:String(ax?x+dx:y+dy),
+    why:(ax?"Left and right change x: "+x+(dx<0?" − ":" + ")+Math.abs(dx):"Up and down change y: "+y+(dy<0?" − ":" + ")+Math.abs(dy))+" = "+(ax?x+dx:y+dy)+". The new point is "+cs(x+dx,y+dy)+".",
+    slips:[[String(ax?x-dx:y-dy),"Nearly.",(ax?"Right adds to x and left takes away.":"Up adds to y and down takes away.")],[String(ax?y+dy:x+dx),"Nearly.","You found the other coordinate. x is the across number, first."]]};}
+  const inX=r()<.5;
+  return choice(r,inX?cs(x,-y):cs(-x,y),[inX?cs(-x,y):cs(x,-y),cs(-x,-y),cs(y,x)].filter((v,i,a)=>v!==(inX?cs(x,-y):cs(-x,y))&&a.indexOf(v)===i).slice(0,2),
+   {show:cs(x,y),hint:"Reflect this point in the "+(inX?"x-axis":"y-axis")+". Where does it go?",
+    why:"Reflecting in the "+(inX?"x-axis keeps x and changes the sign of y":"y-axis keeps y and changes the sign of x")+": "+(inX?cs(x,-y):cs(-x,y))+".",
+    slips:[[inX?cs(-x,y):cs(x,-y),"Nearly.","That’s a reflection in the other axis. The "+(inX?"x-axis is the across line, so the point flips up or down.":"y-axis is the up line, so the point flips left or right.")]]});
+ },
+ coords(r){
+  const x=between(r,-5,5)||2,y=between(r,-5,5)||-3,G=24,O=6*G+8;
+  let s="";for(let i=-6;i<=6;i++){s+=`<line x1="${O+i*G}" y1="8" x2="${O+i*G}" y2="${O*2-8}" stroke="var(--outline)" stroke-width="${i?0.6:2}" ${i?'opacity=".6"':''}/><line x1="8" y1="${O+i*G}" x2="${O*2-8}" y2="${O+i*G}" stroke="var(--outline)" stroke-width="${i?0.6:2}" ${i?'opacity=".6"':''}/>`;
+   if(i&&i%2===0)s+=TX(O+i*G,O+14,String(i).replace("-","−"),{fs:10})+TX(O-6,O-i*G+4,String(i).replace("-","−"),{fs:10,a:"end"});}
+  s+=`<circle cx="${O+x*G}" cy="${O-y*G}" r="6" fill="var(--acc)" stroke="var(--ink)" stroke-width="1.5"/>`+TX(O+x*G+10,O-y*G-8,"A",{b:1,a:"start"});
+  return choice(r,cs(x,y),[cs(y,x),cs(-x,y),cs(x,-y)].filter((v,i,a)=>v!==cs(x,y)&&a.indexOf(v)===i).slice(0,3),
+   {show:"",svg:SV(O*2,O*2,s,"A grid with point A"),hint:"What are the coordinates of A?",why:"Go across first, then up or down: "+x+" across, "+y+" up, so A is "+cs(x,y)+".",
+    slips:[[cs(y,x),"Nearly.","Across first, then up: along the corridor, then up the stairs."]]});
+ },
+ /* ---------------- ratio, algebra and statistics ---------------- */
+ ratioRel(r){
+  const k=between(r,0,1),nm=pick(r,NAMES);
+  if(k===0){const p=pick(r,[2,3,4,5]),f=between(r,2,6)*50,m=pick(r,[2,3,4]),want=p*m;
+   return {ask:"calc",show:"",qtext:"A recipe for "+p+" people uses "+f+" g of flour. How much flour is needed for "+want+" people?",a:sp(f*m),unit:"g",why:want+" people is "+m+" times as many, so "+m+" × "+f+" = "+sp(f*m)+" g.",slips:[[String(f+want-p),"Nearly.","Don’t add. "+want+" people is "+m+" times as many as "+p+", so multiply."]]};}
+  const a=between(r,2,5),b=between(r,2,6),n=between(r,3,8);
+  return {ask:"calc",show:"",qtext:"For every "+a+" red beads in a necklace there are "+b+" blue beads. There are "+a*n+" red beads. How many blue beads are there?",a:String(b*n),
+   why:a*n+" red beads is "+n+" groups of "+a+". Each group has "+b+" blue, so "+n+" × "+b+" = "+b*n+".",slips:[[String(a*n+b-a),"Nearly.","Find how many groups first: "+a*n+" ÷ "+a+" = "+n+"."]]};
+ },
+ pcCompare(r){
+  if(r()<.55){const out=pick(r,[20,25,50]),sc=between(r,5,out-1);if(sc*100%out)return GEN.pcCompare(r);const nm=pick(r,NAMES);
+   return {ask:"calc",show:"",qtext:nm+" scored "+sc+" out of "+out+" in a quiz. What percentage is that?",a:String(sc*100/out),unit:"%",why:"Make it out of 100: × "+100/out+". "+sc+" × "+100/out+" = "+sc*100/out+"%.",slips:[[String(sc),"Nearly.","That’s out of "+out+". Percent means out of 100."]]};}
+  for(;;){const a=pick(r,[20,25,50]),b=pick(r,[20,25,50,10]);if(a===b)continue;const x=between(r,Math.ceil(a/2),a-1),y=between(r,Math.ceil(b/2),b-1);
+   const px=x*100/a,py=y*100/b;if(px%1||py%1||px===py)continue;const A=pick(r,NAMES),B=pick(r,NAMES.filter(n=>n!==A));
+   return choice(r,px>py?A:B,[px>py?B:A],{show:"",qtext:A+" scored "+x+" out of "+a+". "+B+" scored "+y+" out of "+b+". Who did better?",
+    why:A+": "+px+"%. "+B+": "+py+"%. "+(px>py?A:B)+" did better.",slips:[[x>y?(px>py?B:A):(px>py?B:A),"Nearly.","A bigger score isn’t always better when the tests are out of different totals. Change both to percentages."]]});}
+ },
+ scaleF(r){
+  const a=between(r,2,9),b=between(r,a+1,12),f=between(r,2,5);
+  if(r()<.5) return {ask:"calc",show:a+" cm by "+b+" cm",hint:"This rectangle is enlarged by a scale factor of "+f+". How long is the longer side now?",a:String(b*f),unit:"cm",why:"Every side is multiplied by "+f+": "+b+" × "+f+" = "+b*f+" cm.",slips:[[String(b+f),"Nearly.","A scale factor multiplies. Don’t add it."]]};
+  return {ask:"calc",show:"",qtext:"A triangle has sides "+a+" cm, "+b+" cm and "+(a+b-1)+" cm. An enlargement has sides "+a*f+" cm, "+b*f+" cm and "+(a+b-1)*f+" cm. What is the scale factor?",a:String(f),
+   why:a*f+" ÷ "+a+" = "+f+". Every side is "+f+" times as long.",slips:[[String(a*f-a),"Nearly.","The scale factor is how many times bigger: divide, don’t take away."]]};
+ },
+ missing(r,lvl){
+  if(lvl>=2&&r()<.6){const n=between(r,2,12),a=between(r,2,9),b=between(r,1,20);
+   return {ask:"calc",show:a+"n + "+b+" = "+(a*n+b),hint:"What is n?",a:String(n),why:"Take away "+b+": "+a+"n = "+a*n+". Divide by "+a+": n = "+n+".",slips:[[String((a*n+b)/a),"Nearly.","Take away the "+b+" first, then divide."]]};}
+  const k=between(r,0,2),a=between(r,15,95),b=between(r,12,80);
+  if(k===0)return {ask:"calc",show:"☐ + "+a+" = "+(a+b),hint:"What number goes in the box?",a:String(b),why:(a+b)+" − "+a+" = "+b+".",slips:[[String(2*a+b),"Nearly.","Undo the adding: take "+a+" away from "+(a+b)+"."]]};
+  if(k===1){const n=between(r,3,12),m=between(r,3,12);return {ask:"calc",show:m+" × a = "+m*n,hint:"What is a?",a:String(n),why:m*n+" ÷ "+m+" = "+n+".",slips:[[String(m*n*m),"Nearly.","Undo the multiplying: divide by "+m+"."]]};}
+  return {ask:"calc",show:(a+b)+" − y = "+a,hint:"What is y?",a:String(b),why:(a+b)+" − "+b+" = "+a+", so y = "+b+"."};
+ },
+ seq(r,lvl){
+  const st=between(r,2,9),d=between(r,2,8),seq=[0,1,2,3].map(i=>st+i*d);
+  if(lvl>=2&&r()<.6){const n=between(r,10,25);return {ask:"calc",show:seq.join(",  ")+",  …",hint:"What is the "+n+"th term?",a:String(st+(n-1)*d),
+   why:"It starts at "+st+" and goes up "+d+" each time. The "+n+"th term is "+st+" + "+(n-1)+" × "+d+" = "+(st+(n-1)*d)+".",slips:[[String(st+n*d),"Nearly.","The first term already counts. Add "+d+" only "+(n-1)+" times."],[String(n*d),"Good start.","The jumps are right, but the sequence starts at "+st+"."]]};}
+  if(r()<.5)return {ask:"calc",show:seq.join(",  ")+",  ☐",hint:"What comes next?",a:String(st+4*d),why:"Add "+d+" each time: "+seq[3]+" + "+d+" = "+(st+4*d)+"."};
+  const n=between(r,3,8),m=between(r,2,6),c=between(r,1,9);
+  return {ask:"calc",show:"term = "+m+" × position + "+c,hint:"What is the term in position "+n+"?",a:String(m*n+c),why:m+" × "+n+" + "+c+" = "+(m*n+c)+".",slips:[[String(m*(n+c)),"Nearly.","Multiply first, then add "+c+"."]]};
+ },
+ combos(r){
+  const k=between(r,0,2);
+  if(k===0){const a=between(r,2,5),b=between(r,2,5);return {ask:"calc",show:"",qtext:"A café sells "+a+" kinds of sandwich and "+b+" kinds of drink. How many different meals of one sandwich and one drink are there?",a:String(a*b),why:"Each of the "+a+" sandwiches goes with each of the "+b+" drinks: "+a+" × "+b+" = "+a*b+".",slips:[[String(a+b),"Nearly.","Each sandwich goes with every drink, so multiply."]]};}
+  if(k===1){const n=pick(r,[3,4]);const digits=shuffle(r,[1,2,3,4,5,6,7,8,9]).slice(0,n).join(", ");return {ask:"calc",show:"",qtext:"How many different "+n+"-digit numbers can be made using each of the digits "+digits+" once?",a:String(n===3?6:24),why:"First digit: "+n+" choices, then "+(n-1)+", then "+(n-2)+(n===4?", then 1":"")+": "+(n===3?"3 × 2 × 1 = 6":"4 × 3 × 2 × 1 = 24")+".",slips:[[String(n*n),"Nearly.","Each digit is used once, so there is one fewer choice each time."]]};}
+  const a=between(r,2,4),b=between(r,2,3),c=between(r,2,3);return {ask:"calc",show:"",qtext:"A pizza has 1 base from "+a+", 1 sauce from "+b+" and 1 topping from "+c+". How many different pizzas are there?",a:String(a*b*c),why:a+" × "+b+" × "+c+" = "+a*b*c+".",slips:[[String(a+b+c),"Nearly.","Every base goes with every sauce and every topping: multiply."]]};
+ },
+ charts(r){
+  const k=between(r,0,2),cats=pick(r,[["Mon","Tue","Wed","Thu","Fri"],["Red","Blue","Green","Yellow"],["Rice","Fish","Chicken","Salad"]]),scale=pick(r,[2,5,10]);
+  if(k<2){const vals=cats.map(()=>scale*between(r,1,9));const max=10*scale,W=40+cats.length*50,H=170,Y=v=>140-v/max*120;
+   let s=`<line x1="34" y1="20" x2="34" y2="140" stroke="var(--ink)" stroke-width="2"/><line x1="34" y1="140" x2="${W-6}" y2="140" stroke="var(--ink)" stroke-width="2"/>`;
+   for(let v=0;v<=max;v+=scale*2){s+=`<line x1="34" y1="${Y(v)}" x2="${W-6}" y2="${Y(v)}" stroke="var(--outline)" stroke-width=".6" opacity=".7"/>`+TX(28,Y(v)+4,v,{a:"end",fs:10});}
+   cats.forEach((c,i)=>{s+=`<rect x="${46+i*50}" y="${Y(vals[i])}" width="30" height="${140-Y(vals[i])}" fill="var(--acc)"/>`+TX(61+i*50,156,c,{fs:10});});
+   const svg=SV(W,H,s,"A bar chart");
+   if(k===0){const i=between(r,0,cats.length-1);return {ask:"calc",show:"",svg,qtext:"What is the value for "+cats[i]+"?",a:String(vals[i]),why:"Read across from the top of the "+cats[i]+" bar to the scale: "+vals[i]+". Each line is "+scale*2+", so halfway is "+scale+"."};}
+   const i=0,j=cats.length-1,ii=vals.indexOf(Math.max(...vals)),jj=vals.indexOf(Math.min(...vals));if(ii===jj)return GEN.charts(r);
+   return {ask:"calc",show:"",svg,qtext:"How much more is "+cats[ii]+" than "+cats[jj]+"?",a:String(vals[ii]-vals[jj]),why:cats[ii]+" is "+vals[ii]+" and "+cats[jj]+" is "+vals[jj]+": "+vals[ii]+" − "+vals[jj]+" = "+(vals[ii]-vals[jj])+".",slips:[[String(vals[ii]),"Good start.","That’s "+cats[ii]+" on its own. Take away "+cats[jj]+"."]]};}
+  const tot=pick(r,[20,24,36,40,60,120]),parts=pick(r,[[1,2],[1,4],[1,3]]),fr=parts[0]/parts[1];
+  const sweep=fr*360,x=60+50*Math.sin(sweep*Math.PI/180),y=60-50*Math.cos(sweep*Math.PI/180);
+  const s=`<circle cx="60" cy="60" r="50" fill="var(--tile)" stroke="var(--ink)" stroke-width="2"/><path d="M60 60 L60 10 A50 50 0 ${sweep>180?1:0} 1 ${x.toFixed(1)} ${y.toFixed(1)} Z" fill="var(--acc)" stroke="var(--ink)" stroke-width="2"/>`+TX(150,50,"Walk",{a:"start",b:1})+`<rect x="132" y="40" width="12" height="12" fill="var(--acc)"/>`+TX(150,74,"Other ways",{a:"start",b:1})+`<rect x="132" y="64" width="12" height="12" fill="var(--tile)" stroke="var(--ink)"/>`;
+  return {ask:"calc",show:"",svg:SV(240,120,s,"A pie chart"),qtext:tot+" children were asked how they get to school. How many walk?",a:String(tot*fr),
+   why:"The walking part is "+parts[0]+"/"+parts[1]+" of the circle. "+parts[0]+"/"+parts[1]+" of "+tot+" = "+tot*fr+".",slips:[[String(tot-tot*fr),"Nearly.","That’s the other ways. The coloured part is walking."]]};
+ },
+ dataProb(r){
+  const names=shuffle(r,["Dugun","Labé","Kinkon","Yimbéring"]).slice(0,3),boys=names.map(()=>between(r,12,48)),girls=names.map(()=>between(r,12,48));
+  const s=TX(8,20,"School",{a:"start",b:1})+TX(150,20,"Boys",{b:1})+TX(210,20,"Girls",{b:1})+names.map((n,i)=>TX(8,44+i*22,n,{a:"start"})+TX(150,44+i*22,boys[i])+TX(210,44+i*22,girls[i])+`<line x1="4" y1="${28+i*22}" x2="236" y2="${28+i*22}" stroke="var(--outline)"/>`).join("");
+  const svg=SV(240,40+names.length*22,`<rect x="2" y="2" width="236" height="${36+names.length*22}" fill="none" stroke="var(--ink)" stroke-width="2"/>`+s,"A table");
+  const i=between(r,0,2),k=between(r,0,2);
+  if(k===0)return {ask:"calc",show:"",svg,qtext:"How many children are there at "+names[i]+" school altogether?",a:String(boys[i]+girls[i]),why:boys[i]+" + "+girls[i]+" = "+(boys[i]+girls[i])+"."};
+  if(k===1)return {ask:"calc",show:"",svg,qtext:"How many girls are there at the three schools altogether?",a:String(girls.reduce((a,b)=>a+b,0)),why:girls.join(" + ")+" = "+girls.reduce((a,b)=>a+b,0)+"."};
+  const d=Math.abs(boys[i]-girls[i]);if(!d)return GEN.dataProb(r);
+  return {ask:"calc",show:"",svg,qtext:"At "+names[i]+" school, how many more "+(boys[i]>girls[i]?"boys than girls":"girls than boys")+" are there?",a:String(d),why:Math.max(boys[i],girls[i])+" − "+Math.min(boys[i],girls[i])+" = "+d+"."};
+ },
+});
+
 /* ================= v2: six topics, the SATs coverage map =================
    The course used to be five "camps" in the order they were written. It is now
    the six topics of the KS2 test framework, every sub-strand in the order a
@@ -2302,27 +2611,26 @@ const SLIP={
             codes and one-line introductions are reused, not rewritten)
      q    - any new generators, as [name, level]
      t    - the introduction, when there is no old one to borrow
-   A part with nothing in old or q is listed so the map is complete, and says
-   honestly that its practice is still being written. */
+   Every part now has practice. */
 const TOPICS=[
  {id:"np",n:"Number & place value",icon:"np",subs:[
-  {n:"Counting in steps and multiples",code:"4N1 / 6N1",t:"Counting on and back in steps of any size, including through zero."},
+  {n:"Counting in steps and multiples",q:[["steps",1],["steps",2]],code:"4N1 / 6N1",t:"Counting on and back in steps of any size, including through zero."},
   {n:"Numbers to 10 million",old:["c1.0","c1.1"]},
-  {n:"Place value and Roman numerals",code:"4N3b / 5N3b",t:"What each digit is worth, and the Roman numerals for numbers and years."},
+  {n:"Place value and Roman numerals",q:[["roman",1],["roman",2]],code:"4N3b / 5N3b",t:"What each digit is worth, and the Roman numerals for numbers and years."},
   {n:"Rounding and estimating",old:["c1.2","c1.3"]},
   {n:"Negative numbers",old:["c1.4","c1.5"]},
   {n:"Multiples, factors, primes, squares and cubes",old:["c2.10","c3.5","c3.4"]},
-  {n:"Number problems",code:"5N6 / 6N6",t:"Place value, rounding and negative numbers in real situations."}]},
+  {n:"Number problems",q:[["npProb",1]],code:"5N6 / 6N6",t:"Place value, rounding and negative numbers in real situations."}]},
  {id:"calc",n:"Calculation",icon:"calc",subs:[
-  {n:"Mental addition and subtraction",code:"4C1 / 5C1",t:"Adding and taking away in your head, using what you already know."},
+  {n:"Mental addition and subtraction",q:[["mentalAS",1]],code:"4C1 / 5C1",t:"Adding and taking away in your head, using what you already know."},
   {n:"Column addition and subtraction",old:["c2.3","c2.4","c2.5","c3.7"]},
-  {n:"Estimating and checking",code:"4C3 / 6C8",t:"Rounding to check an answer, and using the inverse to prove it."},
-  {n:"Addition and subtraction problems",code:"5C4 / 6C4",t:"Choosing what to add and what to take away in a word problem."},
+  {n:"Estimating and checking",q:[["estimate",1]],code:"4C3 / 6C8",t:"Rounding to check an answer, and using the inverse to prove it."},
+  {n:"Addition and subtraction problems",q:[["asProb",1]],code:"5C4 / 6C4",t:"Choosing what to add and what to take away in a word problem."},
   {n:"Mental multiplication and division",old:["c2.0","c2.1","c2.2","c2.9"]},
   {n:"Short and long multiplication",old:["c2.6","c3.0","c3.1"]},
   {n:"Short and long division",old:["c2.7","c2.8","c3.2","c3.3"]},
   {n:"Order of operations",old:["c3.6"]},
-  {n:"Four-operation problems",code:"6C8",t:"Problems with more than one step, and what to do with a remainder."}]},
+  {n:"Four-operation problems",q:[["opProb",1]],code:"6C8",t:"Problems with more than one step, and what to do with a remainder."}]},
  {id:"fdp",n:"Fractions, decimals & %",icon:"fdp",subs:[
   {n:"Equivalent fractions and simplifying",code:"5F2b / 6F2",q:[["frEquiv",1],["frSimplify",1],["frEquiv",2],["frSimplify",2]],
    t:"Multiply or divide the top and the bottom by the same number and the fraction keeps its size."},
@@ -2343,36 +2651,36 @@ const TOPICS=[
   {n:"Fractions, decimals and percentages together",old:["c4.8"],q:[["pcToFr",1],["frToPc",1],["fdpLargest",1]]},
   {n:"Percentages of amounts",old:["c4.9","c4.10"],q:[["pcProb",1],["pcProb",2]]}]},
  {id:"meas",n:"Measurement",icon:"meas",subs:[
-  {n:"Comparing and ordering measures",code:"4M1 / 5M1",t:"Change them into the same unit, then compare."},
-  {n:"Reading scales",code:"3M2 / 4M2",t:"Work out what each small mark is worth before you read the scale."},
-  {n:"Money",code:"4M9 / 5M9",t:"Totals and change in pounds and pence."},
-  {n:"Time and timetables",code:"4M4 / 5M4",t:"Durations, the 24-hour clock and reading a timetable."},
+  {n:"Comparing and ordering measures",q:[["measCompare",1]],code:"4M1 / 5M1",t:"Change them into the same unit, then compare."},
+  {n:"Reading scales",q:[["scale",1],["scale",2]],code:"3M2 / 4M2",t:"Work out what each small mark is worth before you read the scale."},
+  {n:"Money",q:[["money",1]],code:"4M9 / 5M9",t:"Totals and change in pounds and pence."},
+  {n:"Time and timetables",q:[["time",1]],code:"4M4 / 5M4",t:"Durations, the 24-hour clock and reading a timetable."},
   {n:"Converting metric units",old:["c5.2"]},
-  {n:"Metric and imperial units",code:"5M6 / 6M6",t:"Miles, feet, inches, pounds and pints, roughly in metric."},
-  {n:"Perimeter and area",old:["c5.3","c5.4"]},
+  {n:"Metric and imperial units",q:[["imperial",1]],code:"5M6 / 6M6",t:"Miles, feet, inches, pounds and pints, roughly in metric."},
+  {n:"Perimeter and area",q:[["perim",1],["perim",2]],old:["c5.3","c5.4"]},
   {n:"Volume",old:["c5.5"]},
-  {n:"Measurement problems",code:"5M9 / 6M9",t:"Problems that mix units, money and time."}]},
+  {n:"Measurement problems",q:[["measProb",1]],code:"5M9 / 6M9",t:"Problems that mix units, money and time."}]},
  {id:"geo",n:"Geometry",icon:"geo",subs:[
-  {n:"Naming 2D and 3D shapes",code:"4G2 / 5G2",t:"The names of shapes, and how many faces, edges and corners they have."},
-  {n:"Describing and classifying shapes",code:"5G2b / 6G2a",t:"Sides, angles, parallel lines and symmetry."},
-  {n:"Drawing shapes and nets",code:"6G2b / 6G3",t:"Which nets fold into which 3D shapes."},
-  {n:"Angles, including missing angles",old:["c5.6"]},
-  {n:"Circles",code:"6G5",t:"The radius, the diameter and how they are related."},
-  {n:"Patterns",code:"4G3 / 6P3",t:"Lines of symmetry and completing a pattern."},
-  {n:"Translation and reflection",code:"5P2 / 6P2",t:"Moving a shape across a grid, and reflecting it in a line."},
-  {n:"Coordinates in four quadrants",code:"4P3 / 6P3",t:"Reading and plotting points, including negative coordinates."}]},
+  {n:"Naming 2D and 3D shapes",q:[["shape2d",1],["shape3d",1]],code:"4G2 / 5G2",t:"The names of shapes, and how many faces, edges and corners they have."},
+  {n:"Describing and classifying shapes",q:[["shapeProps",1]],code:"5G2b / 6G2a",t:"Sides, angles, parallel lines and symmetry."},
+  {n:"Drawing shapes and nets",q:[["nets",1]],code:"6G2b / 6G3",t:"Which nets fold into which 3D shapes."},
+  {n:"Angles, including missing angles",q:[["angPoint",1]],old:["c5.6"]},
+  {n:"Circles",q:[["circles",1]],code:"6G5",t:"The radius, the diameter and how they are related."},
+  {n:"Symmetry and patterns",q:[["symmetry",1]],code:"4G3 / 6P3",t:"Lines of symmetry and completing a pattern."},
+  {n:"Translation and reflection",q:[["transform",1]],code:"5P2 / 6P2",t:"Moving a shape across a grid, and reflecting it in a line."},
+  {n:"Coordinates in four quadrants",q:[["coords",1]],code:"4P3 / 6P3",t:"Reading and plotting points, including negative coordinates."}]},
  {id:"ras",n:"Ratio, algebra & statistics",icon:"ras",subs:[
-  {n:"Ratio and relative sizes",code:"6R1",t:"Scaling a recipe up or down: if 2 makes 6, then 6 makes 18."},
-  {n:"Percentages for comparison",code:"6R2",t:"Changing scores into percentages so you can compare them."},
-  {n:"Scale factors",code:"6R3",t:"Making a shape bigger or smaller by the same amount every way."},
+  {n:"Ratio and relative sizes",q:[["ratioRel",1]],code:"6R1",t:"Scaling a recipe up or down: if 2 makes 6, then 6 makes 18."},
+  {n:"Percentages for comparison",q:[["pcCompare",1]],code:"6R2",t:"Changing scores into percentages so you can compare them."},
+  {n:"Scale factors",q:[["scaleF",1]],code:"6R3",t:"Making a shape bigger or smaller by the same amount every way."},
   {n:"Unequal sharing and grouping",old:["c5.0","c5.1"]},
-  {n:"Missing numbers as algebra",code:"6A1 / 6A3",t:"A letter stands for a number. Find it."},
+  {n:"Missing numbers as algebra",q:[["missing",1],["missing",2]],code:"6A1 / 6A3",t:"A letter stands for a number. Find it."},
   {n:"Formulae in words",old:["c5.8"]},
-  {n:"Linear sequences",code:"6A2",t:"Find the rule, then use it to find any term."},
+  {n:"Linear sequences",q:[["seq",1],["seq",2]],code:"6A2",t:"Find the rule, then use it to find any term."},
   {n:"Two unknowns",old:["c5.9"]},
-  {n:"Combinations",code:"6A5",t:"Listing every possible way, so none are missed."},
-  {n:"Tables, charts and line graphs",code:"4S1 / 6S1",t:"Reading values from tables, bar charts, line graphs and pie charts."},
-  {n:"Problems with data",code:"5S1 / 6S1",t:"Using what a chart or table shows to answer a question."},
+  {n:"Combinations",q:[["combos",1]],code:"6A5",t:"Listing every possible way, so none are missed."},
+  {n:"Tables, charts and line graphs",q:[["charts",1]],code:"4S1 / 6S1",t:"Reading values from tables, bar charts, line graphs and pie charts."},
+  {n:"Problems with data",q:[["dataProb",1]],code:"5S1 / 6S1",t:"Using what a chart or table shows to answer a question."},
   {n:"The mean",old:["c5.7"]}]}];
 
 /* ================= v2: the app, in the Woven design =================
@@ -2515,6 +2823,7 @@ function answerText(q){return q.ask==="ch"?q.opts[q.a]:q.ask==="pickAll"?q.opts.
 
 function qArt(q){
  if(q.shape) return shapeArt(q.shape);
+ if(q.svg) return `<div class="artbox">${q.svg}</div>`;
  const pic=QART[q.ask]||QART[q.g];
  if(!pic) return "";
  try{const h=pic(Object.assign({},q,{show:String(q.show).replace(/,/g," ")}));return h?`<div class="artbox">${h}</div>`:"";}catch(e){return "";}
