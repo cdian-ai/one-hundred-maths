@@ -28,7 +28,12 @@ remainder key, so "143 r 3" can be typed), the drawings and the arithmetic paper
 - **Every one of the 57 parts has practice** (stage 2 added 31 generators for
   number, calculation, measurement, geometry, ratio, algebra and statistics,
   with drawings of scales, timetables, shapes, grids, charts and tables).
-- Still to come: the videos, and the Reasoning mock papers (Papers 2 and 3).
+- **All three mock papers**: Paper 1 (arithmetic, 36 questions, 40 marks, 30
+  minutes) and Papers 2 and 3 (reasoning, 25 questions, 35 marks, 40 minutes,
+  every topic, multi-step problems worth 2 marks). New questions each time; the
+  review shows the working for every miss, and the latest three add up to a
+  total out of 110 against the expected standard.
+- Still to come: the videos.
 
 ## What it is built from
 

@@ -2752,7 +2752,7 @@ const TOP=id=>TOPICS.find(t=>t.id===id);
 
 /* ---------- state ---------- */
 const KEY="oh-maths.v2";
-const fresh=()=>({h:{},d:{},days:{},at:null,sess:null,papers:[],name:"",seen:0});
+const fresh=()=>({h:{},d:{},days:{},at:null,sess:null,papers:[],mocks:{},name:"",seen:0});
 let S=(()=>{try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY))||{})}catch(e){return fresh()}})();
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const dayStr=d=>{const x=d||new Date();return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");};
@@ -2942,7 +2942,7 @@ const TITLES={topic:"",sub:"",start:"Today’s session",session:"Today’s sessi
 function header(){
  const isHome=V.s==="home";
  const title=V.s==="topic"?TOP(V.tp).n:V.s==="sub"?SUB(V.id).n:"One Hundred";
- const sub=V.s==="topic"||V.s==="sub"?"Year 6 SATs maths":isHome?"Year 6 SATs maths":TITLES[V.s];
+ const sub=V.s==="topic"||V.s==="sub"?"Year 6 SATs maths":isHome?"Year 6 SATs maths":V.s==="paper"?PAPERS[V.kind].name:TITLES[V.s];
  $("#hdr").innerHTML=`${isHome?"":`<button class="backb" onclick="${["session","end","paper","diag","diagres"].includes(V.s)?"home()":"back()"}" aria-label="Back"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>`}
   <div class="ttl"><b>${esc(title)}</b><span>${esc(sub)}</span></div>`;
 }
@@ -2966,7 +2966,7 @@ home(){
   ${at?`<button class="strip carry" onclick="openSub('${at.id}')"><b>↺</b><span><b>${esc(at.n)}</b><br><small>Carry on where you stopped</small></span><span class="ar">›</span></button>`:""}
   ${fresh?`<button class="strip carry" onclick="startDiag()"><b>?</b><span><b>Not sure where to start?</b><br><small>Ten quick questions point you to the right parts</small></span><span class="ar">›</span></button>`:""}
   <div class="tiles">${TOPICS.map((tp,i)=>`<button class="tile" onclick="go('topic',{tp:'${tp.id}'})"><div class="band" style="background-position:${i*9}px 0"></div><div class="in"><svg class="ic" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">${ICONS[tp.icon]}</svg><div style="display:grid;gap:8px"><div class="nm">${esc(tp.n)}</div>${blocks(blocksOf(tp.id))}</div></div></button>`).join("")}</div>
-  <div class="links"><button onclick="go('mocks')">Mocks<small>${S.papers.length?"Paper 1: "+S.papers[S.papers.length-1]+" of 40":"Paper 1 ready"}</small></button><button onclick="go('ready')">Ready for SATs<small>${readyCount()} of 6 topics</small></button><button onclick="go('parent')">For parents<small>Progress</small></button></div>
+  <div class="links"><button onclick="go('mocks')">Mocks<small>${[1,2,3].every(k=>lastMock(k)!=null)?lastMock(1)+lastMock(2)+lastMock(3)+" of 110":"3 papers"}</small></button><button onclick="go('ready')">Ready for SATs<small>${readyCount()} of 6 topics</small></button><button onclick="go('parent')">For parents<small>Progress</small></button></div>
   <button class="btn quiet" onclick="go('about')">About One Hundred</button>`;
 },
 topic(){
@@ -3047,19 +3047,19 @@ parent(){
  const month=TODAY().slice(0,7), days=Object.keys(S.days).filter(d=>d.startsWith(month)).length;
  const nm=S.name||"Your child";
  return `<h2 style="font-size:24px">${esc(nm)}’s progress</h2>
-  <div class="kpis"><div><b>${days}</b><span>days practised this month</span></div><div><b>${readyCount()} of 6</b><span>topics ready</span></div><div><b>${S.papers.length?S.papers[S.papers.length-1]+"/40":"–"}</b><span>last arithmetic paper</span></div></div>
+  <div class="kpis"><div><b>${days}</b><span>days practised this month</span></div><div><b>${readyCount()} of 6</b><span>topics ready</span></div><div><b>${[1,2,3].every(k=>lastMock(k)!=null)?lastMock(1)+lastMock(2)+lastMock(3)+"/110":"–"}</b><span>latest mock total</span></div></div>
   <div class="ptab"><div class="h">Maths</div>${TOPICS.map(tp=>`<div class="r"><span>${esc(tp.n)}</span><b>${blocksOf(tp.id)} of 10 blocks</b></div>`).join("")}</div>
   <p class="small-note">8 of 10 blocks means ready for that topic. Blocks are not a SATs score.</p>
   <div class="card"><b>What One Hundred covers</b><span>Every content area in the official KS2 maths test framework, built from the 2025 and 2026 papers: number, calculation, fractions, measurement, geometry, ratio, algebra and statistics. The parts that carry the most marks get the most practice.</span></div>
   <div class="card"><b>How to help</b><span>Ask ${S.name?esc(S.name):"your child"} to show you one question they got right today. Praise the effort, not the score.</span></div>`;
 },
 mocks(){
- const last=S.papers.slice(-3);
+ const row=k=>{const P=PAPERS[k],a=((S.mocks||{})["p"+k])||(k===1?S.papers:[])||[];
+  return `<div class="mset"><b>${P.name}</b><span class="st ready">Ready</span><small>${k===1?"36 questions, 30 minutes, no calculator. Long multiplication and long division are worth 2 marks each, near the end.":"25 questions, 40 minutes. Problems from every topic, some worth 2 marks."} New questions every time.${a.length?" Your last tries: "+a.slice(-3).join(", ")+" out of "+P.marks+".":""}</small></div>
+  <button class="btn${a.length?" sec":""}" onclick="openPaper(${k})">Start ${P.name.split(":")[0]} · ${P.secs/60} min ${arrow()}</button>`;};
  return `<div class="greet">${nuuru({size:64,pose:"think"})}<p>Mocks are the real thing, practised. Same papers, same times, marked like May.</p></div>
-  <span class="eb">The maths papers</span><div class="papers"><div><b>Paper 1: Arithmetic</b><small>30 min · 40 marks</small></div><div><b>Paper 2: Reasoning</b><small>40 min · 35 marks</small></div><div><b>Paper 3: Reasoning</b><small>40 min · 35 marks</small></div></div>
-  <div class="mset"><b>Paper 1: Arithmetic</b><span class="st ready">Ready</span><small>36 questions, 30 minutes, long multiplication and long division worth 2 marks each, placed late, as in the real paper. New questions every time.${last.length?" Your last tries: "+last.join(", ")+" out of 40.":""}</small></div>
-  <button class="btn" onclick="openPaper()">Start Paper 1 · 30 min ${arrow()}</button>
-  <div class="mset"><b>Papers 2 and 3: Reasoning</b><span class="st">Being written</span><small>They draw on every topic, so they open once all six topics have their practice.</small></div>`;
+  ${mockTotalHTML()}${row(1)}${row(2)}${row(3)}
+  <p class="small-note">In the real test, Papers 2 and 3 have space to show working, and a 2-mark question can earn 1 mark for a correct method. Here the answer is marked, so practise writing your working on paper too.</p>`;
 },
 paper(){return paperHTML();},
 diag(){return diagHTML();},
@@ -3160,41 +3160,77 @@ function finishSession(){const sess=S.sess,score=sess.res.reduce((a,b)=>a+b,0);
  S.days[TODAY()]=1;save();tellHost();
  STACK=[];V={s:"end",res:{score,total:sess.items.length,focus:sess.focus,before:sess.before,after:blocksOf(sess.focus)}};render();try{window.scrollTo(0,0)}catch(e){}}
 
-/* ---------- the arithmetic paper, restyled ---------- */
-function openPaper(){
- const qs=[]; const sd=seed();
- for(let i=0;i<32;i++){const g=PAPERMIX[i%PAPERMIX.length][0];qs.push(Object.assign(makeQ(g,1+(i%2),sd+i*7919),{m:1}));}
- qs.splice(13,0,Object.assign(makeQ("longMul",1,sd+911),{m:2}));
- qs.splice(24,0,Object.assign(makeQ("longDiv",1,sd+922),{m:2}));
- qs.push(Object.assign(makeQ("longMul",2,sd+933),{m:2}));
- qs.push(Object.assign(makeQ("longDiv",2,sd+944),{m:2}));
- go("paper",{qs,i:0,ans:qs.map(()=>""),t0:Date.now(),mark:null},false);
+/* ---------- the three papers ----------
+   Paper 1, arithmetic: 36 questions, 40 marks, 30 minutes, long multiplication
+   and long division worth 2 each and placed late, as in the real paper.
+   Papers 2 and 3, reasoning: 25 questions, 35 marks, 40 minutes each. Like the
+   real ones they mix every topic, start gently, and give 2 marks to the
+   problems with more than one step. One try per question, no feedback until
+   the end, then a review of every question with its working. */
+const REASON={
+ 2:[["steps",1,1],["shape2d",1,1],["pvRound",1,1],["frCompare",1,1],["money",1,1],["coords",1,1],["mentalAS",1,1],["charts",1,1],["symmetry",1,1],["decCompare",1,1],
+    ["angles",1,1],["missing",1,1],["scale",2,1],["roman",2,1],["pcCompare",1,1],
+    ["opProb",1,2],["fdProb",1,2],["measProb",1,2],["ratioRel",1,2],["perim",2,2],["time",1,2],["pcProb",2,2],["seq",2,2],["ratioShare",2,2],["dataProb",1,2]],
+ 3:[["pvDigit",1,1],["shape3d",1,1],["pvNeg",1,1],["frEquiv",1,1],["measCompare",1,1],["transform",1,1],["estimate",1,1],["circles",1,1],["nets",1,1],["decRound",1,1],
+    ["angPoint",1,1],["scaleF",1,1],["imperial",1,1],["combos",1,1],["frToPc",1,1],
+    ["asProb",1,2],["npProb",1,2],["opProb",1,2],["frWord",1,2],["missing",2,2],["mean",1,2],["volume",1,2],["areaTri",1,2],["charts",1,2],["formula",1,2]]};
+const PAPERS={1:{name:"Paper 1: Arithmetic",secs:1800,marks:40},2:{name:"Paper 2: Reasoning",secs:2400,marks:35},3:{name:"Paper 3: Reasoning",secs:2400,marks:35}};
+function openPaper(kind){
+ kind=kind||1; const qs=[]; const sd=seed();
+ if(kind===1){
+  for(let i=0;i<32;i++){const g=PAPERMIX[i%PAPERMIX.length][0];qs.push(Object.assign(makeQ(g,1+(i%2),sd+i*7919),{m:1}));}
+  qs.splice(13,0,Object.assign(makeQ("longMul",1,sd+911),{m:2}));
+  qs.splice(24,0,Object.assign(makeQ("longDiv",1,sd+922),{m:2}));
+  qs.push(Object.assign(makeQ("longMul",2,sd+933),{m:2}));
+  qs.push(Object.assign(makeQ("longDiv",2,sd+944),{m:2}));
+ } else {
+  REASON[kind].forEach(([g,lvl,m],i)=>qs.push(Object.assign(makeQ(g,lvl,sd+i*7919+kind),{m})));
+ }
+ go("paper",{kind,qs,i:0,ans:qs.map(()=>""),t0:Date.now(),mark:null},false);
 }
 let PT=null;
 function tick(){clearInterval(PT);PT=setInterval(()=>{
- if(V.s!=="paper"||V.mark){clearInterval(PT);return;}
- const left=1800-Math.floor((Date.now()-V.t0)/1000);
- if(left<=0){clearInterval(PT);markPaper();return;}
+ if(V.s!=="paper"||V.mark!=null){clearInterval(PT);return;}
+ const left=PAPERS[V.kind].secs-Math.floor((Date.now()-V.t0)/1000);
+ if(left<=0){clearInterval(PT);toast("Time’s up");markPaper();return;}
  const e=$("#clk");if(e){e.textContent=mmss(left);e.className="timer"+(left<300?" low":"");}},500);}
+const pRight=(q,a)=>a!==""&&(q.ask==="ch"?a===q.a:eqv(a,q.a,q.exact));
 function paperHTML(){
- if(V.mark!=null){const tot=V.qs.reduce((a,q)=>a+q.m,0);
-  return `<div class="end"><div class="tp"><span>Paper 1 done</span><span>Arithmetic</span></div><div class="score">${V.mark}<small> of ${tot}.</small></div><h2>${V.mark>=34?"Exam-ready pace.":V.mark>=24?"Good base. Look at the misses.":"Worth a review."}</h2></div>
-   <span class="eb">Review</span><div class="review">${V.qs.map((q,k)=>{const ok=V.ans[k]!==""&&eqv(V.ans[k],q.a,q.exact);return `<div><span class="m ${ok?"ok":""}">${ok?"✓":V.ans[k]===""?"–":"✗"}</span><span>${fmt(q.show)}</span><b>${ok?"":fmt(q.a)}</b></div>`}).join("")}</div>
-   <button class="btn" onclick="openPaper()">Try another Paper 1 ${arrow()}</button><button class="btn sec mid" onclick="home()">Back to home</button>`;}
- const q=V.qs[V.i],k=(c,l)=>`<button class="key" onclick="ptap('${c}')">${l||c}</button>`;
- return `<div class="qh"><span class="eb">Question ${V.i+1} of ${V.qs.length}${q.m>1?" · 2 marks":""}</span><span class="timer" id="clk">30:00</span></div>
-  <div class="card"><div class="qshow${String(q.show).length>13?" mid":""}">${fmt(q.show)}</div>
-   <div class="slot ${V.ans[V.i]===""?"empty":""}">${V.ans[V.i]===""?"–":esc(V.ans[V.i])}</div>
-   <div class="keys">${k(1)}${k(2)}${k(3)}<button class="key sm" onclick="pdel()">⌫</button>${k(4)}${k(5)}${k(6)}${k(".")}${k(7)}${k(8)}${k(9)}${k("/")}${k("-","−")}${k(0)}${k("r")}<button class="key go" onclick="pnext()" aria-label="Next">›</button></div>
-   <div class="pgrid">${V.qs.map((_,j)=>`<button class="pg${V.ans[j]!==""?" ans":""}${j===V.i?" now":""}" onclick="pgo(${j})">${j+1}</button>`).join("")}</div></div>
+ const P=PAPERS[V.kind];
+ if(V.mark!=null){const tot=V.qs.reduce((a,q)=>a+q.m,0),pc=V.mark/tot;
+  return `<div class="end"><div class="tp"><span>${esc(P.name)} done</span><span>${V.kind===1?"No calculator":"Reasoning"}</span></div><div class="score">${V.mark}<small> of ${tot}.</small></div><h2>${pc>=.85?"Exam-ready pace.":pc>=.6?"Good base. Look at the misses.":"Worth a review."}</h2></div>
+   ${mockTotalHTML()}
+   <span class="eb">Review</span><div class="review">${V.qs.map((q,k)=>{const ok=pRight(q,V.ans[k]);
+    const qtxt=q.qtext||(q.ask==="round"?"Round "+enNum(q.show)+" to the nearest "+q.p+".":q.ask==="share"?"Share "+q.show+" in the ratio "+q.r1+" : "+q.r2+". The first share?":(q.hint?q.hint+" ":"")+(q.show||""));
+    return `<div><span class="m ${ok?"ok":""}">${ok?"✓":V.ans[k]===""?"–":"✗"}</span><span>${fmt(qtxt)}${q.m>1?` <small class="small-note">(2 marks)</small>`:""}${!ok&&q.why?`<br><small class="small-note">${fmt(q.why)}</small>`:""}</span><b>${ok?"":fmt(answerText(q))}</b></div>`}).join("")}</div>
+   <button class="btn" onclick="openPaper(${V.kind})">Try another ${esc(P.name.split(":")[0])} ${arrow()}</button><button class="btn sec mid" onclick="home();go('mocks')">Back to Mocks</button>`;}
+ const q=V.qs[V.i],a=V.ans[V.i],k=(c,l)=>`<button class="key" onclick="ptap('${c}')">${l||c}</button>`;
+ const prompt=q.qtext?`<p class="qtext">${fmt(q.qtext)}</p>`:q.hint?`<p class="qtext">${fmt(q.hint)}</p>`:q.ask==="round"?`<p class="qtext">Round to the nearest ${fmt(q.p)}.</p>`:q.ask==="share"?`<p class="qtext">Share it in the ratio ${q.r1} : ${q.r2}. How big is the first share?</p>`:"";
+ const input=q.ask==="ch"
+  ?`<div class="opts" role="radiogroup">${q.opts.map((o,j)=>`<button class="op" role="radio" aria-checked="${a===j}" onclick="ppick(${j})">${fmt(o)}</button>`).join("")}</div>`
+  :`<div class="slot ${a===""?"empty":""}">${q.unit==="£"?'<span class="u">£</span>':""}<span>${a===""?"–":esc(a)}</span>${q.unit&&q.unit!=="£"?`<span class="u">${esc(q.unit)}</span>`:""}</div>
+   <div class="keys">${k(1)}${k(2)}${k(3)}<button class="key sm" onclick="pdel()">⌫</button>${k(4)}${k(5)}${k(6)}${k(".")}${k(7)}${k(8)}${k(9)}${k("/")}${k("-","−")}${k(0)}${k("r")}<button class="key go" onclick="pnext()" aria-label="Next">›</button></div>`;
+ return `<div class="qh"><span class="eb">Question ${V.i+1} of ${V.qs.length}${q.m>1?" · 2 marks":""}</span><span class="timer" id="clk">${mmss(P.secs)}</span></div>
+  <div class="card">${prompt}${qArt(q)}${q.show&&q.ask!=="pickAll"?`<div class="qshow${String(q.show).length>13?" mid":""}">${q.ask==="pvDigit"?pvMark(Object.assign({},q,{show:enNum(q.show)})):fmt(q.show)}</div>`:""}${input}
+   ${q.ask==="ch"?`<button class="btn sec" onclick="pnext()">Next question ${arrow()}</button>`:""}
+   <div class="pgrid">${V.qs.map((_,j)=>`<button class="pg${V.ans[j]!==""?" ans":""}${j===V.i?" now":""}" onclick="pgo(${j})" aria-label="Question ${j+1}">${j+1}</button>`).join("")}</div></div>
   <button class="btn sec mid" onclick="markPaper()">I’ve finished · mark my paper</button>`;
 }
-function ptap(c){if(V.ans[V.i].length<14)V.ans[V.i]+=c;render();}
-function pdel(){V.ans[V.i]=V.ans[V.i].slice(0,-1);render();}
+function ptap(c){if(String(V.ans[V.i]).length<14)V.ans[V.i]=String(V.ans[V.i])+c;render();}
+function pdel(){V.ans[V.i]=String(V.ans[V.i]).slice(0,-1);render();}
+function ppick(j){V.ans[V.i]=j;render();}
 function pgo(k){V.i=k;render();}
-function pnext(){V.i=(V.i+1)%V.qs.length;render();}
-function markPaper(){clearInterval(PT);let m=0;V.qs.forEach((q,k)=>{if(V.ans[k]!==""&&eqv(V.ans[k],q.a,q.exact))m+=q.m;});
- V.mark=m;S.papers=(S.papers||[]).concat([m]).slice(-20);save();render();try{window.scrollTo(0,0)}catch(e){}}
+function pnext(){V.i=(V.i+1)%V.qs.length;render();try{window.scrollTo(0,0)}catch(e){}}
+function markPaper(){clearInterval(PT);let m=0;V.qs.forEach((q,k)=>{if(pRight(q,V.ans[k]))m+=q.m;});
+ V.mark=m;S.mocks=S.mocks||{};const key="p"+V.kind;S.mocks[key]=(S.mocks[key]||[]).concat([m]).slice(-20);
+ if(V.kind===1)S.papers=(S.papers||[]).concat([m]).slice(-20);save();tellHost();render();try{window.scrollTo(0,0)}catch(e){}}
+const lastMock=k=>{const a=((S.mocks||{})["p"+k])||(k===1?S.papers:[])||[];return a.length?a[a.length-1]:null;};
+/* the three latest papers together, against the 2026 expected standard (56 of 110) */
+function mockTotalHTML(){
+ const s=[1,2,3].map(lastMock);if(s.some(x=>x==null))return `<div class="card"><b>Your total</b><span class="small-note">Do all three papers to see your total out of 110. ${s.map((x,i)=>x==null?"Paper "+(i+1)+" still to do.":"").join(" ")}</span></div>`;
+ const t=s[0]+s[1]+s[2];
+ return `<div class="mile"><b>${t}</b><span>out of 110 across your latest three papers. ${t>=62?"That’s above the expected standard (56 marks in 2026), with room to spare.":t>=56?"That’s at the expected standard (56 marks in 2026). Aim for about 62 to be safe.":"The expected standard in 2026 was 56 marks. "+(56-t)+" more to reach it."}</span></div>`;
+}
 
 /* ---------- find where to start ---------- */
 function startDiag(){const sd=seed();STACK.push(V);V={s:"diag",i:0,qs:DIAG.map((d,k)=>makeQ(d.g,1,sd+k*7919)),res:[],ctx:"diag"};newAns();render();try{window.scrollTo(0,0)}catch(e){}}
@@ -3225,7 +3261,7 @@ const COURSE="maths";
 function tellHost(){
  try{if(window.parent===window)return;
   const b={};TOPICS.forEach(tp=>b[tp.id]=blocksOf(tp.id));
-  window.parent.postMessage({app:"one-hundred",course:COURSE,type:"progress",v:2,done:Object.keys(S.d||{}),blocks:b,days:Object.keys(S.days).length},location.origin);
+  window.parent.postMessage({app:"one-hundred",course:COURSE,type:"progress",v:2,done:Object.keys(S.d||{}),blocks:b,days:Object.keys(S.days).length,mocks:[1,2,3].map(lastMock)},location.origin);
  }catch(e){}
 }
 function hostSays(ev){
